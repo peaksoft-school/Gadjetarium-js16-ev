@@ -1,5 +1,5 @@
-const App = () => {
-   return <div>App</div>
-}
+import Button from '../Button'
+
+const App = () => <Button>Hello</Button>
 
 export default App
