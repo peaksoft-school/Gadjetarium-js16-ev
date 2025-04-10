@@ -39,7 +39,7 @@ export default defineConfig([
       extends: [
          'plugin:react/recommended',
          'airbnb',
-         +'plugin:prettier/recommended',
+         'plugin:prettier/recommended',
       ],
    },
    {

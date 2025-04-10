@@ -1,5 +1,3 @@
-import Button from '../Button'
-
-const App = () => <Button>Hello</Button>
+const App = () => <h1>GADGETARIUM js-16</h1>
 
 export default App
