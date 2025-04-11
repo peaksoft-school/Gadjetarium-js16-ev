@@ -28,6 +28,93 @@ const theme = createTheme({
          main: '#F4F4F4',
       },
    },
+   typography: {
+      fontFamily: '"Inter", sans-serif',
+      h1: {
+         fontFamily: '"Ubuntu", sans-serif',
+         fontWeight: 700,
+         fontSize: '2.5rem',
+         lineHeight: 1.2,
+      },
+      h2: {
+         fontFamily: '"Inter", sans-serif',
+         fontWeight: 500,
+         fontSize: '26px',
+         lineHeight: 1.1,
+      },
+      h2Bold: {
+         fontFamily: '"Inter", sans-serif',
+         fontWeight: 700,
+         fontSize: '28px',
+         lineHeight: 'auto',
+      },
+      h3: {
+         fontFamily: '"Inter", sans-serif',
+         fontWeight: 500,
+         fontSize: '28px',
+         lineHeight: 1,
+      },
+      h4: {
+         fontFamily: '"Inter", sans-serif',
+         fontSize: '24px',
+      },
+      h5: {
+         fontFamily: '"Inter", sans-serif',
+         fontWeight: 500,
+         fontSize: '22px',
+         lineHeight: 1,
+      },
+      h6: {
+         fontFamily: '"Inter", sans-serif',
+         fontWeight: 600,
+         fontSize: '20px',
+         lineHeight: 1.2,
+      },
+      subtitle1: {
+         fontFamily: '"Inter", sans-serif',
+         fontSize: '18px',
+         lineHeight: 1.6,
+      },
+      subtitle2: {
+         fontFamily: '"Inter", sans-serif',
+         fontSize: '19px',
+         lineHeight: 1.3,
+      },
+      body1: {
+         fontFamily: '"Inter", sans-serif',
+         fontSize: '16px',
+         lineHeight: 1.4,
+      },
+      bodyLight: {
+         fontFamily: '"Inter", sans-serif',
+         fontWeight: 300,
+         fontSize: '16px',
+         lineHeight: 1,
+      },
+      bodyMedium: {
+         fontFamily: '"Inter", sans-serif',
+         fontWeight: 500,
+         fontSize: '10px',
+         lineHeight: 1.4,
+      },
+   },
+   components: {
+      MuiTypography: {
+         styleOverrides: {
+            root: {
+               '&.MuiTypography-h4-regular': {
+                  fontWeight: 400,
+               },
+               '&.MuiTypography-h4-medium': {
+                  fontWeight: 500,
+               },
+               '&.MuiTypography-h4-bold': {
+                  fontWeight: 700,
+               },
+            },
+         },
+      },
+   },
 })
 
 export const Themes = ({ children }) => (
