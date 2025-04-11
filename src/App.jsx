@@ -1,5 +1,6 @@
 import './App.css'
+import StyledInput from './components/UI/Input'
 
-const App = () => <h1>GADGETARIUM js-16</h1>
+const App = () => <StyledInput />
 
 export default App
