@@ -4,7 +4,6 @@ import './index.css'
 import App from './App.jsx'
 import { Themes } from './Theme/Themes.jsx'
 
-
 createRoot(document.getElementById('root')).render(
    <StrictMode>
       <Themes>
