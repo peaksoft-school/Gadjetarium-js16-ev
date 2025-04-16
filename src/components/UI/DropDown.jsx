@@ -5,6 +5,7 @@ import {
    Select,
    Box,
    Avatar,
+   styled,
 } from '@mui/material'
 
 const SelectDropdown = ({
@@ -15,35 +16,15 @@ const SelectDropdown = ({
    disabled = false,
    fullWidth = true,
 }) => {
-   const handleChange = (event) => {
-      onChange(event.target.value)
-   }
+   const handleChange = (event) => onChange(event.target.value)
 
    return (
-      <FormControl
-         fullWidth={fullWidth}
-         disabled={disabled}
-         sx={{ minHeight: 40 }}
-      >
-         <InputLabel
-            sx={{
-               fontSize: 14,
-            }}
-         >
-            {label}
-         </InputLabel>
+      <StyledFormControl fullWidth={fullWidth} disabled={disabled}>
+         <StyledInputLabel>{label}</StyledInputLabel>
          <Select
             value={value}
             label={label}
             onChange={handleChange}
-            sx={{
-               height: 40,
-               fontSize: 14,
-               '& .MuiSelect-select': {
-                  display: 'flex',
-                  alignItems: 'center',
-               },
-            }}
             MenuProps={{
                PaperProps: {
                   sx: {
@@ -56,24 +37,32 @@ const SelectDropdown = ({
                },
             }}
          >
-            {options.map((option) => (
-               <MenuItem key={option.value} value={option.value}>
+            {options.map(({ value, icon, label }) => (
+               <MenuItem key={value} value={value}>
                   <Box display="flex" alignItems="center" gap={1}>
-                     {option.icon && (
+                     {icon && (
                         <Avatar
-                           src={option.icon}
-                           alt={option.label}
+                           src={icon}
+                           alt={label}
                            sx={{ width: 24, height: 24 }}
                            variant="rounded"
                         />
                      )}
-                     {option.label}
+                     {label}
                   </Box>
                </MenuItem>
             ))}
          </Select>
-      </FormControl>
+      </StyledFormControl>
    )
 }
 
 export default SelectDropdown
+
+const StyledFormControl = styled(FormControl)({
+   minHeight: 40,
+})
+
+const StyledInputLabel = styled(InputLabel)({
+   fontSize: 14,
+})
