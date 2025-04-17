@@ -1,6 +1,6 @@
 import { styled, Button as MuiButton } from '@mui/material'
 
-const Button = ({
+const ButtonUI = ({
    children,
    onClick,
    variant = 'contained',
@@ -27,18 +27,20 @@ const Button = ({
    )
 }
 
-export default Button
+export default ButtonUI
 
 const StyledButton = styled(MuiButton)(({ theme }) => ({
    borderRadius: '10px',
    height: '53px',
-   padding: '14px 32px',
    marginTop: '20px',
    fontSize: '18px',
+   padding: '10px 24px',
    textTransform: 'none',
+   boxShadow: 'none',
 
    '&.MuiButton-contained': {
       backgroundColor: '#CB11AB',
+      boxShadow: 'none',
       color: '#fff',
       '&:hover': {
          backgroundColor: '#E313BF',
@@ -56,6 +58,7 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
       backgroundColor: 'transparent',
       border: '1px solid #CB11AB',
       color: '#CB11AB',
+      boxShadow: 'none',
 
       '&:hover': {
          backgroundColor: '#CB11AB',
@@ -74,6 +77,8 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
       backgroundColor: 'white',
       border: '1px solid #CB11AB',
       color: '#CB11AB',
+      boxShadow: 'none',
+
       '&:hover': {
          backgroundColor: '#CB11AB',
          color: '#fff',
@@ -90,6 +95,8 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
    '&.MuiButton-containedSuccess': {
       backgroundColor: '#2FC509',
       color: '#fff',
+      boxShadow: 'none',
+
       '&:hover': {
          backgroundColor: '#218838',
       },
