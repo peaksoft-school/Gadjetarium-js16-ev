@@ -7,9 +7,8 @@ import {
    Typography,
    Box,
 } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import styled from '@emotion/styled'
+import { Icons } from '../../assets/icons'
 
 const CatalogCardWithDelete = ({
    image,
@@ -21,7 +20,7 @@ const CatalogCardWithDelete = ({
    return (
       <Card>
          <DeleteButton onClick={onDelete} size="small">
-            <CloseIcon fontSize="small" />
+            <img src={Icons.cancel} alt="" />
          </DeleteButton>
 
          <ImageContainer>
@@ -36,7 +35,7 @@ const CatalogCardWithDelete = ({
          <Actions>
             <AddButton
                variant="contained"
-               startIcon={<ShoppingCartIcon />}
+               startIcon={<img src={Icons.basket} alt="" />}
                onClick={onAddToCart}
             >
                В КОРЗИНУ

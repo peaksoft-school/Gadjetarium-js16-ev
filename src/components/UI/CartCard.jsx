@@ -1,7 +1,6 @@
 import { Box, Typography, IconButton, Button } from '@mui/material'
-import { Add, Remove, FavoriteBorder, Close } from '@mui/icons-material'
-import StarIcon from '@mui/icons-material/Star'
 import styled from '@emotion/styled'
+import { Icons } from '../../assets/icons'
 
 const CartCard = ({
    image,
@@ -16,13 +15,14 @@ const CartCard = ({
    onDecrease,
    onRemove,
    onFavorite,
+   isLiked = false,
 }) => {
    const renderStars = () => {
       return Array.from({ length: 5 }, (_, i) => (
          <StarIcon
             key={i}
-            fontSize="small"
-            sx={{ color: i + 1 <= rating ? '#FFA000' : '#ddd' }}
+            src={i + 1 <= rating ? Icons.starFul : Icons.starEmpty}
+            alt="star"
          />
       ))
    }
@@ -51,13 +51,9 @@ const CartCard = ({
          <ActionSection>
             <Box display="flex" gap={18}>
                <QuantityBox>
-                  <CircleButton onClick={onDecrease}>
-                     <Remove />
-                  </CircleButton>
+                  <CircleButton onClick={onDecrease}>-</CircleButton>
                   <Typography mx={1}>{quantity}</Typography>
-                  <CircleButton onClick={onIncrease}>
-                     <Add />
-                  </CircleButton>
+                  <CircleButton onClick={onIncrease}>+</CircleButton>
                </QuantityBox>
 
                <PriceText>{price.toLocaleString()} с</PriceText>
@@ -65,10 +61,16 @@ const CartCard = ({
          </ActionSection>
 
          <BottomButtons>
-            <SmallButton onClick={onFavorite} startIcon={<FavoriteBorder />}>
+            <SmallButton size="small" onClick={onFavorite}>
+               <LikeIcon
+                  src={isLiked ? Icons.likeR : Icons.likeW}
+                  alt="like"
+                  isLiked={isLiked}
+               />
                В избранное
             </SmallButton>
-            <SmallButton onClick={onRemove} startIcon={<Close />}>
+            <SmallButton onClick={onRemove}>
+               <DeleteIcon src={Icons.cancel} alt="delete" />
                Удалить
             </SmallButton>
          </BottomButtons>
@@ -106,7 +108,6 @@ const InfoSection = styled(Box)`
 const Title = styled(Typography)`
    font-size: 18px;
    font-weight: 400;
-
    width: 300px;
    height: 54px;
 `
@@ -117,7 +118,11 @@ const RatingBox = styled(Box)`
    gap: 4px;
    width: 155px;
    height: 15px;
- 
+`
+
+const StarIcon = styled('img')`
+   width: 16px;
+   height: 16px;
 `
 
 const Availability = styled(Typography)`
@@ -130,7 +135,7 @@ const Availability = styled(Typography)`
 const ProductCode = styled(Typography)`
    color: #888;
    font-size: 14px;
-   width: 136px;
+   width: 146px;
    height: 20px;
 `
 
@@ -154,6 +159,8 @@ const CircleButton = styled(IconButton)`
    height: 28px;
    border: 1px solid #000;
    border-radius: 50px;
+   font-weight: bold;
+   font-size: 16px;
 `
 
 const PriceText = styled(Typography)`
@@ -181,4 +188,19 @@ const SmallButton = styled(Button)`
    text-transform: none;
    width: 120px;
    color: #909cb5;
+   display: flex;
+   align-items: center;
+   gap: 4px;
+`
+
+const LikeIcon = styled('img')`
+   width: 16px;
+   height: 16px;
+   filter: ${({ isLiked }) =>
+      isLiked ? 'none' : 'grayscale(100%) brightness(0.5)'};
+`
+
+const DeleteIcon = styled('img')`
+   width: 16px;
+   height: 16px;
 `
