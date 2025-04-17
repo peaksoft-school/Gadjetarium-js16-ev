@@ -1,4 +1,5 @@
 import { styled, Button as MuiButton } from '@mui/material'
+import { Icons } from '../../assets/icons'
 
 const ButtonUI = ({
    children,
@@ -22,7 +23,10 @@ const ButtonUI = ({
          }
          {...rest}
       >
-         {shopCart && <p>🗑</p>} {children}
+         {shopCart && (
+            <img src={Icons.basket} style={{ marginRight: '3.5px' }} />
+         )}{' '}
+         {children}
       </StyledButton>
    )
 }
