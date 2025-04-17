@@ -1,12 +1,12 @@
-import React from 'react'
 import { Box, Typography, IconButton, Button } from '@mui/material'
 import { Add, Remove, FavoriteBorder, Close } from '@mui/icons-material'
 import StarIcon from '@mui/icons-material/Star'
+import styled from '@emotion/styled'
 
 const CartCard = ({
    image,
    name,
-   rating,
+   rating = 4,
    reviews,
    inStock,
    code,
@@ -18,53 +18,23 @@ const CartCard = ({
    onFavorite,
 }) => {
    const renderStars = () => {
-      const stars = []
-      for (let i = 1; i <= 5; i++) {
-         stars.push(
-            <StarIcon
-               key={i}
-               fontSize="small"
-               sx={{ color: i <= rating ? '#FFA000' : '#ddd' }}
-            />
-         )
-      }
-      return stars
+      return Array.from({ length: 5 }, (_, i) => (
+         <StarIcon
+            key={i}
+            fontSize="small"
+            sx={{ color: i + 1 <= rating ? '#FFA000' : '#ddd' }}
+         />
+      ))
    }
 
    return (
-      <Box
-         display="flex"
-         alignItems="flex-start"
-         justifyContent="space-between"
-         maxWidth={980}
-         borderRadius={1}
-         maxHeight={170}
-         p={2}
-         sx={{
-            border: '1px solid #FFFFFF',
-            gap: 2,
-         }}
-      >
-         <Box component="img" src={image} alt={name} width={106} height={121} />
+      <CardContainer>
+         <ProductImage src={image} alt={name} />
 
-         <Box flex="1">
-            <Typography
-               fontSize={18}
-               fontWeight={400}
-               mb={0.5}
-               width={390}
-               height={54}
-            >
-               {name}
-            </Typography>
+         <InfoSection>
+            <Title>{name}</Title>
 
-            <Box
-               display="flex"
-               alignItems="center"
-               gap={0.5}
-               width={155}
-               height={15}
-            >
+            <RatingBox>
                <Typography color="textSecondary" fontSize={12}>
                   Рейтинг
                </Typography>
@@ -72,106 +42,143 @@ const CartCard = ({
                <Typography fontSize={13} color="textSecondary">
                   ({reviews})
                </Typography>
-            </Box>
+            </RatingBox>
 
-            <Typography color="green" fontSize={12} width={88} height={15}>
-               В наличии ({inStock})
-            </Typography>
+            <Availability>В наличии ({inStock})</Availability>
+            <ProductCode>Код товара: {code}</ProductCode>
+         </InfoSection>
 
-            <Typography
-               color="textSecondary"
-               fontSize={14}
-               width={136}
-               height={20}
-            >
-               Код товара: {code}
-            </Typography>
-         </Box>
-
-         <Box display="flex" paddingTop={4}>
-            <Box display="flex" gap={3}>
-               <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  width={89}
-                  height={28}
-               >
-                  <IconButton
-                     onClick={onDecrease}
-                     width="28"
-                     height="28"
-                     sx={{
-                        border: '1px solid #000',
-                        borderRadius: '50px',
-                     }}
-                  >
+         <ActionSection>
+            <Box display="flex" gap={18}>
+               <QuantityBox>
+                  <CircleButton onClick={onDecrease}>
                      <Remove />
-                  </IconButton>
-
+                  </CircleButton>
                   <Typography mx={1}>{quantity}</Typography>
-
-                  <IconButton
-                     onClick={onDecrease}
-                     width="28"
-                     height="28"
-                     sx={{
-                        border: '1px solid #000',
-                        borderRadius: '50px',
-                     }}
-                  >
+                  <CircleButton onClick={onIncrease}>
                      <Add />
-                  </IconButton>
-               </Box>
+                  </CircleButton>
+               </QuantityBox>
 
-               <Typography
-                  fontWeight={700}
-                  fontSize={18}
-                  width={94}
-                  height={20}
-               >
-                  {price.toLocaleString()} с
-               </Typography>
+               <PriceText>{price.toLocaleString()} с</PriceText>
             </Box>
-         </Box>
+         </ActionSection>
 
-         <Box
-            display="flex"
-            paddingTop={12}
-            width={281}
-            height={20}
-            paddingRight={5}
-            gap={1}
-         >
-            <Button
-               onClick={onFavorite}
-               startIcon={<FavoriteBorder />}
-               color="grey"
-               sx={{
-                  width: '130px',
-                  height: '20px',
-                  fontSize: 12,
-                  fontWeight: 400,
-               }}
-            >
+         <BottomButtons>
+            <SmallButton onClick={onFavorite} startIcon={<FavoriteBorder />}>
                В избранное
-            </Button>
-            <Button
-               onClick={onRemove}
-               startIcon={<Close />}
-               color="grey"
-               sx={{
-                  width: '57px',
-                  height: '20px',
-                  fontSize: 12,
-                  fontWeight: 400,
-               }}
-            >
+            </SmallButton>
+            <SmallButton onClick={onRemove} startIcon={<Close />}>
                Удалить
-            </Button>
-         </Box>
-      </Box>
+            </SmallButton>
+         </BottomButtons>
+      </CardContainer>
    )
 }
 
 export default CartCard
+
+const CardContainer = styled(Box)`
+   display: flex;
+   align-items: flex-start;
+   justify-content: space-between;
+   max-width: 980px;
+   max-height: 170px;
+   border-radius: 8px;
+   padding: 16px;
+   border: 1px solid #ffffff;
+   gap: 16px;
+   width: 929px;
+`
+
+const ProductImage = styled('img')`
+   width: 106px;
+   height: 121px;
+   object-fit: contain;
+`
+
+const InfoSection = styled(Box)`
+   display: flex;
+   flex-direction: column;
+   gap: 4px;
+`
+
+const Title = styled(Typography)`
+   font-size: 18px;
+   font-weight: 400;
+
+   width: 300px;
+   height: 54px;
+`
+
+const RatingBox = styled(Box)`
+   display: flex;
+   align-items: center;
+   gap: 4px;
+   width: 155px;
+   height: 15px;
+ 
+`
+
+const Availability = styled(Typography)`
+   color: #3cde14;
+   font-size: 12px;
+   width: 88px;
+   height: 15px;
+`
+
+const ProductCode = styled(Typography)`
+   color: #888;
+   font-size: 14px;
+   width: 136px;
+   height: 20px;
+`
+
+const ActionSection = styled(Box)`
+   display: flex;
+   padding-top: 32px;
+`
+
+const QuantityBox = styled(Box)`
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 89px;
+   height: 28px;
+   position: relative;
+   left: 100px;
+`
+
+const CircleButton = styled(IconButton)`
+   width: 28px;
+   height: 28px;
+   border: 1px solid #000;
+   border-radius: 50px;
+`
+
+const PriceText = styled(Typography)`
+   font-weight: 700;
+   font-size: 18px;
+   width: 94px;
+   height: 20px;
+`
+
+const BottomButtons = styled(Box)`
+   display: flex;
+   padding-top: 96px;
+   padding-right: 40px;
+   width: 300px;
+   height: 20px;
+   gap: 5px;
+   position: relative;
+   right: 120px;
+`
+
+const SmallButton = styled(Button)`
+   height: 20px;
+   font-size: 12px;
+   font-weight: 400;
+   text-transform: none;
+   width: 120px;
+   color: #909cb5;
+`

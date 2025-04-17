@@ -1,50 +1,25 @@
 import {
    Box,
-   Card as MuiCard,
    CardContent,
-   CardMedia,
    Typography,
    Rating,
    Stack,
+   CardMedia,
+   Card as MuiCard,
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 const CompactCard = ({ image, title, price, rating, reviews }) => {
    return (
-      <MuiCard
-         sx={{
-            width: 210,
-            height: 354,
-            borderRadius: 2,
-            p: 1.5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-         }}
-      >
-         <CardMedia
-            component="img"
-            image={image}
-            alt={title}
-            sx={{
-               width: '100%',
-               height: 210,
-               objectFit: 'contain',
-               mb: 1.5,
-               marginBottom: 3,
-            }}
-         />
-
-         <CardContent sx={{ p: 0, textAlign: 'center' }}>
-            <Typography variant="body2" fontWeight={500} sx={{ mb: 0.5 }}>
-               {title}
-            </Typography>
-
-            <Stack
+      <StyledCard>
+         <StyledCardMedia component="img" image={image} alt={title} />
+         <StyledCardContent>
+            <TitleTypography variant="body2">{title}</TitleTypography>
+            <RatingStack
                direction="row"
                justifyContent="center"
                alignItems="center"
                spacing={0.5}
-               marginBottom={2}
             >
                <Typography variant="caption" color="text.secondary">
                   Рейтинг
@@ -53,18 +28,51 @@ const CompactCard = ({ image, title, price, rating, reviews }) => {
                <Typography variant="caption" color="text.secondary">
                   ({reviews})
                </Typography>
-            </Stack>
-
-            <Typography
-               variant="h6"
-               fontWeight={700}
-               sx={{ mt: 1, paddingRight: 12.8 }}
-            >
-               {price} с
-            </Typography>
-         </CardContent>
-      </MuiCard>
+            </RatingStack>
+            <PriceTypography variant="h6">{price} с</PriceTypography>
+         </StyledCardContent>
+      </StyledCard>
    )
 }
 
 export default CompactCard
+
+const StyledCard = styled(MuiCard)({
+   width: 210,
+   height: 354,
+   borderRadius: 16,
+   padding: 12,
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+})
+
+const StyledCardMedia = styled(CardMedia)({
+   width: '100%',
+   height: 210,
+   objectFit: 'contain',
+   marginBottom: 24,
+})
+
+const StyledCardContent = styled(CardContent)({
+   padding: 0,
+   textAlign: 'center',
+})
+
+const TitleTypography = styled(Typography)({
+   fontWeight: 500,
+   marginBottom: 4,
+   textAlign: 'start',
+   width: '150px',
+})
+
+const RatingStack = styled(Stack)({
+   marginBottom: 16,
+})
+
+const PriceTypography = styled(Typography)({
+   fontWeight: 700,
+   marginTop: 8,
+   paddingRight: 12.8,
+   textAlign: 'start',
+})

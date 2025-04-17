@@ -1,6 +1,5 @@
-import React from 'react'
 import {
-   Card,
+   Card as MuiCard,
    CardContent,
    CardActions,
    IconButton,
@@ -10,6 +9,7 @@ import {
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import styled from '@emotion/styled'
 
 const CatalogCardWithDelete = ({
    image,
@@ -19,88 +19,109 @@ const CatalogCardWithDelete = ({
    onAddToCart,
 }) => {
    return (
-      <Card
-         sx={{
-            width: 219,
-            height: 367,
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            p: 1,
-            borderRadius: 2,
-         }}
-      >
-         <IconButton
-            onClick={onDelete}
-            sx={{
-               position: 'absolute',
-               top: 8,
-               right: 8,
-               backgroundColor: 'white',
-               boxShadow: 1,
-               zIndex: 1,
-               width: '18px',
-               height: '18px',
-               '&:hover': {
-                  backgroundColor: '#f5f5f5',
-               },
-            }}
-            size="small"
-         >
+      <Card>
+         <DeleteButton onClick={onDelete} size="small">
             <CloseIcon fontSize="small" />
-         </IconButton>
+         </DeleteButton>
 
-         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-            <img
-               src={image}
-               alt={title}
-               width={155}
-               height={170}
-               style={{ objectFit: 'contain' }}
-            />
-         </Box>
+         <ImageContainer>
+            <StyledImage src={image} alt={title} />
+         </ImageContainer>
 
-         <CardContent sx={{ px: 1, pt: 2 }}>
-            <Typography
-               fontSize={14}
-               fontWeight={500}
-               sx={{ maxWidth: 178, minHeight: 40 }}
-            >
-               {title}
-            </Typography>
-            <Typography
-               fontSize={18}
-               fontWeight={700}
-               mt={1}
-               sx={{ maxWidth: 185, minHeight: 25 }}
-            >
-               {price.toLocaleString()} с
-            </Typography>
-         </CardContent>
+         <Content>
+            <TitleText>{title}</TitleText>
+            <PriceText>{price.toLocaleString()} с</PriceText>
+         </Content>
 
-         <CardActions sx={{ justifyContent: 'center', px: 1, pb: 2 }}>
-            <Button
+         <Actions>
+            <AddButton
                variant="contained"
                startIcon={<ShoppingCartIcon />}
-               fullWidth
                onClick={onAddToCart}
-               sx={{
-                  height: 46,
-                  backgroundColor: '#d122b4',
-                  borderRadius: 2,
-                  fontWeight: 500,
-                  textTransform: 'none',
-                  '&:hover': {
-                     backgroundColor: '#bb1ca3',
-                  },
-               }}
             >
                В КОРЗИНУ
-            </Button>
-         </CardActions>
+            </AddButton>
+         </Actions>
       </Card>
    )
 }
 
 export default CatalogCardWithDelete
+
+const Card = styled(MuiCard)`
+   width: 219px;
+   height: 367px;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   padding: 8px;
+`
+
+const DeleteButton = styled(IconButton)`
+   position: absolute;
+   top: 8px;
+   right: 8px;
+   background-color: white;
+   border: solid 1.13px #909cb54d;
+   z-index: 1;
+   width: 18px;
+   height: 18px;
+
+   &:hover {
+      background-color: #f5f5f5;
+   }
+`
+
+const ImageContainer = styled(Box)`
+   display: flex;
+   justify-content: center;
+   margin-top: 16px;
+`
+
+const StyledImage = styled('img')`
+   width: 155px;
+   height: 170px;
+   object-fit: contain;
+`
+
+const Content = styled(CardContent)`
+   padding-left: 8px;
+   padding-right: 8px;
+   padding-top: 16px;
+`
+
+const TitleText = styled(Typography)`
+   font-size: 14px;
+   font-weight: 500;
+   width: 178px;
+   height: 40px;
+`
+
+const PriceText = styled(Typography)`
+   font-size: 18px;
+   font-weight: 700;
+   margin-top: 8px;
+   max-width: 185px;
+   min-height: 25px;
+`
+
+const Actions = styled(CardActions)`
+   justify-content: center;
+   padding-left: 8px;
+   padding-right: 8px;
+   padding-bottom: 16px;
+`
+
+const AddButton = styled(Button)`
+   height: 46px;
+   background-color: #d122b4;
+
+   font-weight: 500;
+   text-transform: none;
+   width: 100%;
+
+   &:hover {
+      background-color: #bb1ca3;
+   }
+`
