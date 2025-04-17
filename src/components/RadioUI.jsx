@@ -1,6 +1,16 @@
 import { Radio, styled } from '@mui/material'
 
-const RadioUI = ({ ...rest }) => <StyledRadio isChecked {...rest} />
+const RadioUI = ({ onChange, disabled, size, name, ...rest }) => {
+   return (
+      <StyledRadio
+         onChange={onChange}
+         disabled={disabled}
+         size={size}
+         name={name}
+         {...rest}
+      />
+   )
+}
 
 export default RadioUI
 

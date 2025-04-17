@@ -1,6 +1,16 @@
 import { Checkbox, styled } from '@mui/material'
 
-const CheckboxUI = ({ ...rest }) => <StyledCheckbox isChecked {...rest} />
+const CheckboxUI = ({ onChange, disabled, size, name, ...rest }) => {
+   return (
+      <StyledCheckbox
+         onChange={onChange}
+         disabled={disabled}
+         size={size}
+         name={name}
+         {...rest}
+      />
+   )
+}
 
 export default CheckboxUI
 
