@@ -1,26 +1,24 @@
-import { Modal as MuiModal, Box } from '@mui/material';
+import { Modal as MuiModal, Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 const Modal = ({ open, onClose, children }) => {
-  return (
-    <MuiModal open={open} onClose={onClose}>
-      <Box
-        onClick={(e) => e.stopPropagation()}
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          bgcolor: 'background.paper',
-          borderRadius: 2,
-          boxShadow: 24,
-          p: 4,
-          minWidth: 300,
-        }}
-      >
-        {children}
-      </Box>
-    </MuiModal>
-  );
-};
+   return (
+      <MuiModal open={open} onClose={onClose}>
+         <StyledBox onClick={(e) => e.stopPropagation()}>{children}</StyledBox>
+      </MuiModal>
+   )
+}
 
-export default Modal;
+export default Modal
+
+const StyledBox = styled(Box)(({ theme }) => ({
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   backgroundColor: theme.palette.background.paper,
+   borderRadius: theme.shape.borderRadius * 2,
+   boxShadow: theme.shadows[5],
+   padding: theme.spacing(4),
+   minWidth: 300,
+}))
