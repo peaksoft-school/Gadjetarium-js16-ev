@@ -1,5 +1,6 @@
 import { Box, Typography, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
+import { styled } from '@mui/material/styles'
+import { Icons } from '../../assets/icons'
 
 const typeStyles = {
    success: {
@@ -26,75 +27,81 @@ export const CustomToast = ({
    const { title, color } = typeStyles[type] || typeStyles.success
 
    return (
-      <Box
-         sx={{
-            backgroundColor: '#1c1c1e',
-            color: 'white',
-            padding: '16px',
-            borderRadius: '10px',
-            boxShadow: 3,
-            width: '500px',
-            maxWidth: '500px',
-            boxSizing: 'border-box',
-            position: 'absolute',
-            right: '1px',
-         }}
-         aria-live="assertive"
-      >
-         <Typography variant="caption" sx={{ color, fontWeight: 600, mb: 1 }}>
-            {title}
-         </Typography>
+      <ToastContainer aria-live="assertive">
+         <TitleText style={{ color }}>{title}</TitleText>
 
-         <Box
-            sx={{
-               display: 'flex',
-               justifyContent: 'space-between',
-               alignItems: 'center',
-               gap: 1,
-            }}
-         >
-            <Box
-               sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  flex: 1,
-                  overflow: 'hidden',
-               }}
-            >
-               <Typography
-                  sx={{
-                     fontSize: '16px',
-                     whiteSpace: 'nowrap',
-                     overflow: 'hidden',
-                     textOverflow: 'ellipsis',
-                  }}
-               >
-                  {message}
-               </Typography>
+         <ToastContent>
+            <MessageBlock>
+               <MessageText>{message}</MessageText>
 
                {actionText && (
-                  <Typography
-                     onClick={onActionClick}
-                     sx={{
-                        color,
-                        fontWeight: 600,
-                        fontSize: '16px',
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                        flexShrink: 0,
-                        '&:hover': { opacity: 0.8 },
-                     }}
-                  >
+                  <ActionLink onClick={onActionClick} style={{ color }}>
                      {actionText}
-                  </Typography>
+                  </ActionLink>
                )}
-            </Box>
+            </MessageBlock>
 
-            <IconButton onClick={closeToast} sx={{ color: 'gray', p: 0.5 }}>
-               <CloseIcon fontSize="small" />
-            </IconButton>
-         </Box>
-      </Box>
+            <CloseBtn onClick={closeToast}>
+               <img src={Icons.cancel} alt="" />
+            </CloseBtn>
+         </ToastContent>
+      </ToastContainer>
    )
 }
+
+const ToastContainer = styled(Box)({
+   backgroundColor: '#1c1c1e',
+   color: 'white',
+   padding: '16px',
+   borderRadius: '10px',
+   boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',
+   width: '520px',
+   maxWidth: '600px',
+   boxSizing: 'border-box',
+   position: 'absolute',
+   right: '1px',
+})
+
+const TitleText = styled(Typography)({
+   fontWeight: 600,
+   fontSize: '0.75rem',
+   marginBottom: '4px',
+})
+
+const ToastContent = styled(Box)({
+   display: 'flex',
+   justifyContent: 'space-between',
+   alignItems: 'center',
+   gap: '8px',
+})
+
+const MessageBlock = styled(Box)({
+   display: 'flex',
+   alignItems: 'center',
+   gap: '8px',
+   flex: 1,
+   overflow: 'hidden',
+})
+
+const MessageText = styled(Typography)({
+   fontSize: '16px',
+   whiteSpace: 'nowrap',
+   overflow: 'hidden',
+   textOverflow: 'ellipsis',
+})
+
+const ActionLink = styled(Typography)({
+   fontWeight: 600,
+   fontSize: '16px',
+   cursor: 'pointer',
+   whiteSpace: 'nowrap',
+   flexShrink: 0,
+   '&:hover': {
+      opacity: 0.8,
+   },
+})
+
+const CloseBtn = styled(IconButton)({
+   color: 'gray',
+   padding: '4px',
+})
