@@ -1,35 +1,42 @@
+import { forwardRef } from 'react'
 import { styled, Button as MuiButton } from '@mui/material'
 import { Icons } from '../../assets/icons'
 
-const ButtonUI = ({
-   children,
-   onClick,
-   variant = 'contained',
-   disabled,
-   type = 'submit',
-   shopCart,
-   ...rest
-}) => {
-   const muiVariant = variant === 'success' ? 'contained' : variant
+const ButtonUI = forwardRef(
+   (
+      {
+         children,
+         onClick,
+         variant = 'contained',
+         disabled,
+         type = 'submit',
+         shopCart,
+         ...rest
+      },
+      ref
+   ) => {
+      const muiVariant = variant === 'success' ? 'contained' : variant
 
-   return (
-      <StyledButton
-         onClick={onClick}
-         type={type}
-         disabled={disabled}
-         variant={muiVariant}
-         className={
-            variant === 'success' ? 'MuiButton-containedSuccess' : undefined
-         }
-         {...rest}
-      >
-         {shopCart && (
-            <img src={Icons.basket} style={{ marginRight: '3.5px' }} />
-         )}{' '}
-         {children}
-      </StyledButton>
-   )
-}
+      return (
+         <StyledButton
+            ref={ref}
+            onClick={onClick}
+            type={type}
+            disabled={disabled}
+            variant={muiVariant}
+            className={
+               variant === 'success' ? 'MuiButton-containedSuccess' : undefined
+            }
+            {...rest}
+         >
+            {shopCart && (
+               <img src={Icons.basket} style={{ marginRight: '3.5px' }} />
+            )}
+            {children}
+         </StyledButton>
+      )
+   }
+)
 
 export default ButtonUI
 
@@ -43,7 +50,7 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
    boxShadow: 'none',
 
    '&.MuiButton-contained': {
-      backgroundColor: '#CB11AB',
+      backgroundColor: theme.palette.primary.main,
       boxShadow: 'none',
       color: '#fff',
       '&:hover': {
@@ -60,12 +67,12 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
 
    '&.MuiButton-outlined': {
       backgroundColor: 'transparent',
-      border: '1px solid #CB11AB',
-      color: '#CB11AB',
+      border: `1px solid ${theme.palette.primary.main}`,
+      color: theme.palette.primary.main,
       boxShadow: 'none',
 
       '&:hover': {
-         backgroundColor: '#CB11AB',
+         backgroundColor: theme.palette.primary.main,
          color: 'white',
       },
       '&:active': {
@@ -79,12 +86,12 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
 
    '&.MuiButton-text': {
       backgroundColor: 'white',
-      border: '1px solid #CB11AB',
+      border: `1px solid ${theme.palette.primary.main}`,
       color: '#CB11AB',
       boxShadow: 'none',
 
       '&:hover': {
-         backgroundColor: '#CB11AB',
+         backgroundColor: theme.palette.primary.main,
          color: '#fff',
       },
       '&:active': {
@@ -97,7 +104,7 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
    },
 
    '&.MuiButton-containedSuccess': {
-      backgroundColor: '#2FC509',
+      backgroundColor: theme.palette.secondary.green,
       color: '#fff',
       boxShadow: 'none',
 
