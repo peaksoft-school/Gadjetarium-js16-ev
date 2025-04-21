@@ -1,6 +1,14 @@
 import { styled, TextField } from '@mui/material'
 
-const Input = ({ error, onChange, disabled, placeholder, ...props }) => {
+const Input = ({
+   error,
+   onChange,
+   disabled,
+   placeholder,
+   value,
+   type,
+   ...props
+}) => {
    return (
       <StyledInput
          fullWidth
@@ -9,6 +17,8 @@ const Input = ({ error, onChange, disabled, placeholder, ...props }) => {
          disabled={disabled}
          placeholder={placeholder}
          error={Boolean(error)}
+         value={value}
+         type={type}
          helperText={error}
          {...props}
       />
@@ -17,7 +27,7 @@ const Input = ({ error, onChange, disabled, placeholder, ...props }) => {
 
 export default Input
 
-const StyledInput = styled(TextField)(({ theme }) => ({
+const StyledInput = styled(TextField)(() => ({
    '& .MuiOutlinedInput-root': {
       borderRadius: '12px',
       backgroundColor: '#f9f9f9',
