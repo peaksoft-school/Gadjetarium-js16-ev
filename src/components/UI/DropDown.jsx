@@ -7,55 +7,42 @@ import {
    Avatar,
    styled,
 } from '@mui/material'
+import { forwardRef } from 'react'
 
-const SelectDropdown = ({
-   label,
-   options,
-   value,
-   onChange,
-   disabled = false,
-   fullWidth = true,
-}) => {
-   const handleChange = (event) => onChange(event.target.value)
+const SelectDropdown = forwardRef(
+   (
+      { label, options, value, onChange, disabled = false, fullWidth = true },
+      ref
+   ) => {
+      const handleChange = (event) => onChange(event.target.value)
 
-   return (
-      <StyledFormControl fullWidth={fullWidth} disabled={disabled}>
-         <StyledInputLabel>{label}</StyledInputLabel>
-         <Select
-            value={value}
-            label={label}
-            onChange={handleChange}
-            MenuProps={{
-               PaperProps: {
-                  sx: {
-                     maxHeight: 300,
-                     '& .MuiMenuItem-root': {
-                        fontSize: 14,
-                        height: 40,
-                     },
+      return (
+         <StyledFormControl fullWidth={fullWidth} disabled={disabled}>
+            <StyledInputLabel>{label}</StyledInputLabel>
+            <StyledSelect
+               value={value}
+               label={label}
+               onChange={handleChange}
+               inputRef={ref}
+               MenuProps={{
+                  PaperProps: {
+                     component: StyledMenuPaper,
                   },
-               },
-            }}
-         >
-            {options.map(({ value, icon, label }) => (
-               <MenuItem key={value} value={value}>
-                  <Box display="flex" alignItems="center" gap={1}>
-                     {icon && (
-                        <Avatar
-                           src={icon}
-                           alt={label}
-                           sx={{ width: 24, height: 24 }}
-                           variant="rounded"
-                        />
-                     )}
-                     {label}
-                  </Box>
-               </MenuItem>
-            ))}
-         </Select>
-      </StyledFormControl>
-   )
-}
+               }}
+            >
+               {options.map(({ value, icon, label }) => (
+                  <MenuItem key={value} value={value}>
+                     <StyledMenuItemContent>
+                        {icon && <StyledAvatar src={icon} alt={label} />}
+                        {label}
+                     </StyledMenuItemContent>
+                  </MenuItem>
+               ))}
+            </StyledSelect>
+         </StyledFormControl>
+      )
+   }
+)
 
 export default SelectDropdown
 
@@ -65,4 +52,26 @@ const StyledFormControl = styled(FormControl)({
 
 const StyledInputLabel = styled(InputLabel)({
    fontSize: 14,
+})
+
+const StyledSelect = styled(Select)({})
+
+const StyledMenuItemContent = styled(Box)({
+   display: 'flex',
+   alignItems: 'center',
+   gap: 8,
+})
+
+const StyledAvatar = styled(Avatar)({
+   width: 24,
+   height: 24,
+   borderRadius: 4,
+})
+
+const StyledMenuPaper = styled('div')({
+   maxHeight: 300,
+   '& .MuiMenuItem-root': {
+      fontSize: 14,
+      height: 40,
+   },
 })
