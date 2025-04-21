@@ -1,13 +1,10 @@
-import { Modal as MuiModal, Box } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Modal as MuiModal, Box, styled } from '@mui/material'
 
-const Modal = ({ open, onClose, children }) => {
-   return (
-      <MuiModal open={open} onClose={onClose}>
-         <StyledBox onClick={(e) => e.stopPropagation()}>{children}</StyledBox>
-      </MuiModal>
-   )
-}
+const Modal = ({ open, onClose, children }) => (
+   <MuiModal open={open} onClose={onClose}>
+      <StyledBox onClick={(e) => e.stopPropagation()}>{children}</StyledBox>
+   </MuiModal>
+)
 
 export default Modal
 
