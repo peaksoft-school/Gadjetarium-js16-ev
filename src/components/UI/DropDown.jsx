@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { forwardRef } from 'react'
 
-const SelectDropdown = forwardRef(
+const Dropdown = forwardRef(
    (
       { label, options, value, onChange, disabled = false, fullWidth = true },
       ref
@@ -34,6 +34,7 @@ const SelectDropdown = forwardRef(
                   <MenuItem key={value} value={value}>
                      <StyledMenuItemContent>
                         {icon && <StyledAvatar src={icon} alt={label} />}
+
                         {label}
                      </StyledMenuItemContent>
                   </MenuItem>
@@ -44,7 +45,7 @@ const SelectDropdown = forwardRef(
    }
 )
 
-export default SelectDropdown
+export default Dropdown
 
 const StyledFormControl = styled(FormControl)({
    minHeight: 40,
