@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify'
-import { CustomToast } from './helpers/CustomToast'
+import { CustomToast } from '../../components/CustomToast'
 
 export const showToast = ({
    message,

@@ -1,16 +1,18 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { Icons } from '../../assets/icons'
+import { Icons } from '../assets/icons'
 
 const typeStyles = {
    success: {
       title: 'Успешно',
       color: '#32CD32',
    },
+
    info: {
       title: 'Информация',
       color: '#00BFFF',
    },
+
    error: {
       title: 'Ошибка',
       color: '#FF6347',
@@ -24,12 +26,10 @@ export const CustomToast = ({
    onActionClick,
    closeToast,
 }) => {
-   const { title, color } = typeStyles[type] || typeStyles.success
+   const { color } = typeStyles[type] || typeStyles.success
 
    return (
       <ToastContainer aria-live="assertive">
-         <TitleText style={{ color }}>{title}</TitleText>
-
          <ToastContent>
             <MessageBlock>
                <MessageText>{message}</MessageText>
@@ -62,12 +62,6 @@ const ToastContainer = styled(Box)({
    right: '1px',
 })
 
-const TitleText = styled(Typography)({
-   fontWeight: 600,
-   fontSize: '0.75rem',
-   marginBottom: '4px',
-})
-
 const ToastContent = styled(Box)({
    display: 'flex',
    justifyContent: 'space-between',
@@ -96,6 +90,7 @@ const ActionLink = styled(Typography)({
    cursor: 'pointer',
    whiteSpace: 'nowrap',
    flexShrink: 0,
+
    '&:hover': {
       opacity: 0.8,
    },
