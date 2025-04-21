@@ -11,7 +11,7 @@ import {
    Rating,
 } from '@mui/material'
 import styled from '@emotion/styled'
-import { Icons } from '../../assets/icons'
+import { Icons } from '../../../assets/icons'
 
 const Card = ({
    image,
