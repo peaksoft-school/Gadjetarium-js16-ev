@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 import { styled, Button as MuiButton } from '@mui/material'
 import { Icons } from '../../assets/icons'
 
-const ButtonUI = forwardRef(
+const Button = forwardRef(
    (
       {
          children,
@@ -38,7 +38,7 @@ const ButtonUI = forwardRef(
    }
 )
 
-export default ButtonUI
+export default Button
 
 const StyledButton = styled(MuiButton)(({ theme }) => ({
    borderRadius: '10px',
