@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router'
 import { Box, Typography, styled } from '@mui/material'
 
-const DynamicBreadcrumbs = () => {
+const Breadcrumbs = () => {
    const location = useLocation()
    const navigate = useNavigate()
 
@@ -38,7 +38,7 @@ const DynamicBreadcrumbs = () => {
    )
 }
 
-export default DynamicBreadcrumbs
+export default 
 
 const BreadcrumbWrapper = styled(Box)({
    display: 'flex',
