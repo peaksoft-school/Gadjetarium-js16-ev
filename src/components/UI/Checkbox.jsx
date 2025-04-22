@@ -27,7 +27,7 @@ const StyledCheckbox = styled(MuiCheckbox)(({ theme, className }) => ({
             : theme.palette.primary.main,
       background: 'none',
    },
-   '$:active': {
+   '$:active': { 
       background: 'none',
    },
 
