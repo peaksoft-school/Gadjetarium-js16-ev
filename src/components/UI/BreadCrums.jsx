@@ -38,7 +38,7 @@ const Breadcrumbs = () => {
    )
 }
 
-export default 
+export default Breadcrumbs
 
 const BreadcrumbWrapper = styled(Box)({
    display: 'flex',
