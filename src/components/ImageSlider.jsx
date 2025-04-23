@@ -22,7 +22,7 @@ const products = [
    },
 ]
 
-export default function GadgetariumSlider() {
+export default function ImageSlider() {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [transitioning, setTransitioning] = useState(false)
 
@@ -156,7 +156,7 @@ const Slide = styled('div')(({ position, transitioning }) => {
          transformOrigin: 'center',
          transform: 'translateX(100%) scale(0.9)',
          height: '78vh',
-        }
+      }
    }
 
    return {
