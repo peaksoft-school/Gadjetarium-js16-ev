@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, Card, CardMedia, IconButton, styled } from '@mui/material'
 
-const ImageSlider = ({ images }) => {
+const BannerSlider = ({ images }) => {
    const [index, setIndex] = useState(0)
    const sliderRef = useRef()
 
@@ -48,7 +48,7 @@ const ImageSlider = ({ images }) => {
    )
 }
 
-export default ImageSlider
+export default BannerSlider
 
 const Wrapper = styled(Box)({
    width: '100%',
