@@ -1,18 +1,12 @@
 import { styled, TextField } from '@mui/material'
+import { forwardRef } from 'react'
 
-const Input = ({
-   error,
-   onChange,
-   disabled,
-   placeholder,
-   value,
-   type,
-   ...props
-}) => {
-   return (
+const Input = forwardRef(
+   ({ error, onChange, disabled, placeholder, value, type, ...props }, ref) => (
       <StyledInput
          fullWidth
          variant="outlined"
+         ref={ref}
          onChange={onChange}
          disabled={disabled}
          placeholder={placeholder}
@@ -23,7 +17,7 @@ const Input = ({
          {...props}
       />
    )
-}
+)
 
 export default Input
 
