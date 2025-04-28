@@ -22,7 +22,7 @@ const products = [
    },
 ]
 
-export default function ImageSlider() {
+export default function UserSlider() {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [transitioning, setTransitioning] = useState(false)
 
