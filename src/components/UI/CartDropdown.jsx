@@ -9,14 +9,11 @@ const CartDropdown = ({ items, total, onRemove, onCheckout }) => {
          <Arrow />
          {items.map((item, index) => (
             <ItemRow key={index}>
-               <img src={item.image} alt={item.name} width="50" height="50" />
-               <Box>
+               <img src={item.image} alt={item.name} width="60" height="67" />
+               <StyledTitle>
                   <Typography>{item.name}</Typography>
-                  <Typography fontSize={12}>{item.subtitle}</Typography>
-               </Box>
-               <Typography fontWeight={600}>
-                  {item.price.toLocaleString()} с
-               </Typography>
+               </StyledTitle>
+               <StyledPrice>{item.price.toLocaleString()} с</StyledPrice>
                <Remove onClick={() => onRemove(index)}>
                   <img src={Icons.cancel} width={12} height={12} alt="remove" />
                </Remove>
@@ -25,9 +22,9 @@ const CartDropdown = ({ items, total, onRemove, onCheckout }) => {
          <hr />
          <Bottom>
             <StyledButton onClick={onCheckout}>Оформить заказ</StyledButton>
-            <Typography>
+            <StyledItogPrice>
                Итого <b>{total.toLocaleString()} с</b>
-            </Typography>
+            </StyledItogPrice>
          </Bottom>
       </DropdownBox>
    )
@@ -50,12 +47,6 @@ const AppCart = ({ array }) => {
       </CartHoverTrigger>
    )
 }
-// const product = {
-//     name: 'Samsung Galaxy S21 128gb',
-//     subtitle: 'синий 9(MLP3RU)',
-//     image: 'https://m.media-amazon.com/images/I/81CSF0P-ULL._AC_UF350,350_QL80_.jpg',
-//     price: 34000,
-//  }
 
 export default AppCart
 
@@ -64,10 +55,14 @@ const DropdownBox = styled(Box)`
    border-radius: 12px;
    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
    padding: 16px;
-   width: 360px;
+   width: auto;
+   max-width: 500px;
    display: flex;
    flex-direction: column;
    gap: 12px;
+   height: auto;
+   max-height: 277px;
+   align-items: start;
 `
 
 const Arrow = styled('div')`
@@ -86,16 +81,21 @@ const ItemRow = styled(Box)`
    align-items: center;
    gap: 8px;
    justify-content: space-between;
+   width: 456.4140625px;
+   height: 88.78302001953125px;
 `
 
 const Bottom = styled(Box)`
    display: flex;
    align-items: center;
    justify-content: space-between;
+   justify-content: center;
+   gap: 80px;
+   width: 100%;
 `
 
 const StyledButton = styled(Button)`
-   background-color: #cb1cff;
+   background-color: #cb11ab;
    color: white;
    text-transform: none;
    font-size: 14px;
@@ -108,6 +108,31 @@ const StyledButton = styled(Button)`
 const Remove = styled('div')`
    cursor: pointer;
    display: flex;
-   align-items: center;
-   justify-content: center;
+   align-items: start;
+   justify-content: start;
+   width: 16px;
+   height: 16px;
+`
+const StyledTitle = styled(Box)`
+   width: 255px;
+   height: 48px;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 150%;
+`
+const StyledPrice = styled(Typography)`
+   width: 72.03389739990234px;
+   height: 17px;
+   font-weight: 700;
+   font-size: 14px;
+   line-height: 100%;
+   color: #384255;
+`
+
+const StyledItogPrice = styled(Typography)`
+   width: 110px;
+   height: 17px;
+   font-weight: 700;
+   font-size: 14px;
+   line-height: 100%;
 `
