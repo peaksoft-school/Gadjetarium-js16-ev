@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import {
    AppBar,
    Toolbar,
@@ -8,20 +8,25 @@ import {
    InputBase,
    Button,
    Stack,
+   styled,
+   Box,
 } from '@mui/material'
-import { styled } from '@mui/system'
 import { Icons } from '../../assets/icons'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
+   const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
+
    const [isScrolled, setIsScrolled] = useState(false)
 
    useEffect(() => {
       const handleScroll = () => {
          const scrollPosition = window.scrollY
+
          setIsScrolled(scrollPosition > 50)
       }
 
       window.addEventListener('scroll', handleScroll)
+
       return () => window.removeEventListener('scroll', handleScroll)
    }, [])
 
@@ -30,19 +35,19 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
          <TopRow sx={{ display: isScrolled ? 'none' : 'flex' }}>
             <TopInfo>
                <Logo src={Icons.gadgetarium} alt="Gadgetarium Logo" />
+
                <NavContainer>
-                  {['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты'].map(
-                     (item) => (
-                        <NavButton sx={{ whiteSpace: 'nowrap' }} key={item}>
-                           {item}
-                        </NavButton>
-                     )
-                  )}
+                  {navArray.map((item) => (
+                     <NavButton sx={{ whiteSpace: 'nowrap' }} key={item}>
+                        {item}
+                     </NavButton>
+                  ))}
                </NavContainer>
             </TopInfo>
 
             <ContactBox>
                <PhoneText>+996 (400) 00-00-00</PhoneText>
+
                <WhiteIcon aria-label="user profile">
                   <IconImage src={Icons.user} alt="User" />
                </WhiteIcon>
@@ -55,14 +60,17 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                alt="Gadgetarium Logo"
                sx={{ display: isScrolled ? 'block' : 'none' }}
             />
+
             <InputContainer>
                <CatalogButton
                   startIcon={<IconImage src={Icons.catalog} alt="Catalog" />}
                >
                   Каталог
                </CatalogButton>
+
                <SearchContainer>
                   <StyledInputBase placeholder="Поиск по каталогу магазина" />
+
                   <WhiteIcon aria-label="search">
                      <IconImage src={Icons.search} alt="Search" />
                   </WhiteIcon>
@@ -75,9 +83,11 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                      <WhiteIcon aria-label="facebook">
                         <IconImage src={Icons.facebookWhite} alt="Facebook" />
                      </WhiteIcon>
+
                      <WhiteIcon aria-label="instagram">
                         <IconImage src={Icons.instagramWhite} alt="Instagram" />
                      </WhiteIcon>
+
                      <WhiteIcon aria-label="whatsapp">
                         <IconImage src={Icons.whatsappWhite} alt="WhatsApp" />
                      </WhiteIcon>
@@ -90,11 +100,13 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                         <IconImage src={Icons.scales} alt="Compare" />
                      </WhiteIcon>
                   </Badge>
+
                   <Badge badgeContent={0} color="error">
                      <WhiteIcon aria-label="favorites">
                         <IconImage src={Icons.likeW} alt="Favorites" />
                      </WhiteIcon>
                   </Badge>
+
                   <Badge badgeContent={basketCount} color="error">
                      <WhiteIcon aria-label="cart">
                         <IconImage src={Icons.basket} alt="Cart" />
@@ -120,6 +132,7 @@ const TopRow = styled(Toolbar)({
    display: 'flex',
    justifyContent: 'space-between',
    alignItems: 'center',
+
    '@media (max-width: 600px)': {
       flexDirection: 'column',
       gap: '12px',
@@ -134,10 +147,12 @@ const BottomRow = styled(Toolbar)(({ isScrolled }) => ({
    gap: isScrolled ? '24px' : '100px',
    alignItems: 'center',
    backgroundColor: isScrolled ? '#1A1A25' : 'transparent',
+
    '@media (max-width: 960px)': {
       padding: isScrolled ? '8px 24px' : 0,
       gap: isScrolled ? '16px' : '24px',
    },
+
    '@media (max-width: 600px)': {
       padding: isScrolled ? '8px 16px' : 0,
       flexDirection: 'column',
@@ -145,18 +160,20 @@ const BottomRow = styled(Toolbar)(({ isScrolled }) => ({
    },
 }))
 
-const TopInfo = styled('div')({
+const TopInfo = styled(Box)({
    display: 'flex',
    alignItems: 'center',
    gap: '20%',
+
    '@media (max-width: 960px)': {
       gap: '24px',
    },
 })
 
-const NavContainer = styled('div')({
+const NavContainer = styled(Box)({
    display: 'flex',
    gap: '24px',
+
    '@media (max-width: 600px)': {
       flexWrap: 'wrap',
       justifyContent: 'center',
@@ -171,12 +188,13 @@ const NavButton = styled(Button)({
    fontWeight: 400,
    padding: '4px 8px',
    minWidth: 'auto',
+
    '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.1)',
    },
 })
 
-const ContactBox = styled('div')({
+const ContactBox = styled(Box)({
    display: 'flex',
    alignItems: 'center',
    gap: '16px',
@@ -195,7 +213,9 @@ const WhiteIcon = styled(IconButton)({
 const IconImage = styled('img')({
    width: '18px',
    height: '18px',
+   transition: 'all 0.3s ease',
 })
+
 
 const Logo = styled('img')({
    width: '160px',
@@ -205,11 +225,12 @@ const Logo = styled('img')({
    },
 })
 
-const InputContainer = styled('div')({
+const InputContainer = styled(Box)({
    display: 'flex',
    alignItems: 'center',
    gap: '16px',
    width: '70%',
+
    '@media (max-width: 960px)': {
       width: '100%',
       gap: '12px',
@@ -231,7 +252,7 @@ const CatalogButton = styled(Button)({
    },
 })
 
-const SearchContainer = styled('div')({
+const SearchContainer = styled(Box)({
    backgroundColor: '#2A2A3A',
    border: '1px solid #FFFFFF',
    padding: '4px 12px',
@@ -240,7 +261,35 @@ const SearchContainer = styled('div')({
    width: '100%',
    height: '36px',
    borderRadius: '8px',
+   transition: 'all 0.3s ease',
+
+   '&:hover': {
+      backgroundColor: 'white',
+      borderColor: 'grey',
+
+      '& .MuiInputBase-input::placeholder': {
+         color: 'grey',
+      },
+      
+      '& img': {     // делаем иконку серой
+         filter: 'brightness(0) saturate(100%) invert(50%)',
+      },
+   },
+
+   '&:focus-within': {
+      backgroundColor: 'white',
+      borderColor: 'grey',
+
+      '& .MuiInputBase-input': {
+         color: 'black',
+      },
+
+      '& img': {    // делаем иконку черной
+         filter: 'brightness(0) saturate(100%)',
+      },
+   },
 })
+
 
 const StyledInputBase = styled(InputBase)({
    color: '#ffffff',
@@ -248,10 +297,24 @@ const StyledInputBase = styled(InputBase)({
    flex: 1,
    '& .MuiInputBase-input': {
       padding: 0,
+      '::placeholder': {
+         color: '#FFFFFF',
+         opacity: 1,
+      },
+   },
+   '&:hover .MuiInputBase-input': {
+      '::placeholder': {
+         color: 'grey',
+         opacity: 1,
+      },
+   },
+   '& .MuiInputBase-input:focus': {
+      backgroundColor: 'white', 
+      color: 'black', 
    },
 })
 
-const IconsContainer = styled('div')({
+const IconsContainer = styled(Box)({
    display: 'flex',
    gap: '80px',
    alignItems: 'center',

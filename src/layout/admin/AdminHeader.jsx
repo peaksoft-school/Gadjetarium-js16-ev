@@ -2,29 +2,27 @@ import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
 import { styled } from '@mui/system'
 import { Icons } from '../../assets/icons'
 
-const AdminHeader = () => {
-   return (
-      <StyledAppBar position="static">
-         <StyledToolbar>
-            <StyledNavs>
-               <Logo src={Icons.gadgetarium} alt="Gadgetarium" />
-               <Box>
-                  <NavLink>Товары</NavLink>
-                  <NavLink>Заказы</NavLink>
-                  <NavLink>Отзывы и рейтинг</NavLink>
-               </Box>
-            </StyledNavs>
+const AdminHeader = () => (
+   <StyledAppBar position="static">
+      <StyledToolbar>
+         <StyledNavs>
+            <Logo src={Icons.gadgetarium} alt="Gadgetarium" />
+            <Box>
+               <NavLink>Товары</NavLink>
+               <NavLink>Заказы</NavLink>
+               <NavLink>Отзывы и рейтинг</NavLink>
+            </Box>
+         </StyledNavs>
 
-            <StyledButton variant="contained">Создать рассылку</StyledButton>
+         <StyledButton variant="contained">Создать рассылку</StyledButton>
 
-            <AdminBox>
-               <UserIcon src={Icons.user} alt="Администратор" />
-               <Typography color="#fff">Администратор</Typography>
-            </AdminBox>
-         </StyledToolbar>
-      </StyledAppBar>
-   )
-}
+         <AdminBox>
+            <UserIcon src={Icons.user} alt="Администратор" />
+            <Typography color="#fff">Администратор</Typography>
+         </AdminBox>
+      </StyledToolbar>
+   </StyledAppBar>
+)
 
 export default AdminHeader
 
@@ -36,7 +34,7 @@ const StyledNavs = styled(Box)({
 })
 
 const StyledAppBar = styled(AppBar)`
-   background-color: #1c1c1e;
+   background-color: '#1A1A25';
    box-shadow: none;
    border-bottom: 2px solid #6a1b9a;
    padding: 0 20px;
