@@ -2,9 +2,9 @@ import { Chip } from '@mui/material'
 import styled from '@emotion/styled'
 import { Icons } from '../../../assets/icons'
 
-const StyledChip = ({ label, onDelete }) => {
+const ChipUi = ({ label, onDelete }) => {
    return (
-      <CustomChip
+      <StyledCustomChip
          label={label}
          onDelete={onDelete}
          deleteIcon={<img src={Icons.cancel} />}
@@ -12,11 +12,11 @@ const StyledChip = ({ label, onDelete }) => {
    )
 }
 
-export default StyledChip
+export default ChipUi
 
-const CustomChip = styled(Chip)(() => ({
-   backgroundColor: '#CDCDCD',
-   border: '1px solid #E8E8E8',
+const StyledCustomChip = styled(Chip)(() => ({
+   backgroundColor: '#E8E8E8',
+   border: '1px solid #CDCDCD',
    borderRadius: '4px',
    color: '#1f1f1f',
    height: 'auto',
@@ -26,6 +26,7 @@ const CustomChip = styled(Chip)(() => ({
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
+   padding: '6px 10px',
 
    '.MuiChip-label': {
       height: '20px',
@@ -37,7 +38,7 @@ const CustomChip = styled(Chip)(() => ({
    },
 
    '.MuiChip-deleteIcon': {
-      color: '#1f1f1f',
+      color: '#292929',
       width: 'auto',
       height: 'auto',
       maxWidth: '20px',
