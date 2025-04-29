@@ -8,7 +8,7 @@ const Footer = () => (
          <TopSection>
             <StyledContainer>
                <Column>
-                  <StyledTypography fontWeight={600}>Каталог</StyledTypography>
+                  <StyledTitle>Каталог</StyledTitle>
                   <StyledLink href="#">Смартфоны</StyledLink>
                   <StyledLink href="#">Ноутбуки и планшеты</StyledLink>
                   <StyledLink href="#">Смарт-часы и браслеты</StyledLink>
@@ -16,18 +16,14 @@ const Footer = () => (
                </Column>
 
                <Column>
-                  <StyledTypography fontWeight={600}>
-                     Будь с нами
-                  </StyledTypography>
+                  <StyledTitle>Будь с нами</StyledTitle>
                   <StyledLink href="#">Акции</StyledLink>
                   <StyledLink href="#">Новинки</StyledLink>
                   <StyledLink href="#">Популярные категории</StyledLink>
                </Column>
 
                <Column>
-                  <StyledTypography fontWeight={600}>
-                     Помощь и сервисы
-                  </StyledTypography>
+                  <StyledTitle>Помощь и сервисы</StyledTitle>
                   <StyledLink href="#">О магазине</StyledLink>
                   <StyledLink href="#">Доставка</StyledLink>
                   <StyledLink href="#">FAQ</StyledLink>
@@ -36,9 +32,7 @@ const Footer = () => (
             </StyledContainer>
 
             <Column>
-               <StyledTypography fontWeight={600}>
-                  Расскажем об акциях и скидках
-               </StyledTypography>
+               <StyledTitle>Расскажем об акциях и скидках</StyledTitle>
 
                <SubscribeForm />
 
@@ -69,8 +63,10 @@ const Footer = () => (
 
 export default Footer
 
+
+
 const BigContainer = styled(Box)({
-   width: '100vv',
+   width: '100vw', 
    height: '100vh',
 })
 
@@ -81,7 +77,7 @@ const FooterContainer = styled(Box)({
    display: 'flex',
    flexDirection: 'column',
    height: '600px',
-   width:'100%'
+   width: '100%',
 })
 
 const TopSection = styled(Box)({
@@ -92,7 +88,9 @@ const TopSection = styled(Box)({
 const Column = styled(Box)({
    display: 'flex',
    flexDirection: 'column',
-   gap: 12,
+   '& > *:not(:last-child)': {
+      marginBottom: 12,
+   },
 })
 
 const InfoWrapper = styled(Box)({
@@ -140,15 +138,18 @@ const StyledLink = styled(Link)({
    color: 'grey',
    fontSize: '16px',
    textDecoration: 'none',
+   display: 'inline',
+   transition: 'color 0.5s ease',
    '&:hover': {
       color: 'white',
    },
 })
 
-const StyledTypography = styled(Typography)({
+const StyledTitle = styled(Typography)(({ theme }) => ({
    fontSize: '16px',
    marginBottom: '12px',
-})
+   fontWeight: theme.typography.fontWeightBold,
+}))
 
 const StyledContainer = styled(Container)({
    display: 'flex',
