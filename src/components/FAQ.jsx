@@ -115,7 +115,6 @@ const Container = styled(Box)`
    flex-direction: column;
    width: 60vw;
    height: 79vh;
-   
 `
 
 const MainTitle = styled(Typography)`
@@ -132,6 +131,8 @@ const Divider = styled(Box)`
 `
 
 const SubTitle = styled(Typography)`
+   display: flex;
+   justify-content: center;
    font-size: 28px;
    font-weight: 700;
    color: #000;
