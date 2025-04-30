@@ -123,7 +123,7 @@ export const Icons = {
    whatsappWhite,
    scalesPirple,
    search,
-   gadgetarium
+   gadgetarium,
    telefon,
    gmail,
    mestoPolojenie,
