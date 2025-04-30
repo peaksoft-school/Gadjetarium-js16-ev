@@ -1,20 +1,20 @@
-import { Chip } from '@mui/material'
+import { Chip as MuiChip } from '@mui/material'
 import styled from '@emotion/styled'
+import { forwardRef } from 'react'
 import { Icons } from '../../../assets/icons'
 
-const ChipUi = ({ label, onDelete }) => {
-   return (
-      <StyledCustomChip
-         label={label}
-         onDelete={onDelete}
-         deleteIcon={<img src={Icons.cancel} />}
-      />
-   )
-}
+const Chip = forwardRef(({ label, onDelete }, ref) => (
+   <StyledCustomChip
+      ref={ref}
+      label={label}
+      onDelete={onDelete}
+      deleteIcon={<img src={Icons.cancel} />}
+   />
+))
 
-export default ChipUi
+export default Chip
 
-const StyledCustomChip = styled(Chip)(() => ({
+const StyledCustomChip = styled(MuiChip)(() => ({
    backgroundColor: '#E8E8E8',
    border: '1px solid #CDCDCD',
    borderRadius: '4px',
