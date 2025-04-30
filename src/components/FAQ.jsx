@@ -8,6 +8,8 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { Icons } from '../assets/icons'
+import Footer from '../layout/Footer'
+import UserHeader from '../layout/user/UserHeader'
 
 const FAQ = () => {
    const [expanded, setExpanded] = useState(null)
@@ -52,49 +54,55 @@ const FAQ = () => {
    ]
 
    return (
-      <Wrapper>
-         <MiniContainer>
-            <MainTitle>FAQ</MainTitle>
-            <Divider />
-         </MiniContainer>
-         <div
-            style={{
-               display: 'flex',
-               alignItems: 'center',
-               justifyContent: 'center',
-            }}
-         >
-            <Container>
-               <SubTitle>Часто задаваемые вопросы</SubTitle>
+      <div>
+         <UserHeader />
+         <Wrapper>
+            <MiniContainer>
+               <MainTitle>FAQ</MainTitle>
+               <Divider />
+            </MiniContainer>
+            <div
+               style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+               }}
+            >
+               <Container>
+                  <SubTitle>Часто задаваемые вопросы</SubTitle>
 
-               {faqData.map((item, index) => (
-                  <Accordion
-                     key={item.id}
-                     expanded={expanded === item.id}
-                     onChange={handleChange(item.id)}
-                  >
-                     <AccordionSummary
-                        expandIcon={
-                           <ExpandIcon isExpanded={expanded === item.id} />
-                        }
+                  {faqData.map((item, index) => (
+                     <Accordion
+                        key={item.id}
+                        expanded={expanded === item.id}
+                        onChange={handleChange(item.id)}
                      >
-                        <QuestionNumber>{index + 1}</QuestionNumber>
-                        <QuestionText>{item.question}</QuestionText>
-                     </AccordionSummary>
-                     <AccordionDetails>
-                        {Array.isArray(item.answer) ? (
-                           item.answer.map((paragraph, i) => (
-                              <AnswerText key={i}>{paragraph}</AnswerText>
-                           ))
-                        ) : (
-                           <AnswerText>{item.answer}</AnswerText>
-                        )}
-                     </AccordionDetails>
-                  </Accordion>
-               ))}
-            </Container>
-         </div>
-      </Wrapper>
+                        <AccordionSummary
+                           expandIcon={
+                              <ExpandIcon isExpanded={expanded === item.id} />
+                           }
+                        >
+                           <QuestionNumber isExpanded={expanded === item.id}>
+                              {index + 1}
+                           </QuestionNumber>
+                           <QuestionText>{item.question}</QuestionText>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                           {Array.isArray(item.answer) ? (
+                              item.answer.map((paragraph, i) => (
+                                 <AnswerText key={i}>{paragraph}</AnswerText>
+                              ))
+                           ) : (
+                              <AnswerText>{item.answer}</AnswerText>
+                           )}
+                        </AccordionDetails>
+                     </Accordion>
+                  ))}
+               </Container>
+            </div>
+         </Wrapper>
+         <Footer />
+      </div>
    )
 }
 
@@ -163,19 +171,20 @@ const AccordionDetails = styled(MuiAccordionDetails)`
    padding: 16px 24px;
 `
 
-const QuestionNumber = styled(Box)`
-   width: 32px;
-   height: 32px;
-   border-radius: 50%;
-   background-color: #f3d3e2;
-   color: #e805d1;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   font-weight: 700;
-   font-size: 16px;
-   margin-right: 16px;
-`
+const QuestionNumber = styled(Box)(({ isExpanded }) => ({
+   width: '32px',
+   height: '32px',
+   borderRadius: '50%',
+   backgroundColor: isExpanded ? '#e805d1' : '#f3d3e2',
+   color: isExpanded ? '#fff' : '#e805d1',
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
+   fontWeight: 700,
+   fontSize: '16px',
+   marginRight: '16px',
+   transition: 'all 0.3s ease',
+}))
 
 const QuestionText = styled(Typography)`
    font-weight: 700;

@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles'
 import { Box, Typography, Link, Container } from '@mui/material'
 import SubscribeForm from '../components/SubscribeForm'
+import { Icons } from '../assets/icons'
 
 const Footer = () => (
    <BigContainer>
@@ -42,10 +43,21 @@ const Footer = () => (
                </Caption>
 
                <InfoWrapper>
-                  <InfoRow>+996 (501) 46 99 44</InfoRow>
-                  <InfoRow>Gadgetarium.kg</InfoRow>
-                  <InfoRow>г.Бишкек, ул. Гражданская 119</InfoRow>
-                  <InfoRow>С 10:00 до 21:00 (без выходных)</InfoRow>
+                  <InfoRow>
+                     <img src={Icons.telefon} alt="" /> +996 (501) 46 99 44
+                  </InfoRow>
+                  <InfoRow>
+                     <img src={Icons.gmail} alt="" />
+                     Gadgetarium.kg
+                  </InfoRow>
+                  <InfoRow>
+                     <img src={Icons.mestoPolojenie} alt="" />
+                     г.Бишкек, ул. Гражданская 119
+                  </InfoRow>
+                  <InfoRow>
+                     <img src={Icons.clock} alt="" /> 10:00 до 21:00 (без
+                     выходных)
+                  </InfoRow>
                </InfoWrapper>
             </Column>
          </TopSection>
@@ -63,11 +75,9 @@ const Footer = () => (
 
 export default Footer
 
-
-
 const BigContainer = styled(Box)({
-   width: '100vw', 
-   height: '100vh',
+   width: '100%',
+   height: '600px',
 })
 
 const FooterContainer = styled(Box)({
