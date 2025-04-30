@@ -1,5 +1,4 @@
-import { Chip as MuiChip } from '@mui/material'
-import styled from '@emotion/styled'
+import { Chip as MuiChip, styled } from '@mui/material'
 import { forwardRef } from 'react'
 import { Icons } from '../../../assets/icons'
 
