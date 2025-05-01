@@ -3,7 +3,7 @@ import { Icons } from '../assets/icons'
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
 
-const Delivery = () => {
+const DeliveryPage = () => {
    return (
       <div>
          <UserHeader />
@@ -101,7 +101,8 @@ const Delivery = () => {
    )
 }
 
-export default Delivery
+export default DeliveryPage
+
 const StyledDelivery = styled(Container)({
    padding: 30,
    width: '100%',

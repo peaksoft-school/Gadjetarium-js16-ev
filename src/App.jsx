@@ -1,6 +1,5 @@
 import './App.css'
-import DeliveryInfo from './components/Delivery'
 
-const App = () => <DeliveryInfo />
+const App = () => <h1>GADGETARIUM js-16</h1>
 
 export default App
