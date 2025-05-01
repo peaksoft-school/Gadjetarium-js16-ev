@@ -56,6 +56,12 @@ import watch from './svgs/watch.svg'
 import whatsappPirple from './svgs/whatsappPirple.svg'
 import whatsappWhite from './svgs/whatsappWhite.svg'
 import scalesPirple from './svgs/scalesPirple.svg'
+import search from './svgs/search.svg'
+import gadgetarium from './svgs/gadgetarium.svg'
+import telefon from './svgs/telefon.svg'
+import gmail from './svgs/gmail.svg'
+import mestoPolojenie from './svgs/gmail.svg'
+import clock from './svgs/clock.svg'
 
 export const Icons = {
    user,
@@ -116,4 +122,10 @@ export const Icons = {
    whatsappPirple,
    whatsappWhite,
    scalesPirple,
+   search,
+   gadgetarium,
+   telefon,
+   gmail,
+   mestoPolojenie,
+   clock,
 }
