@@ -95,7 +95,6 @@ const FullscreenContainer = styled('div')({
    height: '100vh',
    overflow: 'hidden',
    position: 'relative',
-   backgroundColor: '#0a0a0a',
 })
 
 const SliderContainer = styled('div')({
@@ -138,19 +137,19 @@ const Slide = styled('div')(({ position, transitioning }) => {
    if (position === 'left') {
       return {
          ...common,
-         width: '25%',
+         width: '25.7%',
          transform: 'translateX(-120%) scale(0.9)',
          left: '50%',
          transformOrigin: 'center',
          transform: 'translateX(-200%) scale(0.9)',
-         height: '78vh',
+         height: '77vh',
       }
    }
 
    if (position === 'right') {
       return {
          ...common,
-         width: '25%',
+         width: '25.7%',
          transform: 'translateX(120%) scale(0.9)',
          left: '50%',
          transformOrigin: 'center',
