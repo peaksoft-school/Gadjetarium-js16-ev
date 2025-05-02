@@ -1,5 +1,6 @@
-import './App.css'
+// import './App.css'
 
-const App = () => <h1>GADGETARIUM js-16</h1>
+// const App = () => <h1>GADGETARIUM js-16</h1>
 
-export default App
+// export default App
+
