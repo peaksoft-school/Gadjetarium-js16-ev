@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
    Accordion as MuiAccordion,
    AccordionSummary as MuiAccordionSummary,
    AccordionDetails as MuiAccordionDetails,
    Typography,
    Box,
+   styled,
 } from '@mui/material'
-import { styled } from '@mui/material/styles'
 import { Icons } from '../assets/icons'
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
@@ -19,60 +19,50 @@ const FAQ = () => {
       setExpanded(isExpanded ? panel : false)
    }
 
-   const ExpandIcon = ({ isExpanded }) => (
-      <ArrowIcon src={Icons.arrowR} alt="стрелка" isExpanded={isExpanded} />
-   )
+   const ExpandIcon = ({ isExpanded }) => <ArrowIcon src={Icons.arrowR} alt="стрелка" isExpanded={isExpanded} />
 
    return (
-      <div>
+      <>
          <UserHeader />
          <Wrapper>
             <MiniContainer>
                <MainTitle>FAQ</MainTitle>
                <Divider />
             </MiniContainer>
-            <div
-               style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-               }}
-            >
+            <Centered>
                <Container>
                   <SubTitle>Часто задаваемые вопросы</SubTitle>
 
-                  {faqData.map((item, index) => (
+                  {faqData.map(({ id, question, answer }, index) => (
                      <Accordion
-                        key={item.id}
-                        expanded={expanded === item.id}
-                        onChange={handleChange(item.id)}
+                        key={id}
+                        expanded={expanded === id}
+                        onChange={handleChange(id)}
                      >
                         <AccordionSummary
-                           expandIcon={
-                              <ExpandIcon isExpanded={expanded === item.id} />
-                           }
+                           expandIcon={<ExpandIcon isExpanded={expanded === id} />}
                         >
-                           <QuestionNumber isExpanded={expanded === item.id}>
+                           <QuestionNumber isExpanded={expanded === id}>
                               {index + 1}
                            </QuestionNumber>
-                           <QuestionText>{item.question}</QuestionText>
+                           <QuestionText>{question}</QuestionText>
                         </AccordionSummary>
                         <AccordionDetails>
-                           {Array.isArray(item.answer) ? (
-                              item.answer.map((paragraph, i) => (
+                           {Array.isArray(answer) ? (
+                              answer.map((paragraph, i) => (
                                  <AnswerText key={i}>{paragraph}</AnswerText>
                               ))
                            ) : (
-                              <AnswerText>{item.answer}</AnswerText>
+                              <AnswerText>{answer}</AnswerText>
                            )}
                         </AccordionDetails>
                      </Accordion>
                   ))}
                </Container>
-            </div>
+            </Centered>
          </Wrapper>
          <Footer />
-      </div>
+      </>
    )
 }
 
@@ -85,6 +75,14 @@ const Wrapper = styled(Box)`
    display: flex;
    justify-content: center;
    flex-direction: column;
+`
+
+const MiniContainer = styled(Box)``
+
+const Centered = styled(Box)`
+   display: flex;
+   align-items: center;
+   justify-content: center;
 `
 
 const Container = styled(Box)`
@@ -175,5 +173,3 @@ const ArrowIcon = styled('img')(({ isExpanded }) => ({
    width: '20px',
    height: '20px',
 }))
-
-const MiniContainer = styled(Box)({})
