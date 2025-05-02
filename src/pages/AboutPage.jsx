@@ -9,16 +9,40 @@ import {
 } from '@mui/material'
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
+import UserSlider from '../components/UserSlider'
+
+const products = [
+   {
+      id: 1,
+      image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12',
+   },
+   {
+      id: 2,
+      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
+   },
+   {
+      id: 3,
+      image: 'https://images.unsplash.com/photo-1603791440384-56cd371ee9a7',
+   },
+   {
+      id: 4,
+      image: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620',
+   },
+]
 
 const AboutPage = () => {
    return (
       <Box>
          <UserHeader />
-         <Root disableGutters>
+         <StyledKingContainer>
             <StyledKingText>О магазине</StyledKingText>
             <br />
-            <hr />
-            <br />
+            <hr width="90%" />
+         </StyledKingContainer>
+
+         <UserSlider products={products} />
+
+         <Root disableGutters>
             <Section>
                <StyledZagolovok1 variant="h5" gutterBottom>
                   Магазин Gadgetarium
@@ -192,4 +216,10 @@ const StyledKingText = styled(Typography)({
    fontSize: '30px',
    fontWeight: 500,
    lineHeight: '110%',
+})
+
+const StyledKingContainer = styled(Box)({
+   position: 'relative',
+   top: '60px',
+   marginLeft: '10%',
 })
