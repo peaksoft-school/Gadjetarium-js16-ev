@@ -43,6 +43,7 @@ export default function PopUp() {
    )
 }
 
+
 const Wrapper = styled(Box)({
    display: 'flex',
    position: 'relative',
@@ -53,7 +54,7 @@ const SubWrapper = styled(Box)({
 })
 
 const MenuWrapper = styled(Box)({
-   background: '#ffffff',
+   backgroundColor: '#ffffff',
    borderRadius: '4px',
    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
    padding: '16px',
@@ -66,4 +67,9 @@ const MenuItem = styled(Typography, {
    marginBottom: '12px',
    color: active ? '#E10098' : '#333333',
    cursor: 'pointer',
+   fontWeight: active ? 600 : 400,
+   transition: 'color 0.2s ease',
+   '&:hover': {
+      color: '#E10098',
+   },
 }))
