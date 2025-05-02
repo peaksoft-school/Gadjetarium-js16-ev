@@ -3,31 +3,12 @@ import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import { Icons } from '../assets/icons'
 
-const products = [
-   {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12',
-   },
-   {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
-   },
-   {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1603791440384-56cd371ee9a7',
-   },
-   {
-      id: 4,
-      image: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620',
-   },
-]
-
-export default function UserSlider() {
+export default function UserSlider({ products = [] }) {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [transitioning, setTransitioning] = useState(false)
 
    const nextSlide = () => {
-      if (transitioning) return
+      if (transitioning || products.length === 0) return
       setTransitioning(true)
       setTimeout(() => {
          setCurrentIndex((prev) => (prev + 1) % products.length)
@@ -35,7 +16,7 @@ export default function UserSlider() {
    }
 
    const prevSlide = () => {
-      if (transitioning) return
+      if (transitioning || products.length === 0) return
       setTransitioning(true)
       setTimeout(() => {
          setCurrentIndex(
@@ -58,6 +39,8 @@ export default function UserSlider() {
       if (diff === total - 1) return 'left'
       return 'hidden'
    }
+
+   if (products.length === 0) return null
 
    return (
       <FullscreenContainer>
@@ -89,6 +72,8 @@ export default function UserSlider() {
       </FullscreenContainer>
    )
 }
+
+// Styled Components
 
 const FullscreenContainer = styled('div')({
    width: '100vw',
