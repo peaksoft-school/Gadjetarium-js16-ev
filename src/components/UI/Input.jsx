@@ -23,7 +23,6 @@ export default Input
 
 const StyledInput = styled(TextField)(() => ({
    '& .MuiOutlinedInput-root': {
-      borderRadius: '12px',
       backgroundColor: '#f9f9f9',
 
       '& fieldset': {
