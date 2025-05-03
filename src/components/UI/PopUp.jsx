@@ -1,75 +1,110 @@
-import { Box, Typography } from '@mui/material'
-import { styled } from '@mui/system'
-import { useState } from 'react'
-import { SUBMENUS } from '../../utils/constants/index'
+import React, { useState } from 'react';
+import { styled } from '@mui/system';
+import { SUBMENUS } from '../../utils/constants/index';
 
-export default function PopUp() {
-   const [selected, setSelected] = useState(null)
-   const [subSelected, setSubSelected] = useState(null)
+const PopUp = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [activeItem, setActiveItem] = useState(null);
 
-   const handleSelect = (item) => setSelected(item === selected ? null : item)
-   const handleSubSelect = (subItem) => setSubSelected(subItem)
+  const handleMenuClick = (menuKey) => {
+    setActiveMenu(prev => (prev === menuKey ? null : menuKey));
+    setActiveItem(null);
+  };
 
-   return (
-      <Wrapper>
-         <MenuWrapper>
-            {Object.keys(SUBMENUS).map((item) => (
-               <MenuItem
-                  key={item}
-                  active={selected === item}
-                  onClick={() => handleSelect(item)}
-               >
-                  {item}
-               </MenuItem>
+  const handleSubMenuClick = (item) => {
+    setActiveItem(item);
+  };
+
+  return (
+    <Wrapper
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setActiveMenu(null);
+        setActiveItem(null);
+      }}
+    >
+      <Trigger>Администратор ▼</Trigger>
+
+      {isHovered && (
+        <MenuContainer>
+          <MainMenu>
+            {Object.keys(SUBMENUS).map((menuKey) => (
+              <MenuItem key={menuKey} onClick={() => handleMenuClick(menuKey)}>
+                <Text $active={activeMenu === menuKey}>{menuKey}</Text>
+              </MenuItem>
             ))}
-         </MenuWrapper>
+          </MainMenu>
 
-         {selected && (
-            <SubWrapper>
-               <MenuWrapper>
-                  {SUBMENUS[selected].map((subItem) => (
-                     <MenuItem
-                        key={subItem}
-                        active={subSelected === subItem}
-                        onClick={() => handleSubSelect(subItem)}
-                     >
-                        {subItem}
-                     </MenuItem>
-                  ))}
-               </MenuWrapper>
-            </SubWrapper>
-         )}
-      </Wrapper>
-   )
-}
+          {activeMenu && (
+            <SubMenu>
+              {SUBMENUS[activeMenu].map((item) => (
+                <MenuItem key={item} onClick={() => handleSubMenuClick(item)}>
+                  <Text $active={activeItem === item}>{item}</Text>
+                </MenuItem>
+              ))}
+            </SubMenu>
+          )}
+        </MenuContainer>
+      )}
+    </Wrapper>
+  );
+};
 
+export default PopUp;
 
-const Wrapper = styled(Box)({
-   display: 'flex',
-   position: 'relative',
-})
+// Styled components
+const Wrapper = styled('div')({
+  position: 'relative',
+  display: 'inline-block',
+});
 
-const SubWrapper = styled(Box)({
-   marginLeft: '16px',
-})
+const Trigger = styled('div')({
+  border: '1px solid #ccc',
+  borderRadius: '4px',
+  padding: '10px 14px',
+  cursor: 'pointer',
+  backgroundColor: '#f5f5f5',
+  userSelect: 'none',
+});
 
-const MenuWrapper = styled(Box)({
-   backgroundColor: '#ffffff',
-   borderRadius: '4px',
-   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-   padding: '16px',
-   width: '300px',
-})
+const MenuContainer = styled('div')({
+  position: 'absolute',
+  top: 0,
+  left: '100%',
+  display: 'flex',
+  backgroundColor: 'white',
+  boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+  borderRadius: '6px',
+  overflow: 'hidden',
+  zIndex: 999,
+  marginLeft: '8px',
+});
 
-const MenuItem = styled(Typography, {
-   shouldForwardProp: (prop) => prop !== 'active',
-})(({ active }) => ({
-   marginBottom: '12px',
-   color: active ? '#E10098' : '#333333',
-   cursor: 'pointer',
-   fontWeight: active ? 600 : 400,
-   transition: 'color 0.2s ease',
-   '&:hover': {
-      color: '#E10098',
-   },
-}))
+const MainMenu = styled('ul')({
+  listStyle: 'none',
+  margin: 0,
+  padding: '8px 0',
+  minWidth: '200px',
+});
+
+const SubMenu = styled(MainMenu)({
+  borderLeft: '1px solid #eee',
+  backgroundColor: '#fafafa',
+});
+
+const MenuItem = styled('li')({
+  padding: '10px 16px',
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+  transition: 'background 0.2s ease',
+  '&:hover': {
+    backgroundColor: '#f5f5f5',
+  },
+});
+
+const Text = styled('span')(({ $active }) => ({
+  color: $active ? 'hotpink' : '#333',
+  fontWeight: $active ? 'bold' : 'normal',
+}));
