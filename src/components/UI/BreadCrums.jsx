@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router'
 import { Box, Typography, styled } from '@mui/material'
 
-const Breadcrumbs = () => {
+const Breadcrumbs = ({ baseLabel = 'Главная' }) => {
    const location = useLocation()
    const navigate = useNavigate()
 
@@ -14,8 +14,8 @@ const Breadcrumbs = () => {
 
    return (
       <BreadcrumbWrapper>
-         <Crumb onClick={() => navigate('/')} clickable>
-            Главная
+         <Crumb onClick={() => navigate('/')} clickable="true">
+            {baseLabel}
          </Crumb>
          {pathnames.map((name, index) => {
             const isLast = index === pathnames.length - 1
@@ -23,8 +23,8 @@ const Breadcrumbs = () => {
                <Box key={index} display="flex" alignItems="center">
                   <DividerSymbol>»</DividerSymbol>
                   <Crumb
-                     isLast={isLast}
-                     clickable={!isLast}
+                     isLast={isLast ? 'true' : undefined}
+                     clickable={!isLast ? 'true' : undefined}
                      onClick={() => !isLast && handleClick(index)}
                   >
                      {decodeURIComponent(
