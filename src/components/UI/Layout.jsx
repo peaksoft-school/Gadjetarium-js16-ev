@@ -1,13 +1,13 @@
-import { Box, Typography } from '@mui/material'
-import { styled } from '@mui/system'
+import { Box, Typography, styled } from '@mui/material'
 import { layoutData } from '../../utils/constants'
 
 const Layout = () => (
    <Wrapper>
-      {layoutData.map((item, index) => (
-         <Card key={index}>
-            <img src={item.icon} alt={item.text} style={imgStyle} />
-            <Text align="center">{item.text}</Text>
+      {layoutData.map(({ text, icon }, i) => (
+         <Card key={i}>
+            <img src={icon} alt={text} style={imgStyle} />
+
+            <Text align="center">{text}</Text>
          </Card>
       ))}
    </Wrapper>
