@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { styled } from '@mui/system'
+import { useState } from 'react'
+import { styled } from '@mui/material'
 import { SUBMENUS } from '../../utils/constants/index'
 
 const PopUp = () => {
@@ -9,12 +9,11 @@ const PopUp = () => {
 
    const handleMenuClick = (menuKey) => {
       setActiveMenu((prev) => (prev === menuKey ? null : menuKey))
+
       setActiveItem(null)
    }
 
-   const handleSubMenuClick = (item) => {
-      setActiveItem(item)
-   }
+   const handleSubMenuClick = (item) => setActiveItem(item)
 
    return (
       <Wrapper
@@ -59,7 +58,6 @@ const PopUp = () => {
 }
 
 export default PopUp
-
 
 const Wrapper = styled('div')({
    position: 'relative',
