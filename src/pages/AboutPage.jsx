@@ -12,12 +12,15 @@ import UserHeader from '../layout/user/UserHeader'
 import UserSlider from '../components/UserSlider'
 import { products } from '../utils/constants'
 import { Images } from '../assets/images'
+import Breadcrumbs from '../components/UI/BreadCrums'
 
 const AboutPage = () => {
    return (
       <Box>
          <UserHeader />
          <StyledKingContainer>
+            <Breadcrumbs />
+            <br />
             <StyledKingText>О магазине</StyledKingText>
             <br />
             <hr width="90%" />
