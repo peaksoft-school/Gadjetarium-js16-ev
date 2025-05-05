@@ -10,7 +10,7 @@ import {
 import { Icons } from '../assets/icons'
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
-import { faqData } from '../utils/constants'
+import { QUESTIONS } from '../utils/constants'
 
 const FAQ = () => {
    const [expanded, setExpanded] = useState(null)
@@ -19,7 +19,9 @@ const FAQ = () => {
       setExpanded(isExpanded ? panel : false)
    }
 
-   const ExpandIcon = ({ isExpanded }) => <ArrowIcon src={Icons.arrowR} alt="стрелка" isExpanded={isExpanded} />
+   const ExpandIcon = ({ isExpanded }) => (
+      <ArrowIcon src={Icons.arrowR} alt="стрелка" isExpanded={isExpanded} />
+   )
 
    return (
       <>
@@ -33,14 +35,16 @@ const FAQ = () => {
                <Container>
                   <SubTitle>Часто задаваемые вопросы</SubTitle>
 
-                  {faqData.map(({ id, question, answer }, index) => (
+                  {QUESTIONS.map(({ id, question, answer }, index) => (
                      <Accordion
                         key={id}
                         expanded={expanded === id}
                         onChange={handleChange(id)}
                      >
                         <AccordionSummary
-                           expandIcon={<ExpandIcon isExpanded={expanded === id} />}
+                           expandIcon={
+                              <ExpandIcon isExpanded={expanded === id} />
+                           }
                         >
                            <QuestionNumber isExpanded={expanded === id}>
                               {index + 1}
