@@ -1,9 +1,9 @@
 import { Box, Typography, styled } from '@mui/material'
-import { layoutData } from '../../utils/constants'
+import { POSSIBILITIES } from '../../utils/constants'
 
-const Layout = () => (
+const Possibilities = () => (
    <Wrapper>
-      {layoutData.map(({ text, icon }, i) => (
+      {POSSIBILITIES.map(({ text, icon }, i) => (
          <Card key={i}>
             <img src={icon} alt={text} style={imgStyle} />
 
@@ -13,7 +13,7 @@ const Layout = () => (
    </Wrapper>
 )
 
-export default Layout
+export default Possibilities
 
 const Wrapper = styled(Box)({
    display: 'flex',
