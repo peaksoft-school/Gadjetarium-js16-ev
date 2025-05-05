@@ -3,23 +3,28 @@ import { Icons } from '../../assets/icons'
 const POSSIBILITIES = [
    {
       icon: Icons.diary,
-      text: 'Официальный дистрибьютер',
+      text: 'Официальный',
+      text2: 'дистрибьютер',
    },
    {
       icon: Icons.repair,
-      text: 'Гарантийное обслуживание',
+      text: 'Гарантийное ',
+      text2: 'обслуживание',
    },
    {
       icon: Icons.cardPay,
-      text: 'Оплата любым удобным способом',
+      text: 'Оплата любым',
+      text2: 'удобным способом',
    },
    {
       icon: Icons.handshake,
-      text: 'Оптовые продажи',
+      text: 'Оптовые',
+      text2: 'продажи',
    },
    {
       icon: Icons.delivery,
-      text: 'Доставка в любой регион Кыргызстана',
+      text: 'Доставка в любой',
+      text2: 'регион Кыргызстана',
    },
 ]
 

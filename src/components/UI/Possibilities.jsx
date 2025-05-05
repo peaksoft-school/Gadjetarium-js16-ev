@@ -3,11 +3,14 @@ import { POSSIBILITIES } from '../../utils/constants'
 
 const Possibilities = () => (
    <Wrapper>
-      {POSSIBILITIES.map(({ text, icon }, i) => (
+      {POSSIBILITIES.map(({ text, icon, text2 }, i) => (
          <Card key={i}>
             <img src={icon} alt={text} style={imgStyle} />
 
-            <Text align="center">{text}</Text>
+            <Text align="center">
+               {text} <br />
+               {text2}
+            </Text>
          </Card>
       ))}
    </Wrapper>
@@ -46,4 +49,5 @@ const Text = styled(Typography)({
    fontSize: '16px',
    lineHeight: '130%',
    textAlign: 'center',
+   width: '170px',
 })
