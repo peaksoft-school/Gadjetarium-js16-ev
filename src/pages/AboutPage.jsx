@@ -10,25 +10,8 @@ import {
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
 import UserSlider from '../components/UserSlider'
-
-const products = [
-   {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12',
-   },
-   {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8',
-   },
-   {
-      id: 3,
-      image: 'https://images.unsplash.com/photo-1603791440384-56cd371ee9a7',
-   },
-   {
-      id: 4,
-      image: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620',
-   },
-]
+import { products } from '../utils/constants'
+import { Images } from '../assets/images'
 
 const AboutPage = () => {
    return (
@@ -119,10 +102,7 @@ const AboutPage = () => {
                      </StyledTextThird>
                   </Box>
                   <ImageWrapper>
-                     <MapImage
-                        src="https://upload.wikimedia.org/wikipedia/commons/6/6d/Kyrgyzstan_provinces_map.png"
-                        alt="Карта магазинов"
-                     />
+                     <MapImage src={Images.KyrgyzJerim} alt="Карта магазинов" />
                   </ImageWrapper>
                </TextImageWrapper>
             </Section>
@@ -164,13 +144,13 @@ const ImageWrapper = styled(Box)({
 })
 
 const MapImage = styled('img')({
-   width: '700px',
-   height: '300px',
+   width: '650px',
+   height: '310px',
 })
 
 const StyledTextFirst = styled(List)({
    width: '1020px',
-   fontSize: '16px',
+   fontSize: '18px',
    fontWeight: 400,
    lineHeight: '150%',
 })
