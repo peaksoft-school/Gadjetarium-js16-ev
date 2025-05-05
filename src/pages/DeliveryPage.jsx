@@ -2,13 +2,14 @@ import { Container, styled, Typography } from '@mui/material'
 import { Icons } from '../assets/icons'
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
+import Breadcrumbs from '../components/UI/BreadCrums'
 
 const DeliveryPage = () => {
    return (
       <div>
          <UserHeader />
          <StyledDelivery>
-            {/* Bread Crumbs */}
+            <Breadcrumbs />
             <StyledContent>
                <StyledText>Доставка</StyledText>
 
