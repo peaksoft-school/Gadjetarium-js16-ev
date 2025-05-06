@@ -1,4 +1,10 @@
 import { Icons } from '../../assets/icons'
+import images1 from '../../assets/images/images1.png'
+import images2 from '../../assets/images/images2.png'
+import images3 from '../../assets/images/images3.png'
+import images4 from '../../assets/images/images4.png'
+import images5 from '../../assets/images/images5.png'
+import images6 from '../../assets/images/images6.png'
 
 const POSSIBILITIES = [
    {
@@ -69,5 +75,32 @@ const SUBMENUS = {
    'По увеличению цены': ['От дешевых к дорогим', 'Фильтры'],
    'По уменьшению цены': ['От дорогих к дешевым', 'Скидки'],
 }
+
+export const Telefon = [
+   {
+      id: 2,
+      image: images2,
+   },
+   {
+      id: 1,
+      image: images1,
+   },
+   {
+      id: 3,
+      image: images3,
+   },
+   {
+      id: 4,
+      image: images4,
+   },
+   {
+      id: 5,
+      image: images5,
+   },
+   {
+      id: 6,
+      image: images6,
+   },
+]
 
 export { SUBMENUS, QUESTIONS, POSSIBILITIES }
