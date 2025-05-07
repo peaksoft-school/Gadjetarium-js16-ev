@@ -56,10 +56,14 @@ import watch from './svgs/watch.svg'
 import whatsappPirple from './svgs/whatsappPirple.svg'
 import whatsappWhite from './svgs/whatsappWhite.svg'
 import scalesPirple from './svgs/scalesPirple.svg'
+<<<<<<< HEAD
 import arrowLFiolet from './svgs/arrowLFiolet.svg'
 import arrowRFiolet from './svgs/arrowRFiolet.svg'
 import arrowRightWhite from './svgs/arrowRightWhite.svg'
 import arrowLeftWhite from './svgs/arrowLeftWhite.svg'
+import gadgetarium from './svgs/gadgetarium.svg'
+=======
+>>>>>>> development
 
 export const Icons = {
    user,
@@ -124,4 +128,5 @@ export const Icons = {
    arrowRFiolet,
    arrowRightWhite,
    arrowLeftWhite,
+   gadgetarium,
 }

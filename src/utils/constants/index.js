@@ -25,4 +25,4 @@ const SUBMENUS = {
    'По уменьшению цены': ['От дорогих к дешевым', 'Скидки'],
 }
 
-export { SUBMENUS }
+export { SUBMENUS, QUESTIONS }
