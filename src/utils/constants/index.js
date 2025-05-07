@@ -1,8 +1,34 @@
-import gatget from '../../assets/images/gatget.png'
-import PeopleTc from '../../assets/images/PeopleTc.png'
-import GatgetStore from '../../assets/images/GatgetStore.png'
+import { Icons } from '../../assets/icons'
 
-export const products = [
+const POSSIBILITIES = [
+   {
+      icon: Icons.diary,
+      text: 'Официальный',
+      text2: 'дистрибьютер',
+   },
+   {
+      icon: Icons.repair,
+      text: 'Гарантийное ',
+      text2: 'обслуживание',
+   },
+   {
+      icon: Icons.cardPay,
+      text: 'Оплата любым',
+      text2: 'удобным способом',
+   },
+   {
+      icon: Icons.handshake,
+      text: 'Оптовые',
+      text2: 'продажи',
+   },
+   {
+      icon: Icons.delivery,
+      text: 'Доставка в любой',
+      text2: 'регион Кыргызстана',
+   },
+]
+
+const QUESTIONS = [
    {
       id: 1,
       image: `${GatgetStore}`,
@@ -25,4 +51,4 @@ const SUBMENUS = {
    'По уменьшению цены': ['От дорогих к дешевым', 'Скидки'],
 }
 
-export { SUBMENUS, QUESTIONS }
+export { SUBMENUS, QUESTIONS, POSSIBILITIES }
