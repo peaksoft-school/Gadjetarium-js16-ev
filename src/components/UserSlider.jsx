@@ -28,7 +28,7 @@ export default function UserSlider({ products = [] }) {
    useEffect(() => {
       const timer = setTimeout(() => setTransitioning(false), 800)
       return () => clearTimeout(timer)
-   }, [currentIndex])
+   }, [currentIndex])   
 
    const getSlidePosition = (index) => {
       const total = products.length
