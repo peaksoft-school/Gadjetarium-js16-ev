@@ -1,6 +1,9 @@
 import user from './svgs/user.svg'
 import arrowDown from './svgs/arrowDown.svg'
 import arrowLeft from './svgs/arrowLeft.svg'
+import arrowLeftWhite from './svgs/arrowLeftWhite.svg'
+import arrowRightWhite from './svgs/arrowRightWhite.svg'
+
 import arrowR from './svgs/arrowR.svg'
 import arrowRight from './svgs/arrowRight.svg'
 import arrowUp from './svgs/arrowUp.svg'
@@ -63,6 +66,8 @@ export const Icons = {
    arrowLeft,
    arrowR,
    arrowRight,
+   arrowLeftWhite,
+   arrowRightWhite,
    arrowUp,
    basket,
    blueLike,
