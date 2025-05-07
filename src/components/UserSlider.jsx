@@ -28,7 +28,7 @@ export default function UserSlider({ products = [] }) {
    useEffect(() => {
       const timer = setTimeout(() => setTransitioning(false), 800)
       return () => clearTimeout(timer)
-   }, [currentIndex])
+   }, [currentIndex])   
 
    const getSlidePosition = (index) => {
       const total = products.length
@@ -41,9 +41,16 @@ export default function UserSlider({ products = [] }) {
    }
 
    if (products.length === 0) return null
-
    return (
       <FullscreenContainer>
+         <NavButtonLeft onClick={prevSlide} disabled={transitioning}>
+            <ArrowIcon src={Icons.arrowLeftWhite} alt="Previous" />
+         </NavButtonLeft>
+
+         <NavButtonRight onClick={nextSlide} disabled={transitioning}>
+            <ArrowIcon src={Icons.arrowRightWhite} alt="Next" />
+         </NavButtonRight>
+
          <SliderContainer>
             {products.map((product, index) => {
                const position = getSlidePosition(index)
@@ -56,34 +63,24 @@ export default function UserSlider({ products = [] }) {
                      <SlideImage
                         style={{ backgroundImage: `url(${product.image})` }}
                      />
-                     {position === 'center' && <SlideContent></SlideContent>}
+                     {position === 'center' && <SlideContent />}
                   </Slide>
                )
             })}
-
-            <NavButtonLeft onClick={prevSlide} disabled={transitioning}>
-               <ArrowIcon src={Icons.arrowLeftWhite} alt="Previous" />
-            </NavButtonLeft>
-
-            <NavButtonRight onClick={nextSlide} disabled={transitioning}>
-               <ArrowIcon src={Icons.arrowRightWhite} alt="Next" />
-            </NavButtonRight>
          </SliderContainer>
       </FullscreenContainer>
    )
 }
 
-// Styled Components
-
 const FullscreenContainer = styled('div')({
-   width: '100vw',
+   width: '100%',
    height: '100vh',
-   overflow: 'hidden',
    position: 'relative',
+   overflow: 'hidden',
 })
 
 const SliderContainer = styled('div')({
-   position: 'absolute',
+   position: 'relative',
    top: 0,
    left: 0,
    width: '100vw',
@@ -134,7 +131,7 @@ const Slide = styled('div')(({ position, transitioning }) => {
    if (position === 'right') {
       return {
          ...common,
-         width: '25.7%',
+         width: '25.2%',
          transform: 'translateX(120%) scale(0.9)',
          left: '50%',
          transformOrigin: 'center',
@@ -175,14 +172,14 @@ const SlideContent = styled('div')({
 })
 
 const NavButton = styled(IconButton)({
-   position: 'fixed',
-   top: '50%',
+   position: 'absolute',
+   top: '52%',
    transform: 'translateY(-50%)',
    backgroundColor: 'rgba(0,0,0,0.5)',
-   width: '50px',
-   height: '50px',
+   width: '60px',
+   height: '60px',
    borderRadius: '50%',
-   zIndex: 10,
+   zIndex: 99,
    transition: 'all 0.3s ease',
    '&:hover': {
       backgroundColor: 'rgba(255,255,255,0.2)',
@@ -194,15 +191,14 @@ const NavButton = styled(IconButton)({
 })
 
 const NavButtonLeft = styled(NavButton)({
-   left: '20vw',
+   left: '260px',
 })
 
 const NavButtonRight = styled(NavButton)({
-   right: '20vw',
+   right: '260px',
 })
 
 const ArrowIcon = styled('img')({
-   width: '15vw',
-   height: '15vh',
-   transition: 'transform 0.2s ease',
+   width: '130px',
+   height: '130px',
 })
