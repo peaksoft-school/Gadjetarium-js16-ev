@@ -57,7 +57,7 @@ const TelefonSlider = () => {
             <ModalBackdrop onClick={handleCloseModal}>
                <ModalImageContainer onClick={(e) => e.stopPropagation()}>
                   <CloseIcon
-                     src={Icons.closeWhite}
+                     src={Icons.cancel}
                      alt="close"
                      onClick={handleCloseModal}
                   />
@@ -148,7 +148,6 @@ const ModalImageContainer = styled('div')({
 const ZoomedImage = styled('img')({
    maxWidth: '100%',
    maxHeight: '100%',
-   borderRadius: '10px',
 })
 
 const ArrowIcon = styled('img')(({ position }) => ({
@@ -168,7 +167,7 @@ const ArrowIcon = styled('img')(({ position }) => ({
 const CloseIcon = styled('img')({
    position: 'absolute',
    top: 100,
-   right: 30,
+   right: 10,
    width: '24px',
    height: '24px',
    cursor: 'pointer',
@@ -176,5 +175,6 @@ const CloseIcon = styled('img')({
    transition: 'filter 0.3s ease',
    '&:hover': {
       filter: 'invert(42%) sepia(72%) saturate(1500%) hue-rotate(290deg)',
+      color: 'gray',
    },
 })
