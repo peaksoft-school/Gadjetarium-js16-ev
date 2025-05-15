@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
    Table,
    TableBody,
@@ -12,6 +12,11 @@ import {
    IconButton,
    styled,
 } from '@mui/material'
+import {
+   useReactTable,
+   getCoreRowModel,
+   flexRender,
+} from '@tanstack/react-table'
 import Checkbox from './Checkbox'
 import { Icons } from '../../assets/icons'
 
@@ -24,198 +29,125 @@ const UniversalTable = ({ variant, data = [] }) => {
       )
    }
 
-   const isSelected = (id) => selected.includes(id)
-
-   const renderHeader = () => {
+   const columns = useMemo(() => {
       if (variant === 'orders') {
-         return (
-            <>
-               <StyledHeaderCell width="60px">ID</StyledHeaderCell>
-               <StyledHeaderCell>ФИО</StyledHeaderCell>
-               <StyledHeaderCell>Номер/дата</StyledHeaderCell>
-               <StyledHeaderCell>Кол-во</StyledHeaderCell>
-               <StyledHeaderCell>Общая сумма</StyledHeaderCell>
-               <StyledHeaderCell>Оформление заказа</StyledHeaderCell>
-               <StyledHeaderCell>Статус</StyledHeaderCell>
-               <StyledHeaderCell>Действия</StyledHeaderCell>
-            </>
-         )
-      } else if (variant === 'products') {
-         return (
-            <>
-               <StyledHeaderCell width="60px">ID</StyledHeaderCell>
-               <StyledHeaderCell>Фото</StyledHeaderCell>
-               <StyledHeaderCell>Наименование товара</StyledHeaderCell>
-               <StyledHeaderCell>Цвет</StyledHeaderCell>
-               <StyledHeaderCell>Кол-во SIM-карт</StyledHeaderCell>
-               <StyledHeaderCell>ОЗУ</StyledHeaderCell>
-               <StyledHeaderCell>ПЗУ</StyledHeaderCell>
-               <StyledHeaderCell>Количество</StyledHeaderCell>
-               <StyledHeaderCell>Цена</StyledHeaderCell>
-            </>
-         )
-      } else if (variant === 'goods') {
-         return (
-            <>
-               <StyledHeaderCell width="60px">ID</StyledHeaderCell>
-               <StyledHeaderCell>Фото</StyledHeaderCell>
-               <StyledHeaderCell>Артикул</StyledHeaderCell>
-               <StyledHeaderCell>Наименование товара</StyledHeaderCell>
-               <StyledHeaderCell>Дата создания</StyledHeaderCell>
-               <StyledHeaderCell>Кол-во</StyledHeaderCell>
-               <StyledHeaderCell>Цена товара</StyledHeaderCell>
-               <StyledHeaderCell>Текущая цена</StyledHeaderCell>
-               <StyledHeaderCell>Действия</StyledHeaderCell>
-            </>
-         )
-      }
-   }
-
-   const renderRow = (item) => {
-      const selectedRow = isSelected(item.id)
-
-      if (variant === 'orders') {
-         return (
-            <>
-               <StyledCell width="60px">
-                  <CheckboxWrapper className="checkbox">
-                     <Checkbox
-                        checked={selectedRow}
-                        onChange={() => toggleCheckbox(item.id)}
-                        size="small"
-                     />
-                  </CheckboxWrapper>
-                  <Box className="idText">{item.id}</Box>
-               </StyledCell>
-               <StyledCell>{item.fio}</StyledCell>
-               <StyledCell>
-                  <Typography fontWeight={500} color="#2C68F5">
-                     {item.number}
-                  </Typography>
-                  <Typography fontSize={12} color="#A1A1A1">
-                     {item.date}
-                  </Typography>
-               </StyledCell>
-               <StyledCell>{item.count} шт.</StyledCell>
-               <StyledCell>{item.total}c</StyledCell>
-               <StyledCell>{item.delivery}</StyledCell>
-               <StyledCell>
-                  <Box display="flex" alignItems="center" gap="6px">
-                     <Typography color="#FFA500" fontWeight={500}>
-                        В обработке
-                     </Typography>
-                     <img src={Icons.arrowDown} width={16} />
-                  </Box>
-               </StyledCell>
-               <StyledCell>
-                  <IconButton>
-                     <img src={Icons.deleteb} alt="delete" />
-                  </IconButton>
-               </StyledCell>
-            </>
-         )
-      } else if (variant === 'products') {
-         return (
-            <>
-               <StyledCell width="60px" sx={{ position: 'relative' }}>
-                  <CheckboxWrapper className="checkbox">
-                     <Checkbox
-                        checked={selectedRow}
-                        onChange={() => toggleCheckbox(item.id)}
-                        size="small"
-                     />
-                  </CheckboxWrapper>
-                  <Box className="idText">{item.id}</Box>
-               </StyledCell>
-               <StyledCell>
-                  <img src={item.photo} alt="product" width={40} />
-               </StyledCell>
-               <StyledCell>
-                  <Typography noWrap>{item.name}</Typography>
-               </StyledCell>
-               <StyledCell>{item.color}</StyledCell>
-               <StyledCell>{item.sim}</StyledCell>
-               <StyledCell>{item.ram} ГБ</StyledCell>
-               <StyledCell>{item.rom} ГБ</StyledCell>
-               <StyledCell>{item.quantity}</StyledCell>
-               <StyledCell>
-                  <Typography color="primary">{item.price}</Typography>
-               </StyledCell>
-            </>
-         )
-      } else if (variant === 'goods') {
-         return (
-            <>
-               <StyledCell width="60px">
-                  <Box
-                     display="flex"
-                     alignItems="center"
-                     justifyContent="center"
-                  >
-                     {selectedRow ? (
+         return [
+            {
+               header: () => (
+                  <StyledHeaderCell width="60px">ID</StyledHeaderCell>
+               ),
+               accessorKey: 'id',
+               cell: ({ row }) => (
+                  <StyledCell width="60px">
+                     <CheckboxWrapper className="checkbox">
                         <Checkbox
-                           checked
-                           onChange={() => toggleCheckbox(item.id)}
+                           checked={selected.includes(row.original.id)}
+                           onChange={() => toggleCheckbox(row.original.id)}
                            size="small"
                         />
-                     ) : (
-                        <Typography onClick={() => toggleCheckbox(item.id)}>
-                           {item.id}
-                        </Typography>
-                     )}
-                  </Box>
-               </StyledCell>
-               <StyledCell>
-                  <img src={item.photo} alt="product" width="40" />
-               </StyledCell>
-               <StyledCell>{item.article}</StyledCell>
-               <StyledCell>
-                  <Typography fontWeight="bold">
-                     Кол-во товара {item.quantity}шт.
-                  </Typography>
-                  <Typography fontSize={12} color="gray">
-                     {item.name}
-                  </Typography>
-               </StyledCell>
-               <StyledCell>
-                  {item.createdAt}
-                  <br />
-                  <Typography fontSize={12} color="gray">
-                     {item.createdTime}
-                  </Typography>
-               </StyledCell>
-               <StyledCell>{item.quantity}</StyledCell>
-               <StyledCell>
-                  <Typography color="primary">{item.price}</Typography>
-                  <Typography fontSize={12} color="error">
-                     {item.discount}
-                  </Typography>
-               </StyledCell>
-               <StyledCell>
-                  <Typography color="primary">{item.currentPrice}</Typography>
-               </StyledCell>
-               <StyledCell>
-                  <IconButton color="primary" size="small">
-                     <img src={Icons.edit} alt="edit" />
-                  </IconButton>
-                  <IconButton color="error" size="small">
-                     <img src={Icons.deleteb} alt="delete" />
-                  </IconButton>
-               </StyledCell>
-            </>
-         )
+                     </CheckboxWrapper>
+                     <IdText className="idText">{row.original.id}</IdText>
+                  </StyledCell>
+               ),
+            },
+            {
+               header: () => <StyledHeaderCell>ФИО</StyledHeaderCell>,
+               accessorKey: 'fio',
+               cell: ({ getValue }) => <StyledCell>{getValue()}</StyledCell>,
+            },
+            {
+               header: () => <StyledHeaderCell>Номер/дата</StyledHeaderCell>,
+               accessorKey: 'number',
+               cell: ({ row }) => (
+                  <StyledCell>
+                     <NumberText>{row.original.number}</NumberText>
+                     <DateText>{row.original.date}</DateText>
+                  </StyledCell>
+               ),
+            },
+            {
+               header: () => <StyledHeaderCell>Кол-во</StyledHeaderCell>,
+               accessorKey: 'count',
+               cell: ({ getValue }) => (
+                  <StyledCell>{getValue()} шт.</StyledCell>
+               ),
+            },
+            {
+               header: () => <StyledHeaderCell>Общая сумма</StyledHeaderCell>,
+               accessorKey: 'total',
+               cell: ({ getValue }) => <StyledCell>{getValue()}c</StyledCell>,
+            },
+            {
+               header: () => (
+                  <StyledHeaderCell>Оформление заказа</StyledHeaderCell>
+               ),
+               accessorKey: 'delivery',
+               cell: ({ getValue }) => <StyledCell>{getValue()}</StyledCell>,
+            },
+            {
+               header: () => <StyledHeaderCell>Статус</StyledHeaderCell>,
+               accessorKey: 'status',
+               cell: () => (
+                  <StyledCell>
+                     <StatusBox>
+                        <StatusText>В обработке</StatusText>
+                        <StatusIcon src={Icons.arrowDown} />
+                     </StatusBox>
+                  </StyledCell>
+               ),
+            },
+            {
+               header: () => <StyledHeaderCell>Действия</StyledHeaderCell>,
+               accessorKey: 'actions',
+               cell: () => (
+                  <StyledCell>
+                     <IconButton>
+                        <img src={Icons.deleteb} alt="delete" />
+                     </IconButton>
+                  </StyledCell>
+               ),
+            },
+         ]
       }
-   }
+
+      return []
+   }, [variant, selected])
+
+   const table = useReactTable({
+      data,
+      columns,
+      getCoreRowModel: getCoreRowModel(),
+   })
 
    return (
       <StyledTableContainer component={Paper}>
          <StyledTable>
             <TableHead>
-               <TableRow>{renderHeader()}</TableRow>
+               {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                     {headerGroup.headers.map((header) => (
+                        <React.Fragment key={header.id}>
+                           {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                           )}
+                        </React.Fragment>
+                     ))}
+                  </TableRow>
+               ))}
             </TableHead>
             <TableBody>
-               {data.map((item) => (
-                  <HoverableRow key={item.id}>{renderRow(item)}</HoverableRow>
+               {table.getRowModel().rows.map((row) => (
+                  <HoverableRow key={row.id}>
+                     {row.getVisibleCells().map((cell) => (
+                        <React.Fragment key={cell.id}>
+                           {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                           )}
+                        </React.Fragment>
+                     ))}
+                  </HoverableRow>
                ))}
             </TableBody>
          </StyledTable>
@@ -251,6 +183,15 @@ const StyledHeaderCell = styled(TableCell)(() => ({
    borderTopRightRadius: 0,
 }))
 
+const StyledCell = styled(TableCell)(() => ({
+   fontSize: 14,
+   color: '#333',
+   whiteSpace: 'nowrap',
+   position: 'relative',
+   padding: '12px 16px',
+   border: 'none',
+}))
+
 const HoverableRow = styled(TableRow)(() => ({
    backgroundColor: '#fff',
    borderRadius: 12,
@@ -269,14 +210,6 @@ const HoverableRow = styled(TableRow)(() => ({
    },
 }))
 
-const StyledCell = styled(TableCell)(() => ({
-   fontSize: 14,
-   color: '#333',
-   whiteSpace: 'nowrap',
-   position: 'relative',
-   padding: '12px 16px',
-}))
-
 const CheckboxWrapper = styled(Box)(() => ({
    position: 'absolute',
    top: '50%',
@@ -285,16 +218,18 @@ const CheckboxWrapper = styled(Box)(() => ({
    visibility: 'hidden',
 }))
 
-const OrderLink = styled('a')(() => ({
-   display: 'block',
-   fontWeight: 500,
-   color: '#2C68F5',
-   textDecoration: 'none',
+const IdText = styled(Box)(() => ({
+   visibility: 'visible',
 }))
 
-const OrderTime = styled(Typography)(() => ({
-   color: '#A1A1A1',
+const NumberText = styled(Typography)(() => ({
+   fontWeight: 500,
+   color: '#2C68F5',
+}))
+
+const DateText = styled(Typography)(() => ({
    fontSize: 12,
+   color: '#A1A1A1',
 }))
 
 const StatusBox = styled(Box)(() => ({
