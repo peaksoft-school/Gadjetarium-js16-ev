@@ -1,8 +1,6 @@
 import './App.css'
+import AppRouter from './routes/AppRouter'
 
-const App = () => <h1>GADGETARIUM js-16</h1>
+const App = () => <AppRouter />
 
 export default App
-
-
-
