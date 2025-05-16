@@ -1,4 +1,10 @@
 import { Icons } from '../../assets/icons'
+import firstPhoneImage from '../../assets/images/images1.png'
+import secondPhoneImage from '../../assets/images/images2.png'
+import thirdPhoneImage from '../../assets/images/images3.png'
+import fourthPhoneImage from '../../assets/images/images4.png'
+import fifthPhoneImage from '../../assets/images/images5.png'
+import sixthPhoneImage from '../../assets/images/images6.png'
 
 const POSSIBILITIES = [
    {
@@ -51,4 +57,31 @@ const SUBMENUS = {
    'По уменьшению цены': ['От дорогих к дешевым', 'Скидки'],
 }
 
-export { SUBMENUS, QUESTIONS, POSSIBILITIES }
+const PHONE_SLIDER = [
+   {
+      id: 2,
+      image: firstPhoneImage,
+   },
+   {
+      id: 1,
+      image: secondPhoneImage,
+   },
+   {
+      id: 3,
+      image: thirdPhoneImage,
+   },
+   {
+      id: 4,
+      image: fourthPhoneImage,
+   },
+   {
+      id: 5,
+      image: fifthPhoneImage,
+   },
+   {
+      id: 6,
+      image: sixthPhoneImage,
+   },
+]
+
+export { SUBMENUS, QUESTIONS, POSSIBILITIES, PHONE_SLIDER }
