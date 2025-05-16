@@ -3,7 +3,6 @@ import arrowDown from './svgs/arrowDown.svg'
 import arrowLeft from './svgs/arrowLeft.svg'
 import arrowLeftWhite from './svgs/arrowLeftWhite.svg'
 import arrowRightWhite from './svgs/arrowRightWhite.svg'
-
 import arrowR from './svgs/arrowR.svg'
 import arrowRight from './svgs/arrowRight.svg'
 import arrowUp from './svgs/arrowUp.svg'

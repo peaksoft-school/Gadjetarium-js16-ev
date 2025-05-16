@@ -1,38 +1,38 @@
 import { useState } from 'react'
-import { Telefon } from '../utils/constants'
 import { styled } from '@mui/material'
 import { Icons } from '../assets/icons'
+import { PHONE_SLIDER } from '../utils/constants'
 
-const TelefonSlider = () => {
+const PhonesSlider = () => {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [isModalOpen, setIsModalOpen] = useState(false)
 
    const handlePrev = (e) => {
       e?.stopPropagation()
-      setCurrentIndex((prev) => (prev === 0 ? Telefon.length - 1 : prev - 1))
+
+      setCurrentIndex((prev) =>
+         prev === 0 ? PHONE_SLIDER.length - 1 : prev - 1
+      )
    }
 
    const handleNext = (e) => {
       e?.stopPropagation()
-      setCurrentIndex((prev) => (prev === Telefon.length - 1 ? 0 : prev + 1))
+
+      setCurrentIndex((prev) =>
+         prev === PHONE_SLIDER.length - 1 ? 0 : prev + 1
+      )
    }
 
-   const handleThumbnailClick = (index) => {
-      setCurrentIndex(index)
-   }
+   const handleThumbnailClick = (i) => setCurrentIndex(i)
 
-   const handleImageClick = () => {
-      setIsModalOpen(true)
-   }
+   const handleImageClick = () => setIsModalOpen(true)
 
-   const handleCloseModal = () => {
-      setIsModalOpen(false)
-   }
+   const handleCloseModal = () => setIsModalOpen(false)
 
    return (
       <SliderWrapper>
          <MainImage
-            src={Telefon[currentIndex].image}
+            src={PHONE_SLIDER[currentIndex].image}
             alt="Main"
             onClick={handleImageClick}
          />
@@ -40,10 +40,10 @@ const TelefonSlider = () => {
          <Thumbnails>
             <NavIcon src={Icons.arrowLeft} alt="prev" onClick={handlePrev} />
 
-            {Telefon.map((item, idx) => (
+            {PHONE_SLIDER.map(({ id, image }, idx) => (
                <Thumbnail
-                  key={item.id}
-                  src={item.image}
+                  key={id}
+                  src={image}
                   alt={`Thumbnail ${idx}`}
                   className={currentIndex === idx ? 'selected' : ''}
                   onClick={() => handleThumbnailClick(idx)}
@@ -69,7 +69,10 @@ const TelefonSlider = () => {
                      onClick={handlePrev}
                   />
 
-                  <ZoomedImage src={Telefon[currentIndex].image} alt="Zoomed" />
+                  <ZoomedImage
+                     src={PHONE_SLIDER[currentIndex].image}
+                     alt="Zoomed"
+                  />
 
                   <ArrowIcon
                      src={Icons.arrowRightWhite}
@@ -84,7 +87,7 @@ const TelefonSlider = () => {
    )
 }
 
-export default TelefonSlider
+export default PhonesSlider
 
 const SliderWrapper = styled('div')({
    display: 'flex',
