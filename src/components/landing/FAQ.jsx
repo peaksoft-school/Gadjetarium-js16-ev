@@ -7,10 +7,10 @@ import {
    Box,
    styled,
 } from '@mui/material'
-import { Icons } from '../assets/icons'
-import Footer from '../layout/Footer'
-import UserHeader from '../layout/user/UserHeader'
-import { QUESTIONS } from '../utils/constants'
+import { Icons } from '../../assets/icons'
+import Footer from '../../layout/Footer'
+import UserHeader from '../../layout/user/UserHeader'
+import { QUESTIONS } from '../../utils/constants'
 
 const FAQ = () => {
    const [expanded, setExpanded] = useState(null)

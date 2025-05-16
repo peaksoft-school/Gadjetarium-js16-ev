@@ -1,10 +1,5 @@
 import { Icons } from '../../assets/icons'
-import firstPhoneImage from '../../assets/images/images1.png'
-import secondPhoneImage from '../../assets/images/images2.png'
-import thirdPhoneImage from '../../assets/images/images3.png'
-import fourthPhoneImage from '../../assets/images/images4.png'
-import fifthPhoneImage from '../../assets/images/images5.png'
-import sixthPhoneImage from '../../assets/images/images6.png'
+import { Images } from '../../assets/images'
 
 const POSSIBILITIES = [
    {
@@ -60,27 +55,32 @@ const SUBMENUS = {
 const PHONE_SLIDER = [
    {
       id: 2,
-      image: firstPhoneImage,
+      image: Images.firstPhoneImage,
    },
+
    {
       id: 1,
-      image: secondPhoneImage,
+      image: Images.secondPhoneImage,
    },
+
    {
       id: 3,
-      image: thirdPhoneImage,
+      image: Images.thirdPhoneImage,
    },
+
    {
       id: 4,
-      image: fourthPhoneImage,
+      image: Images.fourthPhoneImage,
    },
+
    {
       id: 5,
-      image: fifthPhoneImage,
+      image: Images.fifthPhoneImage,
    },
+
    {
       id: 6,
-      image: sixthPhoneImage,
+      image: Images.sixthPhoneImage,
    },
 ]
 
