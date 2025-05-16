@@ -1,4 +1,5 @@
 import { Icons } from '../../assets/icons'
+import { Images } from '../../assets/images'
 
 const POSSIBILITIES = [
    {
@@ -51,4 +52,36 @@ const SUBMENUS = {
    'По уменьшению цены': ['От дорогих к дешевым', 'Скидки'],
 }
 
-export { SUBMENUS, QUESTIONS, POSSIBILITIES }
+const PHONE_SLIDER = [
+   {
+      id: 2,
+      image: Images.firstPhoneImage,
+   },
+
+   {
+      id: 1,
+      image: Images.secondPhoneImage,
+   },
+
+   {
+      id: 3,
+      image: Images.thirdPhoneImage,
+   },
+
+   {
+      id: 4,
+      image: Images.fourthPhoneImage,
+   },
+
+   {
+      id: 5,
+      image: Images.fifthPhoneImage,
+   },
+
+   {
+      id: 6,
+      image: Images.sixthPhoneImage,
+   },
+]
+
+export { SUBMENUS, QUESTIONS, POSSIBILITIES, PHONE_SLIDER }
