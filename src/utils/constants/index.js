@@ -1,10 +1,10 @@
 import { Icons } from '../../assets/icons'
-import images1 from '../../assets/images/images1.png'
-import images2 from '../../assets/images/images2.png'
-import images3 from '../../assets/images/images3.png'
-import images4 from '../../assets/images/images4.png'
-import images5 from '../../assets/images/images5.png'
-import images6 from '../../assets/images/images6.png'
+import phone1 from '../../assets/images/phone1.png'
+import phone2 from '../../assets/images/phone2.png'
+import phone3 from '../../assets/images/phone3.png'
+import phone4 from '../../assets/images/phone4.png'
+import phone5 from '../../assets/images/phone5.png'
+import phone6 from '../../assets/images/phone6.png'
 
 const POSSIBILITIES = [
    {
@@ -79,27 +79,27 @@ const SUBMENUS = {
 export const Telefon = [
    {
       id: 2,
-      image: images2,
+      image: phone2,
    },
    {
       id: 1,
-      image: images1,
+      image: phone1,
    },
    {
       id: 3,
-      image: images3,
+      image: phone3,
    },
    {
       id: 4,
-      image: images4,
+      image: phone4,
    },
    {
       id: 5,
-      image: images5,
+      image: phone5,
    },
    {
       id: 6,
-      image: images6,
+      image: phone6,
    },
 ]
 

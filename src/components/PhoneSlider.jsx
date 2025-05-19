@@ -3,7 +3,7 @@ import { Telefon } from '../utils/constants'
 import { styled } from '@mui/material'
 import { Icons } from '../assets/icons'
 
-const TelefonSlider = () => {
+const PhoneSlider = () => {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -84,7 +84,7 @@ const TelefonSlider = () => {
    )
 }
 
-export default TelefonSlider
+export default PhoneSlider
 
 const SliderWrapper = styled('div')({
    display: 'flex',
