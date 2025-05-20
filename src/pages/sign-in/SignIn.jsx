@@ -83,7 +83,6 @@ const SignIn = () => {
             Вход в систему
          </Typography>
 
-         {/* Кнопка Google */}
          <Button
             fullWidth
             variant="outlined"
@@ -109,7 +108,6 @@ const SignIn = () => {
 
          <Divider sx={{ my: 2 }}>или</Divider>
 
-         {/* Форма обычного входа */}
          <form onSubmit={formik.handleSubmit}>
             <TextField
                fullWidth

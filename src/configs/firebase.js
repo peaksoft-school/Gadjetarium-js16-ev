@@ -1,9 +1,8 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
-// Прямое определение конфигурации (без process.env)
 const firebaseConfig = {
-  apiKey: "AIzaSyA...", // Замените на ваш реальный ключ
+  apiKey: "AIzaSyA...", 
   authDomain: "your-project.firebaseapp.com",
   projectId: "your-project",
   storageBucket: "your-project.appspot.com",
