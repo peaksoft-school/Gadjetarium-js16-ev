@@ -13,6 +13,7 @@ import {
    TextField,
 } from '@mui/material'
 import GoogleIcon from '@mui/icons-material/Google'
+import { styled } from '@mui/system'
 import { AUTH_THUNK } from '../../store/authSlice/authThunk'
 import { signInWithGoogle } from '../../configs/firebase'
 
@@ -23,7 +24,6 @@ const SignIn = () => {
    const [error, setError] = useState(null)
    const isLoading = useSelector((state) => state.auth.isLoading)
 
-   // Форма для обычного входа
    const formik = useFormik({
       initialValues: {
          email: '',
@@ -46,14 +46,11 @@ const SignIn = () => {
       },
    })
 
-   // Обработчик Google входа
    const handleGoogleSignIn = async () => {
       try {
          setGoogleLoading(true)
          setError(null)
-
          const { idToken, email } = await signInWithGoogle()
-
          await dispatch(
             AUTH_THUNK.googleSignIn({
                idToken,
@@ -70,20 +67,12 @@ const SignIn = () => {
    }
 
    return (
-      <Box
-         sx={{
-            maxWidth: '400px',
-            margin: '2rem auto',
-            padding: '2rem',
-            boxShadow: 3,
-            borderRadius: '8px',
-         }}
-      >
+      <Container>
          <Typography variant="h5" align="center" gutterBottom>
             Вход в систему
          </Typography>
 
-         <Button
+         <GoogleButton
             fullWidth
             variant="outlined"
             onClick={handleGoogleSignIn}
@@ -91,20 +80,9 @@ const SignIn = () => {
             startIcon={
                googleLoading ? <CircularProgress size={20} /> : <GoogleIcon />
             }
-            sx={{
-               mt: 1,
-               mb: 2,
-               color: '#4285F4',
-               borderColor: '#4285F4',
-               '&:hover': {
-                  borderColor: '#3367D6',
-                  backgroundColor: 'rgba(66, 133, 244, 0.04)',
-               },
-               height: '48px',
-            }}
          >
             {googleLoading ? 'Вход...' : 'Войти через Google'}
-         </Button>
+         </GoogleButton>
 
          <Divider sx={{ my: 2 }}>или</Divider>
 
@@ -143,34 +121,68 @@ const SignIn = () => {
                </Alert>
             )}
 
-            <Button
+            <SubmitButton
                fullWidth
                type="submit"
                variant="contained"
                disabled={isLoading}
-               sx={{
-                  mt: 2,
-                  bgcolor: '#D901A6',
-                  '&:hover': { bgcolor: '#b1008b' },
-                  height: '48px',
-               }}
             >
                {isLoading ? (
                   <CircularProgress size={24} color="inherit" />
                ) : (
                   'Войти'
                )}
-            </Button>
+            </SubmitButton>
          </form>
 
-         <Typography align="center" sx={{ mt: 2 }}>
-            Нет аккаунта?{' '}
+         <StyledLinkText>
+            Нет аккаунта?
             <Link href="/sign-up" underline="hover">
                Зарегистрироваться
             </Link>
-         </Typography>
-      </Box>
+         </StyledLinkText>
+
+         <StyledLinkText>
+            <Link href="/forgot-password" underline="hover">
+               Забыли пароль?
+            </Link>
+         </StyledLinkText>
+      </Container>
    )
 }
 
 export default SignIn
+
+const Container = styled(Box)(({ theme }) => ({
+   maxWidth: '400px',
+   margin: '2rem auto',
+   padding: '2rem',
+   boxShadow: theme.shadows[3],
+   borderRadius: '8px',
+}))
+
+const GoogleButton = styled(Button)({
+   marginTop: '8px',
+   marginBottom: '16px',
+   color: '#4285F4',
+   borderColor: '#4285F4',
+   height: '48px',
+   '&:hover': {
+      borderColor: '#3367D6',
+      backgroundColor: 'rgba(66, 133, 244, 0.04)',
+   },
+})
+
+const SubmitButton = styled(Button)({
+   marginTop: '16px',
+   backgroundColor: '#D901A6',
+   height: '48px',
+   '&:hover': {
+      backgroundColor: '#b1008b',
+   },
+})
+
+const StyledLinkText = styled(Typography)({
+   marginTop: '16px',
+   textAlign: 'center',
+})

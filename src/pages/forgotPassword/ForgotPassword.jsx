@@ -56,7 +56,7 @@ const ForgotPassword = () => {
                   <Button
                      fullWidth
                      variant="contained"
-                     onClick={() => navigate('/login')}
+                     onClick={() => navigate('/sign-in')}
                      sx={{ mt: 3 }}
                   >
                      Вернуться к входу
@@ -100,7 +100,7 @@ const ForgotPassword = () => {
 
                   <Box textAlign="center">
                      <Link
-                        href="/login"
+                        href="/sign-in"
                         variant="body2"
                         onClick={() => dispatch(resetForgotPasswordState())}
                      >

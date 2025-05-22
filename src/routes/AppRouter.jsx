@@ -8,6 +8,9 @@ import Spinner from '../components/Spinner'
 const SignIn = lazy(() => import('../pages/sign-in/SignIn'))
 const SignUp = lazy(() => import('../pages/sign-up/SignUp'))
 const Home = lazy(() => import('../pages/home/Home'))
+const ForgotPassword = lazy(
+   () => import('../pages/forgotPassword/ForgotPassword')
+)
 
 const AppRouter = () => (
    <Routes>
@@ -46,6 +49,20 @@ const AppRouter = () => (
                component={
                   <Suspense fallback={<Spinner />}>
                      <SignUp />
+                  </Suspense>
+               }
+               fallBackPath="user"
+               roles={['GUEST']}
+            />
+         }
+      />
+      <Route
+         path="/forgot-password"
+         element={
+            <PrivateRouter
+               component={
+                  <Suspense fallback={<Spinner />}>
+                     <ForgotPassword />
                   </Suspense>
                }
                fallBackPath="user"
