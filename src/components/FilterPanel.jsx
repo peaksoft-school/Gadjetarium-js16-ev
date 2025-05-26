@@ -190,7 +190,6 @@ const FilterTitle = styled(Typography)({
 const FilterWrapper = styled(Box)({
    width: 280,
    padding: 20,
-   border: '1px solid #ccc',
    borderRadius: 8,
    border: 'none',
 })
@@ -202,6 +201,7 @@ const ResetLink = styled(Button)({
    marginBottom: '10px',
    background: 'none',
    boxShadow: 'none',
+
    '&:hover': {
       background: 'none',
       textDecoration: 'underline',
