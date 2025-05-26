@@ -11,74 +11,76 @@ import {
    AccordionDetails,
    TextField,
    Button,
+   Divider,
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Icons } from '../assets/icons'
+import { catalogProductData } from '../utils/constants'
 
 const FilterPanel = () => {
    const [price, setPrice] = useState([500, 250000])
-   const [category, setCategory] = useState([])
-   const [colors, setColors] = useState([])
-   const [memory, setMemory] = useState([])
-   const [ram, setRam] = useState([])
+   const [selectedFilters, setSelectedFilters] = useState({})
+   const [expandedCategories, setExpandedCategories] = useState(
+      catalogProductData.reduce((acc, item) => {
+         acc[item.id] = true
+         return acc
+      }, {})
+   )
 
    const handlePriceChange = (_, newValue) => {
       setPrice(newValue)
    }
 
-   const handleCheckboxChange = (value, group, setGroup) => {
-      if (group.includes(value)) {
-         setGroup(group.filter((v) => v !== value))
-      } else {
-         setGroup([...group, value])
-      }
+   const handleCheckboxChange = (key, value) => {
+      setSelectedFilters((prev) => {
+         const values = prev[key] || []
+         return {
+            ...prev,
+            [key]: values.includes(value)
+               ? values.filter((v) => v !== value)
+               : [...values, value],
+         }
+      })
    }
 
    const resetFilters = () => {
       setPrice([500, 250000])
-      setCategory([])
-      setColors([])
-      setMemory([])
-      setRam([])
+      setSelectedFilters({})
    }
 
-   const renderCheckboxGroup = (options, selected, setSelected) => (
+   const toggleCategory = (id) => {
+      setExpandedCategories((prev) => ({
+         ...prev,
+         [id]: !prev[id],
+      }))
+   }
+
+   const renderCheckboxGroup = (options, key) => (
       <FormGroup>
-         {options.map((option) => (
-            <FormControlLabel
-               key={option}
-               control={
-                  <Checkbox
-                     checked={selected.includes(option)}
-                     onChange={() =>
-                        handleCheckboxChange(option, selected, setSelected)
-                     }
-                  />
-               }
-               label={option}
-            />
-         ))}
+         {options.map((item) => {
+            const label = item.categoryName || item.title
+            return (
+               <FormControlLabel
+                  key={item.id}
+                  control={
+                     <Checkbox
+                        checked={selectedFilters[key]?.includes(label) || false}
+                        onChange={() => handleCheckboxChange(key, label)}
+                        size="small"
+                        sx={{ padding: '4px 8px' }}
+                     />
+                  }
+                  label={<Typography variant="body2">{label}</Typography>}
+                  sx={{ margin: 0 }}
+               />
+            )
+         })}
       </FormGroup>
    )
 
    return (
       <FilterWrapper>
          <ResetLink onClick={resetFilters}>Сбросить все фильтры</ResetLink>
-
-         <Section>
-            <Accordion defaultExpanded>
-               <AccordionSummary expandIcon={<img src={Icons.arrowDown} />}>
-                  <FilterTitle>Категория</FilterTitle>
-               </AccordionSummary>
-               <AccordionDetails>
-                  {renderCheckboxGroup(
-                     ['Samsung', 'Apple', 'Huawei', 'Honor', 'Xiaomi'],
-                     category,
-                     setCategory
-                  )}
-               </AccordionDetails>
-            </Accordion>
-         </Section>
 
          <Section>
             <Accordion defaultExpanded>
@@ -117,60 +119,67 @@ const FilterPanel = () => {
             </Accordion>
          </Section>
 
-         <Section>
-            <Accordion defaultExpanded>
-               <AccordionSummary expandIcon={<img src={Icons.arrowDown} />}>
-                  <FilterTitle>Цвет</FilterTitle>
-               </AccordionSummary>
-               <AccordionDetails>
-                  {renderCheckboxGroup(
-                     [
-                        'Black',
-                        'Blue',
-                        'Gold',
-                        'Graphite',
-                        'Green',
-                        'Rose Gold',
-                        'Red',
-                        'Silver',
-                        'White',
-                     ],
-                     colors,
-                     setColors
-                  )}
-               </AccordionDetails>
-            </Accordion>
-         </Section>
+         <Divider sx={{ my: 2 }} />
 
-         <Section>
-            <Accordion defaultExpanded>
-               <AccordionSummary expandIcon={<img src={Icons.arrowDown} />}>
-                  <FilterTitle>Оперативная память (GB)</FilterTitle>
-               </AccordionSummary>
-               <AccordionDetails>
-                  {renderCheckboxGroup(
-                     ['32', '64', '128', '512', '1024'],
-                     ram,
-                     setRam
-                  )}
-               </AccordionDetails>
-            </Accordion>
-         </Section>
+         {catalogProductData.map((product) => (
+            <Box key={product.id}>
+               <CategoryHeader onClick={() => toggleCategory(product.id)}>
+                  <Typography fontWeight="bold" color="#a000c0">
+                     {product.title}
+                  </Typography>
+                  <img
+                     src={Icons.arrowDown}
+                     style={{
+                        transform: expandedCategories[product.id]
+                           ? 'rotate(180deg)'
+                           : 'rotate(0deg)',
+                        transition: 'transform 0.3s ease',
+                     }}
+                  />
+               </CategoryHeader>
 
-         <Section>
-            <Accordion defaultExpanded>
-               <AccordionSummary expandIcon={<img src={Icons.arrowDown} />}>
-                  <FilterTitle>Объем памяти (GB)</FilterTitle>
-               </AccordionSummary>
-               <AccordionDetails>
-                  {renderCheckboxGroup(
-                     ['16', '32', '64', '128'],
-                     memory,
-                     setMemory
-                  )}
-               </AccordionDetails>
-            </Accordion>
-         </Section>
+               {expandedCategories[product.id] && (
+                  <>
+                     <Section>
+                        <Accordion defaultExpanded>
+                           <AccordionSummary
+                              expandIcon={<img src={Icons.arrowDown} />}
+                           >
+                              <FilterTitle>Бренды</FilterTitle>
+                           </AccordionSummary>
+                           <AccordionDetails>
+                              {renderCheckboxGroup(
+                                 product.category.subCategory,
+                                 `${product.id}-brands`
+                              )}
+                           </AccordionDetails>
+                        </Accordion>
+                     </Section>
+
+                     {product.categories.map((characteristic) => (
+                        <Section key={characteristic.id}>
+                           <Accordion defaultExpanded>
+                              <AccordionSummary
+                                 expandIcon={<img src={Icons.arrowDown} />}
+                              >
+                                 <FilterTitle>
+                                    {characteristic.type}
+                                 </FilterTitle>
+                              </AccordionSummary>
+                              <AccordionDetails>
+                                 {renderCheckboxGroup(
+                                    characteristic.subCategory,
+                                    `${product.id}-${characteristic.filterCharacteristicsKey}`
+                                 )}
+                              </AccordionDetails>
+                           </Accordion>
+                        </Section>
+                     ))}
+                  </>
+               )}
+               <Divider sx={{ my: 2 }} />
+            </Box>
+         ))}
       </FilterWrapper>
    )
 }
@@ -178,12 +187,12 @@ const FilterPanel = () => {
 export default FilterPanel
 
 const Section = styled(Box)({
-   marginBottom: '20px',
+   marginBottom: '12px',
 })
 
 const FilterTitle = styled(Typography)({
    fontWeight: 600,
-   marginBottom: '10px',
+   fontSize: '0.9rem',
    color: '#a000c0',
 })
 
@@ -192,18 +201,31 @@ const FilterWrapper = styled(Box)({
    padding: 20,
    borderRadius: 8,
    border: 'none',
+   backgroundColor: '#fff',
+   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
 })
 
 const ResetLink = styled(Button)({
    padding: 0,
    textTransform: 'none',
    color: '#1976d2',
-   marginBottom: '10px',
+   marginBottom: '16px',
    background: 'none',
    boxShadow: 'none',
 
    '&:hover': {
       background: 'none',
       textDecoration: 'underline',
+   },
+})
+
+const CategoryHeader = styled(Box)({
+   display: 'flex',
+   justifyContent: 'space-between',
+   alignItems: 'center',
+   padding: '8px 0',
+   cursor: 'pointer',
+   '&:hover': {
+      opacity: 0.8,
    },
 })
