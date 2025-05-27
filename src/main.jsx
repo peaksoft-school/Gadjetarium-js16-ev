@@ -6,11 +6,16 @@ import { Themes } from './Theme/Themes.jsx'
 import { Notifications } from './components/Notification.jsx'
 import { BrowserRouter } from 'react-router'
 
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 createRoot(document.getElementById('root')).render(
    <StrictMode>
       <Themes>
          <BrowserRouter>
-            <App />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+               <App />
+            </LocalizationProvider>
             <Notifications />
          </BrowserRouter>
       </Themes>

@@ -34,7 +34,7 @@ const StyledNavs = styled(Box)({
 })
 
 const StyledAppBar = styled(AppBar)`
-   background-color: '#1A1A25';
+   background-color: #1a1a25;
    box-shadow: none;
    border-bottom: 2px solid #6a1b9a;
    padding: 0 20px;

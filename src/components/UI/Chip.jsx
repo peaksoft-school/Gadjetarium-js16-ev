@@ -1,6 +1,6 @@
 import { Chip as MuiChip, styled } from '@mui/material'
 import { forwardRef } from 'react'
-import { Icons } from '../../../assets/icons'
+import { Icons } from '../../assets/icons'
 
 const Chip = forwardRef(({ label, onDelete }, ref) => (
    <StyledCustomChip
