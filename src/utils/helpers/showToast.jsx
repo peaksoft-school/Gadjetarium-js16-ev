@@ -6,7 +6,7 @@ export const showToast = ({
    type = 'success',
    actionText,
    onActionClick,
-   autoClose = 4000,
+   autoClose = 3000,
 }) => {
    toast(
       ({ closeToast }) => (
