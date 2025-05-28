@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Typography, styled } from '@mui/material';
 import { TrendingUp } from '@mui/icons-material';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Tabs, Tab, Badge, styled } from '@mui/material';
 import { REVIEW_STATUSES, TAB_LABELS } from '../utils/constants/index';
 

@@ -27,7 +27,6 @@ const fetchReviews = async (status = REVIEW_STATUSES.ALL, url = 'YOUR_BACKEND_AP
     if (!response.ok) throw new Error('Network response was not ok');
     return await response.json();
   } catch (error) {
-    console.error('Error fetching reviews:', error);
     return [];
   }
 };
