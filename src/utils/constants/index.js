@@ -25,4 +25,32 @@ const SUBMENUS = {
    'По уменьшению цены': ['От дорогих к дешевым', 'Скидки'],
 }
 
-export { SUBMENUS, QUESTIONS }
+export { SUBMENUS }
+
+
+export const REVIEW_STATUSES = {
+  ALL: 'all',
+  UNREAD: 'unread',
+  ANSWERED: 'answered',
+};
+
+export const TAB_LABELS = {
+  [REVIEW_STATUSES.ALL]: 'Все отзывы',
+  [REVIEW_STATUSES.UNREAD]: 'Нeoтветченные',
+  [REVIEW_STATUSES.ANSWERED]: 'Отвеченные',
+};
+
+// Mock stats data (can be replaced with backend data)
+export const MOCK_STATS = {
+  totalReviews: 1775,
+  totalEarnings: 7556,
+  totalOrdersThisMonth: 34562,
+  dailyStats: {
+    orders: 12,
+    items: 56,
+  },
+  periods: {
+    current: { amount: 120000, label: 'Текущий период' },
+    previous: { amount: 100500, label: 'Предыдущий период' },
+  },
+};

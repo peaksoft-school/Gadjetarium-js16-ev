@@ -4,15 +4,10 @@
 
 // export default App
 
-import React from 'react'
-import CustomerReviews from './pages/CustomerReviews'
+import ReviewsPage from './pages/ReviewsPage';
 
-const App = () => {
-   return (
-      <div>
-         <CustomerReviews />
-      </div>
-   )
+function App() {
+  return <ReviewsPage />;
 }
 
-export default App
+export default App;
