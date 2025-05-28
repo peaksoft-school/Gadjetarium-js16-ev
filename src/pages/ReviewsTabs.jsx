@@ -1,14 +1,15 @@
+import React from 'react';
 import { Tabs, Tab, Badge, styled } from '@mui/material';
 import { REVIEW_STATUSES, TAB_LABELS } from '../utils/constants/index';
 
-const StyledTabs = styled(Tabs)(({ theme }) => ({
+const StyledTabs = styled(Tabs)({
   '& .MuiTabs-indicator': {
     display: 'none',
   },
   marginBottom: '24px',
-}));
+});
 
-const StyledTab = styled(Tab)(({ theme }) => ({
+const StyledTab = styled(Tab)({
   textTransform: 'none',
   fontSize: '14px',
   fontWeight: '500',
@@ -28,7 +29,7 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   '&.Mui-selected:hover': {
     backgroundColor: '#d81b60',
   },
-}));
+});
 
 const ReviewsTabs = ({ activeTab, onTabChange, reviewsCounts }) => {
   const handleChange = (event, newValue) => {

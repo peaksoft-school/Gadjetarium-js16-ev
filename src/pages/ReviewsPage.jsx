@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Box, Container, styled } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import ReviewsTabs from '../pages/ReviewsTabs';
 import ReviewsStats from '../pages/ReviewsStats';
 import ReviewsList from '../pages/ReviewsList';
 import { REVIEW_STATUSES, MOCK_STATS } from '../utils/constants/index';
+import { fetchReviewsAsync, setCurrentStatus, submitReplyAsync, deleteReviewAsync } from '../store/rewiews/RewiewsSlice';
 
 const PageContainer = styled(Container)({
   maxWidth: '1200px',
@@ -21,51 +23,10 @@ const MainContent = styled(Box)({
   flex: 1,
 });
 
-const fetchReviews = async (status = REVIEW_STATUSES.ALL, url = 'YOUR_BACKEND_API_ENDPOINT') => {
-  try {
-    const response = await fetch(`${url}?status=${status}`);
-    if (!response.ok) throw new Error('Network response was not ok');
-    return await response.json();
-  } catch (error) {
-    return [];
-  }
-};
-
-const submitReply = async (reviewId, replyText, url = 'YOUR_BACKEND_API_ENDPOINT/reply') => {
-  try {
-    const response = await fetch(`${url}/${reviewId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reply: replyText }),
-    });
-    if (!response.ok) throw new Error('Failed to submit reply');
-    return { success: true };
-  } catch (error) {
-    console.error('Error submitting reply:', error);
-    throw error;
-  }
-};
-
-const updateReply = async (reviewId, replyText, url = 'YOUR_BACKEND_API_ENDPOINT/update') => {
-  try {
-    const response = await fetch(`${url}/${reviewId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reply: replyText }),
-    });
-    if (!response.ok) throw new Error('Failed to update reply');
-    return { success: true };
-  } catch (error) {
-    console.error('Error updating reply:', error);
-    throw error;
-  }
-};
-
 const ReviewsPage = () => {
-  const [activeTab, setActiveTab] = useState(REVIEW_STATUSES.ALL);
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [stats] = useState(MOCK_STATS);
+  const dispatch = useDispatch();
+  const { reviews, loading, error, currentStatus } = useSelector((state) => state.reviews);
+  const stats = MOCK_STATS;
 
   const reviewsCounts = {
     all: reviews.length,
@@ -74,63 +35,38 @@ const ReviewsPage = () => {
   };
 
   useEffect(() => {
-    loadReviews();
-  }, [activeTab]);
-
-  const loadReviews = async () => {
-    setLoading(true);
-    try {
-      const fetchedReviews = await fetchReviews(activeTab);
-      setReviews(fetchedReviews);
-    } catch (error) {
-      console.error('Error loading reviews:', error);
-      setReviews([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    dispatch(fetchReviewsAsync(currentStatus));
+  }, [currentStatus, dispatch]);
 
   const handleTabChange = (newTab) => {
-    setActiveTab(newTab);
+    dispatch(setCurrentStatus(newTab));
   };
 
-  const handleReply = async (reviewId, replyText) => {
-    try {
-      await submitReply(reviewId, replyText);
-      setReviews((prev) =>
-        prev.map((r) =>
-          r.id === reviewId ? { ...r, reply: replyText, status: REVIEW_STATUSES.ANSWERED } : r
-        )
-      );
-    } catch (error) {
-      console.error('Error submitting reply:', error);
-    }
+  const handleReply = (reviewId, replyText) => {
+    dispatch(submitReplyAsync({ reviewId, replyText }));
   };
 
-  const handleEditReply = async (reviewId, replyText) => {
-    try {
-      await updateReply(reviewId, replyText);
-      setReviews((prev) =>
-        prev.map((r) => (r.id === reviewId ? { ...r, reply: replyText } : r))
-      );
-    } catch (error) {
-      console.error('Error updating reply:', error);
-    }
+  const handleDelete = (reviewId) => {
+    dispatch(deleteReviewAsync(reviewId));
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <PageContainer>
       <ContentContainer>
         <MainContent>
           <ReviewsTabs
-            activeTab={activeTab}
+            activeTab={currentStatus}
             onTabChange={handleTabChange}
             reviewsCounts={reviewsCounts}
           />
           <ReviewsList
             reviews={reviews}
             onReply={handleReply}
-            onEditReply={handleEditReply}
+            onEditReply={handleReply} // Reusing for simplicity
+            onDelete={handleDelete}
           />
         </MainContent>
         <ReviewsStats stats={stats} />

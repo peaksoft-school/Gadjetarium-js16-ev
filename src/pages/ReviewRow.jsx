@@ -1,18 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
   Avatar,
   IconButton,
   Collapse,
-  styled,
   Rating,
+  styled,
 } from '@mui/material';
-import {
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-  Delete,
-} from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowUp, Delete } from '@mui/icons-material';
 import ReviewReplyForm from './ReviewReplyForm';
 
 const ReviewContainer = styled(Box)({
@@ -96,11 +92,21 @@ const RightSection = styled(Box)({
   gap: '20px',
 });
 
+const StyledRating = styled(Rating)({
+  color: '#ff9800',
+});
+
 const UserSection = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   minWidth: '120px',
+});
+
+const UserAvatar = styled(Avatar)({
+  width: 32,
+  height: 32,
+  marginBottom: '4px',
 });
 
 const UserName = styled(Typography)({
@@ -119,6 +125,11 @@ const ControlSection = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   gap: '4px',
+});
+
+const DeleteIcon = styled(Delete)({
+  color: '#999',
+  fontSize: '18px',
 });
 
 const ImageGrid = styled(Box)({
@@ -140,6 +151,12 @@ const ReplySection = styled(Box)({
   borderRadius: '8px',
   padding: '16px',
   marginTop: '16px',
+});
+
+const ReplyText = styled(Typography)({
+  color: '#666',
+  marginBottom: '16px',
+  fontSize: '14px',
 });
 
 const ReplyButton = styled(Box)({
@@ -221,15 +238,15 @@ const ReviewRow = ({
           <ReviewDate>{review.date || '20.06.22 - 14:15'}</ReviewDate>
         </CommentSection>
         <RightSection>
-          <Rating value={review.rating || 3} readOnly size="small" sx={{ color: '#ff9800' }} />
+          <StyledRating value={review.rating || 3} readOnly size="small" />
           <UserSection>
-            <Avatar sx={{ width: 32, height: 32, mb: 0.5 }} />
+            <UserAvatar />
             <UserName>{review.user?.name || 'Адыл Бакытов'}</UserName>
             <UserEmail>{review.user?.email || 'Adyl@mail.com'}</UserEmail>
           </UserSection>
           <ControlSection>
             <IconButton size="small" onClick={handleDeleteClick}>
-              <Delete sx={{ color: '#999', fontSize: 18 }} />
+              <DeleteIcon />
             </IconButton>
             <IconButton size="small" onClick={(e) => { e.stopPropagation(); onToggleExpand(); }}>
               {expanded ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
@@ -247,9 +264,9 @@ const ReviewRow = ({
           <ReplySection>
             {!showReplyForm && (
               <Box>
-                <Typography variant="body2" sx={{ color: '#666', mb: 2 }}>
+                <ReplyText variant="body2">
                   Добрый день! Благодарим Вас за отзыв, рады быть полезными. Спасибо, что выбираете нас. Хорошего дня!
-                </Typography>
+                </ReplyText>
                 <ReplyButton>
                   <EditButton onClick={handleReplyClick}>Редактировать</EditButton>
                 </ReplyButton>
@@ -258,7 +275,7 @@ const ReviewRow = ({
             {showReplyForm && (
               <ReviewReplyForm
                 reviewId={review.id}
-                initialReply={review.reply || 'Добрый день! Благодарим Вас за отзыв, рады быть полезными. Спасибо, что выбираете нас. Хороего дня!'}
+                initialReply={review.reply || 'Добрый день! Благодарим Вас за отзыв, рады быть полезными. Спасибо, что выбираете нас. Хорошего дня!'}
                 onSave={review.reply ? handleEditSaveReply : handleSaveReply}
                 onCancel={handleCancelReply}
                 isEditing={!!review.reply}

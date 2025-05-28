@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, styled } from '@mui/material';
 import { TrendingUp } from '@mui/icons-material';
 
@@ -72,27 +72,29 @@ const PeriodTabs = styled(Box)({
   marginBottom: '16px',
 });
 
-const PeriodTab = styled(Typography)(({ active }) => ({
-  fontSize: '14px',
-  color: active ? '#333333' : '#666666',
-  cursor: 'pointer',
-  fontWeight: active ? '600' : '400',
-  position: 'relative',
-  paddingBottom: '4px',
-  '&:after': {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: active ? '2px' : '0px',
-    backgroundColor: '#E91E63',
-    transition: 'all 0.2s ease',
-  },
-  '&:hover': {
-    color: '#333333',
-  },
-}));
+const PeriodTab = styled(Typography, { shouldForwardProp: (prop) => prop !== 'active' })(
+  ({ active }) => ({
+    fontSize: '14px',
+    color: active ? '#333333' : '#666666',
+    cursor: 'pointer',
+    fontWeight: active ? '600' : '400',
+    position: 'relative',
+    paddingBottom: '4px',
+    '&:after': {
+      content: '""',
+      position: 'absolute',
+      bottom: '0',
+      left: '0',
+      right: '0',
+      height: active ? '2px' : '0px',
+      backgroundColor: '#E91E63',
+      transition: 'all 0.2s ease',
+    },
+    '&:hover': {
+      color: '#333333',
+    },
+  })
+);
 
 const ComparisonBlock = styled(Box)({
   backgroundColor: '#F8F9FA',
@@ -114,6 +116,10 @@ const ComparisonRow = styled(Box)({
   alignItems: 'center',
 });
 
+const ComparisonItem = styled(Box)({
+  textAlign: 'center',
+});
+
 const ComparisonValue = styled(Typography)({
   fontSize: '20px',
   fontWeight: '700',
@@ -123,6 +129,11 @@ const ComparisonValue = styled(Typography)({
 const ComparisonLabel = styled(Typography)({
   fontSize: '12px',
   color: '#999999',
+});
+
+const TrendingIcon = styled(TrendingUp)({
+  color: '#4CAF50',
+  fontSize: '28px',
 });
 
 const ReviewsStats = ({ stats }) => {
@@ -171,23 +182,23 @@ const ReviewsStats = ({ stats }) => {
       <ComparisonBlock>
         <ComparisonTitle>Доставлено товаров на сумму</ComparisonTitle>
         <ComparisonRow>
-          <Box textAlign="center">
+          <ComparisonItem>
             <ComparisonValue>
               {activePeriod === 'day' && '12 500 с'}
               {activePeriod === 'month' && '120 000 с'}
               {activePeriod === 'year' && '1 450 000 с'}
             </ComparisonValue>
             <ComparisonLabel>Текущий период</ComparisonLabel>
-          </Box>
-          <TrendingUp style={{ color: '#4CAF50', fontSize: '28px' }} />
-          <Box textAlign="center">
+          </ComparisonItem>
+          <TrendingIcon />
+          <ComparisonItem>
             <ComparisonValue>
               {activePeriod === 'day' && '10 200 с'}
               {activePeriod === 'month' && '100 500 с'}
               {activePeriod === 'year' && '1 200 000 с'}
             </ComparisonValue>
             <ComparisonLabel>Предыдущий период</ComparisonLabel>
-          </Box>
+          </ComparisonItem>
         </ComparisonRow>
       </ComparisonBlock>
     </StatsContainer>

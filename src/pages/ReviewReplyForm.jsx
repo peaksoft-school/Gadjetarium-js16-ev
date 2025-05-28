@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Box, TextField, Button, styled } from '@mui/material';
 
-const ReplyContainer = styled(Box)(({ theme }) => ({
+const ReplyContainer = styled(Box)({
   marginTop: '16px',
   padding: '16px',
   backgroundColor: '#f8f9fa',
   borderRadius: '8px',
-}));
+});
 
-const ReplyTextField = styled(TextField)(({ theme }) => ({
+const ReplyTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     backgroundColor: '#fff',
     '& fieldset': {
@@ -21,24 +21,24 @@ const ReplyTextField = styled(TextField)(({ theme }) => ({
       borderColor: '#e91e63',
     },
   },
-}));
+});
 
-const ButtonContainer = styled(Box)(({ theme }) => ({
+const ButtonContainer = styled(Box)({
   display: 'flex',
   gap: '12px',
   marginTop: '12px',
-}));
+});
 
-const SaveButton = styled(Button)(({ theme }) => ({
+const SaveButton = styled(Button)({
   backgroundColor: '#e91e63',
   color: '#fff',
   textTransform: 'none',
   '&:hover': {
     backgroundColor: '#d81b60',
   },
-}));
+});
 
-const CancelButton = styled(Button)(({ theme }) => ({
+const CancelButton = styled(Button)({
   color: '#e91e63',
   borderColor: '#e91e63',
   textTransform: 'none',
@@ -46,7 +46,7 @@ const CancelButton = styled(Button)(({ theme }) => ({
     borderColor: '#d81b60',
     backgroundColor: 'rgba(233, 30, 99, 0.04)',
   },
-}));
+});
 
 const ReviewReplyForm = ({ reviewId, initialReply = '', onSave, onCancel, isEditing = false }) => {
   const [reply, setReply] = useState(initialReply);

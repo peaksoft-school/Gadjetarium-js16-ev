@@ -12,6 +12,14 @@ const EmptyState = styled(Box)({
   color: '#666',
 });
 
+const EmptyTitle = styled(Typography)({
+  marginBottom: '8px',
+});
+
+const EmptyText = styled(Typography)({
+  fontSize: '14px',
+});
+
 const ReviewsList = ({ reviews, onReply, onEditReply, onDelete }) => {
   const [expandedReviewId, setExpandedReviewId] = useState(null);
 
@@ -23,10 +31,8 @@ const ReviewsList = ({ reviews, onReply, onEditReply, onDelete }) => {
     return (
       <ListContainer>
         <EmptyState>
-          <Typography variant="h6" gutterBottom>
-            Отзывы не найдены
-          </Typography>
-          <Typography variant="body2">В данной категории пока нет отзывов</Typography>
+          <EmptyTitle variant="h6">Отзывы не найдены</EmptyTitle>
+          <EmptyText variant="body2">В данной категории пока нет отзывов</EmptyText>
         </EmptyState>
       </ListContainer>
     );
