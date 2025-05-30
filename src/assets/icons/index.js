@@ -70,6 +70,8 @@ export const Icons = {
    arrowLeft,
    arrowR,
    arrowRight,
+   arrowLeftWhite,
+   arrowRightWhite,
    arrowUp,
    basket,
    blueLike,

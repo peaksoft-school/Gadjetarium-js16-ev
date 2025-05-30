@@ -1,6 +1,6 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { Icons } from '../assets/icons'
+import { Icons } from '../../assets/icons'
 
 const typeStyles = {
    success: {
