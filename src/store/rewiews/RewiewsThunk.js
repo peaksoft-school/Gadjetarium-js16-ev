@@ -1,6 +1,8 @@
+import axiosInstance from "../../configs/axiosInstans"
+
 export const fetchReviews = async (status) => {
    try {
-      const response = await fetch(`/v1/reviews/list?status=${status}`)
+      const response = await axiosInstance(`/v1/reviews/list?status=${status}`)
       if (!response.ok) throw new Error('Network response was not ok')
       return await response.json()
    } catch (error) {
@@ -11,7 +13,7 @@ export const fetchReviews = async (status) => {
 
 export const submitReply = async (reviewId, replyText) => {
    try {
-      const response = await fetch('/v1/reviews/reply', {
+      const response = await axiosInstance('/v1/reviews/reply', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -28,7 +30,7 @@ export const submitReply = async (reviewId, replyText) => {
 
 export const deleteReview = async (reviewId) => {
    try {
-      const response = await fetch(`/v1/reviews/remove/${reviewId}`, {
+      const response = await axiosInstance(`/v1/reviews/remove/${reviewId}`, {
          method: 'DELETE',
       })
       if (!response.ok) throw new Error('Failed to delete review')

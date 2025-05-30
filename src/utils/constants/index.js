@@ -27,48 +27,32 @@ const SUBMENUS = {
 
 // ===========================================
 export const REVIEW_STATUSES = {
-  ALL: 'all',
-  UNREAD: 'unread',
-  ANSWERED: 'answered',
-};
+   ALL: 'all',
+   UNREAD: 'unread',
+   ANSWERED: 'answered',
+}
 
 export const TAB_LABELS = {
-  [REVIEW_STATUSES.ALL]: 'Все отзывы',
-  [REVIEW_STATUSES.UNREAD]: 'Нeoтветченные',
-  [REVIEW_STATUSES.ANSWERED]: 'Отвеченные',
-};
+   [REVIEW_STATUSES.ALL]: 'Все отзывы',
+   [REVIEW_STATUSES.UNREAD]: 'Нeoтветченные',
+   [REVIEW_STATUSES.ANSWERED]: 'Отвеченные',
+}
 
 export const MOCK_STATS = {
-  totalReviews: 1775,
-  totalEarnings: 7556,
-  totalOrdersThisMonth: 34562,
-  dailyStats: {
-    orders: 12,
-    items: 56,
-  },
-  periods: {
-    current: { amount: 120000, label: 'Текущий период' },
-    previous: { amount: 100500, label: 'Предыдущий период' },
-  },
-};
+   totalReviews: 1775,
+   totalEarnings: 7556,
+   totalOrdersThisMonth: 34562,
+   dailyStats: {
+      orders: 12,
+      items: 56,
+   },
+   periods: {
+      current: { amount: 120000, label: 'Текущий период' },
+      previous: { amount: 100500, label: 'Предыдущий период' },
+   },
+}
 // ====================================
 
-
-// import axios from 'axios';
-
-// const axiosInstance = axios.create({
-//   baseURL: 'https://yourdomain.com', // Replace with your actual API base URL
-//   headers: {
-//     'Content-Type': 'application/json',
-//     // Add authentication headers if needed (e.g., Authorization: `Bearer ${token}`)
-//   },
-// });
-
-// export default axiosInstance;
-
-
-
-// // ======================================================================================
 // export { SUBMENUS, QUESTIONS, POSSIBILITIES, PHONE_SLIDER }
 
 // export const catalogProductData = [

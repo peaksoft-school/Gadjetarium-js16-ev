@@ -9,7 +9,7 @@ const ListContainer = styled(Box)({
 const EmptyState = styled(Box)({
   textAlign: 'center',
   padding: '40px 20px',
-  color: '#666',
+  color: '#665',
 });
 
 const EmptyTitle = styled(Typography)({

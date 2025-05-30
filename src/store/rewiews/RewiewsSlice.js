@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchReviews, submitReply, deleteReview } from '../rewiews/RewiewsThunk';
 
-// Асинхронные действия
 export const fetchReviewsAsync = createAsyncThunk(
   'reviews/fetchReviews',
   async (status, { rejectWithValue }) => {
