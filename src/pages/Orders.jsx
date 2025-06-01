@@ -15,19 +15,23 @@ export default function Orders() {
    const [searchValue, setSearchValue] = useState('')
    const [fromDate, setFromDate] = useState(null)
    const [toDate, setToDate] = useState(null)
-   const [selectedStatus, setSelectedStatus] = useState('')
+   const [selectedStatuses, setSelectedStatuses] = useState([])
    const [openPicker, setOpenPicker] = useState(null)
 
    const dispatch = useDispatch()
-   const { data: orders, loading, error } = useSelector((state) => state.orders)
+   const {
+      data: orders = [],
+      loading,
+      error,
+   } = useSelector((state) => state.orders)
 
    const loadOrders = () => {
       const params = {}
-
       if (searchValue.trim()) params.search = searchValue.trim()
       if (fromDate) params.from = fromDate.format('YYYY-MM-DD')
       if (toDate) params.to = toDate.format('YYYY-MM-DD')
-      if (selectedStatus) params.status = selectedStatus
+      if (selectedStatuses.length > 0)
+         params.status = selectedStatuses.join(',')
 
       dispatch(fetchOrders(params))
    }
@@ -38,7 +42,7 @@ export default function Orders() {
 
    useEffect(() => {
       loadOrders()
-   }, [searchValue, fromDate, toDate, selectedStatus])
+   }, [searchValue, fromDate, toDate, selectedStatuses])
 
    const handleDateChange = (date) => {
       if (openPicker === 'from') setFromDate(date)
@@ -51,15 +55,34 @@ export default function Orders() {
    }
 
    const handleStatusClick = (status) => {
-      setSelectedStatus(selectedStatus === status ? '' : status)
+      setSelectedStatuses((prev) =>
+         prev.includes(status)
+            ? prev.filter((s) => s !== status)
+            : [...prev, status]
+      )
    }
 
+   const handleStatusDelete = (status) => {
+      setSelectedStatuses((prev) => prev.filter((s) => s !== status))
+   }
+
+   const filteredOrders =
+      selectedStatuses.length > 0
+         ? orders.filter((order) => selectedStatuses.includes(order.status))
+         : orders
+
+   const statusCounts = selectedStatuses.map((status) => ({
+      status,
+      count: orders.filter((order) => order.status === status).length,
+   }))
+
    const statusOptions = [
-      { label: 'В ожидании', value: 'WAITING' },
-      { label: 'В обработке', value: 'READY_FOR_PICKUP' },
-      { label: 'Курьер в пути', value: 'COURIER_ON_THE_WAY' },
-      { label: 'Доставлено', value: 'DELIVERED' },
-      { label: 'Отменены', value: 'CANCELLED' },
+      { label: 'WAITING', value: 'WAITING' },
+      { label: 'READY_FOR_PICKUP', value: 'READY_FOR_PICKUP' },
+      { label: 'COURIER_ON_THE_WAY', value: 'COURIER_ON_THE_WAY' },
+      { label: 'DELIVERED', value: 'DELIVERED' },
+      { label: 'CANCELLED', value: 'CANCELLED' },
+      { label: 'GET', value: 'GET' },
    ]
 
    return (
@@ -83,7 +106,7 @@ export default function Orders() {
                }}
             />
          </StyledDiv1>
-         <br />
+
          <br />
          <StyledDiv2>
             {statusOptions.map((status) => (
@@ -92,14 +115,30 @@ export default function Orders() {
                   label={status.label}
                   onClick={() => handleStatusClick(status.value)}
                   variant={
-                     selectedStatus === status.value ? 'filled' : 'outlined'
+                     selectedStatuses.includes(status.value)
+                        ? 'filled'
+                        : 'outlined'
                   }
                />
             ))}
          </StyledDiv2>
+
+         <br />
+
+         <StyledDiv2>
+            {statusCounts.map(({ status, count }) => (
+               <Chip
+                  key={status}
+                  label={`${status} × ${count}`}
+                  onDelete={() => handleStatusDelete(status)}
+               />
+            ))}
+         </StyledDiv2>
+
          <br />
          <hr style={{ width: '60%', marginLeft: '12.5%' }} />
          <br />
+
          <Container>
             <StyledTabs>
                <StyledBoxTab onClick={() => setOpenPicker('from')}>
@@ -115,12 +154,24 @@ export default function Orders() {
                   <img src={Icons.calendar} alt="calendar" />
                </StyledBoxTab>
             </StyledTabs>
-            <br />
 
+            <br />
             {loading && <div>Загрузка...</div>}
             {error && <div>Ошибка: {error}</div>}
 
-            <UniversalTable variant="orders" data={orders} />
+            <UniversalTable
+               variant="orders"
+               data={filteredOrders.map((order) => ({
+                  id: order.id,
+                  fio: order.fullName,
+                  number: order.number,
+                  createdAt: order.createdAt,
+                  count: order.count,
+                  total: order.totalPrice,
+                  delivery: order.pickup ? 'Самовывоз' : 'Доставка',
+                  status: order.status,
+               }))}
+            />
 
             {openPicker && (
                <Box>
@@ -136,7 +187,11 @@ export default function Orders() {
 }
 
 const StyledDiv1 = styled(Container)({ paddingTop: '40px' })
-const StyledDiv2 = styled(Container)({ display: 'flex', gap: '14px' })
+const StyledDiv2 = styled(Container)({
+   display: 'flex',
+   gap: '14px',
+   flexWrap: 'wrap',
+})
 const StyledInput = styled(Input)({ width: '559px', height: '39px' })
 const StyledBoxTab = styled(Box)({
    border: '1px solid #CDCDCD',

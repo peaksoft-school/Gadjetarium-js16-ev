@@ -6,7 +6,7 @@ export const fetchOrders = createAsyncThunk(
    async ({ search, from, to, status, page = 1, pageSize = 10 } = {}) => {
       try {
          const params = {}
-         
+
          if (search) params.search = search
          if (from) params.from = from
          if (to) params.to = to
@@ -17,9 +17,9 @@ export const fetchOrders = createAsyncThunk(
          console.log('Отправляем запрос с параметрами:', params)
 
          const response = await axiosInstance.get('/api/orders', { params })
-         
+
          console.log('Ответ от сервера:', response.data)
-         
+
          return response.data.content || response.data || []
       } catch (error) {
          console.error('Ошибка при загрузке заказов:', error)
@@ -31,15 +31,28 @@ export const fetchOrders = createAsyncThunk(
 export const updateOrder = createAsyncThunk(
    'orders/update',
    async ({ id, status }) => {
-      const response = await axiosInstance.put(`/api/orders/${id}`, { status })
+      const response = await axiosInstance.put(
+         `/api/orders/${id}?status=${status}`
+      )
       return { id, status: response.data }
    }
 )
 
-export const deleteOrder = createAsyncThunk('orders/delete', async (id) => {
-   await axiosInstance.delete(`/api/orders/${id}`)
-   return id
-})
+export const deleteOrder = createAsyncThunk(
+   'orders/delete',
+   async (id, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.delete(`/api/orders/${id}`)
+         return id
+      } catch (error) {
+         console.error(
+            'Ошибка при удалении заказа:',
+            error?.response?.data || error.message
+         )
+         return rejectWithValue(error?.response?.data || 'Ошибка при удалении')
+      }
+   }
+)
 
 const ordersSlice = createSlice({
    name: 'orders',
@@ -51,7 +64,7 @@ const ordersSlice = createSlice({
    reducers: {
       clearError: (state) => {
          state.error = null
-      }
+      },
    },
    extraReducers: (builder) => {
       builder
