@@ -3,7 +3,7 @@ import { styled } from '@mui/system'
 import { Icons } from '../../assets/icons'
 
 const AdminHeader = () => (
-   <StyledAppBar position="static">
+   <StyledAppBar sx={{ backgroundColor: '#1A1A25' }} position="static">
       <StyledToolbar>
          <StyledNavs>
             <Logo src={Icons.gadgetarium} alt="Gadgetarium" />
@@ -34,7 +34,6 @@ const StyledNavs = styled(Box)({
 })
 
 const StyledAppBar = styled(AppBar)`
-   background-color: '#1A1A25';
    box-shadow: none;
    border-bottom: 2px solid #6a1b9a;
    padding: 0 20px;
