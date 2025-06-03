@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import {
@@ -16,6 +15,7 @@ import GoogleIcon from '@mui/icons-material/Google'
 import { styled } from '@mui/system'
 import { AUTH_THUNK } from '../../store/authSlice/authThunk'
 import { signInWithGoogle } from '../../configs/firebase'
+import { useForm } from 'react-hook-form'
 
 const SignIn = () => {
    const dispatch = useDispatch()
@@ -24,27 +24,28 @@ const SignIn = () => {
    const [error, setError] = useState(null)
    const isLoading = useSelector((state) => state.auth.isLoading)
 
-   const formik = useFormik({
-      initialValues: {
-         email: '',
-         password: '',
-      },
-      onSubmit: (values, { setSubmitting }) => {
-         setError(null)
-         dispatch(
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      setError: setFormError,
+   } = useForm({ mode: 'onChange' })
+
+   const onSubmit = async (values) => {
+      setError(null)
+      try {
+         await dispatch(
             AUTH_THUNK.signIn({
                values,
                navigate,
-               setSubmitting,
+               setSubmitting: () => {},
                handleClose: () => {},
             })
-         )
-            .unwrap()
-            .catch((err) => {
-               setError(err.message || 'Неправильный email или пароль')
-            })
-      },
-   })
+         ).unwrap()
+      } catch (err) {
+         setError(err.message || 'Неправильный email или пароль')
+      }
+   }
 
    const handleGoogleSignIn = async () => {
       try {
@@ -86,33 +87,33 @@ const SignIn = () => {
 
          <Divider sx={{ my: 2 }}>или</Divider>
 
-         <form onSubmit={formik.handleSubmit}>
+         <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
                fullWidth
                margin="normal"
                label="Email"
-               name="email"
                type="email"
-               value={formik.values.email}
-               onChange={formik.handleChange}
-               required
-               error={formik.touched.email && Boolean(formik.errors.email)}
-               helperText={formik.touched.email && formik.errors.email}
+               {...register('email', {
+                  required: 'Email обязателен',
+                  pattern: {
+                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                     message: 'Некорректный email',
+                  },
+               })}
+               error={!!errors.email}
+               helperText={errors.email?.message}
             />
 
             <TextField
                fullWidth
                margin="normal"
                label="Пароль"
-               name="password"
                type="password"
-               value={formik.values.password}
-               onChange={formik.handleChange}
-               required
-               error={
-                  formik.touched.password && Boolean(formik.errors.password)
-               }
-               helperText={formik.touched.password && formik.errors.password}
+               {...register('password', {
+                  required: 'Пароль обязателен',
+               })}
+               error={!!errors.password}
+               helperText={errors.password?.message}
             />
 
             {error && (

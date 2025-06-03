@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { styled } from '@mui/material/styles'
 import { Box, Typography, Link, Container, Paper } from '@mui/material'
+import { useForm } from 'react-hook-form'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/Button'
 import { AUTH_THUNK } from '../../store/authSlice/authThunk'
@@ -11,96 +12,38 @@ const Registration = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [phone, setPhone] = useState('+996')
-   const [errors, setErrors] = useState({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-   })
    const [isSubmitting, setIsSubmitting] = useState(false)
 
-   const validate = (values) => {
-      const newErrors = {
-         firstName: '',
-         lastName: '',
-         email: '',
-         password: '',
-         confirmPassword: '',
-      }
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      watch,
+   } = useForm()
 
-      let isValid = true
+   const password = watch('password')
 
-      if (!values.firstName.trim()) {
-         newErrors.firstName = 'Имя обязательно'
-         isValid = false
-      }
-
-      if (!values.lastName.trim()) {
-         newErrors.lastName = 'Фамилия обязательна'
-         isValid = false
-      }
-
-      if (!values.email) {
-         newErrors.email = 'Email обязателен'
-         isValid = false
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-         newErrors.email = 'Некорректный email'
-         isValid = false
-      }
-
-      if (!values.password) {
-         newErrors.password = 'Пароль обязателен'
-         isValid = false
-      } else if (values.password.length < 8) {
-         newErrors.password = 'Пароль должен быть не менее 8 символов'
-         isValid = false
-      }
-
-      if (values.password !== values.confirmPassword) {
-         newErrors.confirmPassword = 'Пароли должны совпадать'
-         isValid = false
-      }
-
-      setErrors(newErrors)
-      return isValid
-   }
-
-   const handleSubmit = async (event) => {
-      event.preventDefault()
+   const onSubmit = async (values) => {
       setIsSubmitting(true)
 
-      const formData = new FormData(event.currentTarget)
-
-      const values = {
-         firstName: formData.get('firstName'),
-         lastName: formData.get('lastName'),
-         email: formData.get('email'),
-         password: formData.get('password'),
-         confirmPassword: formData.get('confirmPassword'),
+      const requestData = {
+         firstName: values.firstName,
+         lastName: values.lastName,
+         email: values.email,
+         password: values.password,
+         phoneNumber: phone,
       }
 
-      if (validate(values)) {
-         const requestData = {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            password: values.password,
-            phoneNumber: phone,
-         }
-
-         try {
-            await dispatch(
-               AUTH_THUNK.signUp({
-                  values: requestData,
-                  navigate,
-                  setSubmitting: setIsSubmitting,
-               })
-            ).unwrap()
-         } catch (error) {
-            console.error('Registration error:', error)
-         }
-      } else {
+      try {
+         await dispatch(
+            AUTH_THUNK.signUp({
+               values: requestData,
+               navigate,
+               setSubmitting: setIsSubmitting,
+            })
+         ).unwrap()
+      } catch (error) {
+         console.error('Registration error:', error)
          setIsSubmitting(false)
       }
    }
@@ -118,81 +61,78 @@ const Registration = () => {
             <Typography component="h1" variant="h5">
                Регистрация
             </Typography>
-            <StyledForm onSubmit={handleSubmit} noValidate>
+            <StyledForm onSubmit={handleSubmit(onSubmit)} noValidate>
                <Input
                   margin="normal"
-                  required
                   fullWidth
-                  id="firstName"
                   label="Имя"
-                  name="firstName"
-                  autoComplete="given-name"
-                  autoFocus
+                  {...register('firstName', { required: 'Имя обязательно' })}
                   error={!!errors.firstName}
-                  helperText={errors.firstName}
+                  helperText={errors.firstName?.message}
                />
 
                <Input
                   margin="normal"
-                  required
                   fullWidth
-                  id="lastName"
                   label="Фамилия"
-                  name="lastName"
-                  autoComplete="family-name"
+                  {...register('lastName', { required: 'Фамилия обязательна' })}
                   error={!!errors.lastName}
-                  helperText={errors.lastName}
+                  helperText={errors.lastName?.message}
                />
 
                <Input
                   margin="normal"
-                  required
                   fullWidth
-                  id="phone"
                   label="Телефон"
                   name="phone"
                   value={phone}
                   onChange={handlePhoneChange}
-                  inputProps={{
-                     maxLength: 13,
-                  }}
+                  inputProps={{ maxLength: 13 }}
                />
 
                <Input
                   margin="normal"
-                  required
                   fullWidth
-                  id="email"
                   label="Email"
-                  name="email"
-                  autoComplete="email"
+                  {...register('email', {
+                     required: 'Email обязателен',
+                     pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: 'Некорректный email',
+                     },
+                  })}
                   error={!!errors.email}
-                  helperText={errors.email}
+                  helperText={errors.email?.message}
                />
 
                <Input
                   margin="normal"
-                  required
                   fullWidth
-                  name="password"
                   label="Пароль"
                   type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  {...register('password', {
+                     required: 'Пароль обязателен',
+                     minLength: {
+                        value: 8,
+                        message: 'Пароль должен быть не менее 8 символов',
+                     },
+                  })}
                   error={!!errors.password}
-                  helperText={errors.password}
+                  helperText={errors.password?.message}
                />
 
                <Input
                   margin="normal"
-                  required
                   fullWidth
-                  name="confirmPassword"
                   label="Подтвердите пароль"
                   type="password"
-                  id="confirmPassword"
+                  {...register('confirmPassword', {
+                     required: 'Подтвердите пароль',
+                     validate: (value) =>
+                        value === password || 'Пароли должны совпадать',
+                  })}
                   error={!!errors.confirmPassword}
-                  helperText={errors.confirmPassword}
+                  helperText={errors.confirmPassword?.message}
                />
 
                <Button
