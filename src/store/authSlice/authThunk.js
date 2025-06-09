@@ -1,6 +1,14 @@
-// store/slices/auth/authThunk.js
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../configs/axiosInstans'
+import { signInWithGoogle } from '../../configs/firebase'
+
+const getErrorMessage = (error, defaultMessage) => {
+   const data = error.response?.data
+   if (typeof data === 'string') return { message: data }
+   if (typeof data === 'object' && data?.message)
+      return { message: data.message }
+   return { message: defaultMessage }
+}
 
 export const AUTH_THUNK = {
    signIn: createAsyncThunk(
@@ -16,16 +24,12 @@ export const AUTH_THUNK = {
             )
             const { token, email, role } = response.data
 
-            localStorage.setItem('TOKEN', token)
-
             if (handleClose) handleClose()
             if (navigate) navigate('/')
 
             return { token, email, role }
          } catch (error) {
-            return rejectWithValue(
-               error.response?.data || { message: 'Ошибка входа' }
-            )
+            return rejectWithValue(getErrorMessage(error, 'Ошибка входа'))
          } finally {
             setSubmitting(false)
          }
@@ -42,15 +46,11 @@ export const AUTH_THUNK = {
             )
             const { token, email, role } = response.data
 
-            localStorage.setItem('TOKEN', token)
-
             if (navigate) navigate('/')
 
             return { token, email, role }
          } catch (error) {
-            return rejectWithValue(
-               error.response?.data || { message: 'Ошибка регистрации' }
-            )
+            return rejectWithValue(getErrorMessage(error, 'Ошибка регистрации'))
          } finally {
             setSubmitting(false)
          }
@@ -69,7 +69,7 @@ export const AUTH_THUNK = {
             return { success: true }
          } catch (error) {
             return rejectWithValue(
-               error.response?.data || { message: 'Ошибка отправки инструкций' }
+               getErrorMessage(error, 'Ошибка отправки инструкций')
             )
          } finally {
             if (setSubmitting) setSubmitting(false)
@@ -92,32 +92,38 @@ export const AUTH_THUNK = {
             return { success: true }
          } catch (error) {
             return rejectWithValue(
-               error.response?.data || { message: 'Ошибка сброса пароля' }
+               getErrorMessage(error, 'Ошибка сброса пароля')
             )
          } finally {
             if (setSubmitting) setSubmitting(false)
          }
       }
    ),
+
    googleSignIn: createAsyncThunk(
       'auth/googleSignIn',
       async ({ navigate }, { rejectWithValue }) => {
          try {
             const { idToken, email } = await signInWithGoogle()
+
+            console.log('ID Token:', idToken)
+
             const response = await axiosInstance.post(
                '/api/auth/google',
                null,
                {
-                  params: { idToken },
+                  params: { idToken }, 
                }
             )
+
             const { token, role } = response.data
-            localStorage.setItem('TOKEN', token)
+
             if (navigate) navigate('/')
             return { token, email, role }
          } catch (error) {
+            console.error('Google SignIn Error:', error.response?.data)
             return rejectWithValue(
-               error.response?.data || { message: error.message }
+               getErrorMessage(error, 'Ошибка входа через Google')
             )
          }
       }

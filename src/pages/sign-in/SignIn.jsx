@@ -14,7 +14,6 @@ import {
 import GoogleIcon from '@mui/icons-material/Google'
 import { styled } from '@mui/system'
 import { AUTH_THUNK } from '../../store/authSlice/authThunk'
-import { signInWithGoogle } from '../../configs/firebase'
 import { useForm } from 'react-hook-form'
 
 const SignIn = () => {
@@ -28,37 +27,24 @@ const SignIn = () => {
       register,
       handleSubmit,
       formState: { errors },
-      setError: setFormError,
    } = useForm({ mode: 'onChange' })
 
-   const onSubmit = async (values) => {
-      setError(null)
-      try {
-         await dispatch(
-            AUTH_THUNK.signIn({
-               values,
-               navigate,
-               setSubmitting: () => {},
-               handleClose: () => {},
-            })
-         ).unwrap()
-      } catch (err) {
-         setError(err.message || 'Неправильный email или пароль')
-      }
+   const onSubmit = (values) => {
+      dispatch(
+         AUTH_THUNK.signIn({
+            values,
+            navigate,
+            setSubmitting: () => {},
+            handleClose: () => {},
+         })
+      )
    }
 
    const handleGoogleSignIn = async () => {
       try {
          setGoogleLoading(true)
          setError(null)
-         const { idToken, email } = await signInWithGoogle()
-         await dispatch(
-            AUTH_THUNK.googleSignIn({
-               idToken,
-               email,
-               navigate,
-            })
-         ).unwrap()
+         await dispatch(AUTH_THUNK.googleSignIn({ navigate })).unwrap()
       } catch (err) {
          console.error('Google sign-in failed:', err)
          setError(err.message || 'Ошибка входа через Google')

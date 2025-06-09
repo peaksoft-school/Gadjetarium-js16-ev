@@ -19,7 +19,6 @@ createRoot(document.getElementById('root')).render(
             <BrowserRouter>
                <Themes>
                   <App />
-
                   <Notifications />
                </Themes>
             </BrowserRouter>

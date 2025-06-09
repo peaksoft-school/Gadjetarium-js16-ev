@@ -1,12 +1,11 @@
-// store/slices/auth/authSlice.js
 import { createSlice } from '@reduxjs/toolkit'
 import { AUTH_THUNK } from './authThunk'
 
 const initialState = {
-   token: localStorage.getItem('TOKEN') || null,
+   token: null,
    email: null,
    role: 'GUEST',
-   isAuth: !!localStorage.getItem('TOKEN'),
+   isAuth: false,
    isLoading: false,
    error: null,
    forgotPasswordSuccess: false,
@@ -23,7 +22,7 @@ const authSlice = createSlice({
          state.email = null
          state.role = 'GUEST'
          state.isAuth = false
-         localStorage.removeItem('TOKEN')
+         localStorage.clear()
       },
       resetForgotPasswordState(state) {
          state.forgotPasswordSuccess = false
@@ -36,7 +35,6 @@ const authSlice = createSlice({
    },
    extraReducers: (builder) => {
       builder
-         // Sign In cases
          .addCase(AUTH_THUNK.signIn.pending, (state) => {
             state.isLoading = true
             state.error = null
@@ -50,10 +48,9 @@ const authSlice = createSlice({
          })
          .addCase(AUTH_THUNK.signIn.rejected, (state, action) => {
             state.isLoading = false
-            state.error = action.payload?.message || 'Ошибка входа'
+            state.error = action.payload.message
          })
 
-         // Sign Up cases
          .addCase(AUTH_THUNK.signUp.pending, (state) => {
             state.isLoading = true
             state.error = null
@@ -67,10 +64,9 @@ const authSlice = createSlice({
          })
          .addCase(AUTH_THUNK.signUp.rejected, (state, action) => {
             state.isLoading = false
-            state.error = action.payload?.message || 'Ошибка регистрации'
+            state.error = action.payload.message
          })
 
-         // Forgot Password cases
          .addCase(AUTH_THUNK.forgotPassword.pending, (state) => {
             state.isLoading = true
             state.error = null
@@ -82,12 +78,10 @@ const authSlice = createSlice({
          })
          .addCase(AUTH_THUNK.forgotPassword.rejected, (state, action) => {
             state.isLoading = false
-            state.error =
-               action.payload?.message || 'Ошибка отправки инструкций'
+            state.error = action.payload.message
             state.forgotPasswordSuccess = false
          })
 
-         // Reset Password cases
          .addCase(AUTH_THUNK.resetPassword.pending, (state) => {
             state.isLoading = true
             state.error = null
@@ -99,20 +93,24 @@ const authSlice = createSlice({
          })
          .addCase(AUTH_THUNK.resetPassword.rejected, (state, action) => {
             state.isLoading = false
-            state.error = action.payload?.message || 'Ошибка сброса пароля'
+            state.error = action.payload.message
             state.resetPasswordSuccess = false
          })
+
          .addCase(AUTH_THUNK.googleSignIn.pending, (state) => {
             state.googleLoading = true
             state.error = null
          })
          .addCase(AUTH_THUNK.googleSignIn.fulfilled, (state, action) => {
             state.googleLoading = false
-            // Остальная логика как в signIn.fulfilled
+            Object.assign(state, {
+               ...action.payload,
+               isAuth: true,
+            })
          })
          .addCase(AUTH_THUNK.googleSignIn.rejected, (state, action) => {
             state.googleLoading = false
-            state.error = action.payload?.message || 'Ошибка входа через Google'
+            state.error = action.payload.message
          })
    },
 })

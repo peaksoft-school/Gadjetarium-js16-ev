@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { styled } from '@mui/material/styles'
-import { Box, Typography, Link, Container, Paper } from '@mui/material'
+import { Typography, Link, Box, Container, Paper } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/Button'
 import { AUTH_THUNK } from '../../store/authSlice/authThunk'
+import { registrationSchema } from '../../utils/helpers/validation'
 
 const Registration = () => {
    const dispatch = useDispatch()
@@ -19,13 +21,13 @@ const Registration = () => {
       handleSubmit,
       formState: { errors },
       watch,
-   } = useForm()
-
-   const password = watch('password')
+   } = useForm({
+      resolver: yupResolver(registrationSchema),
+      mode: 'onChange',
+   })
 
    const onSubmit = async (values) => {
       setIsSubmitting(true)
-
       const requestData = {
          firstName: values.firstName,
          lastName: values.lastName,
@@ -56,32 +58,30 @@ const Registration = () => {
    }
 
    return (
-      <Container component="main" maxWidth="xs">
+      <CenteredContainer maxWidth="xs">
          <StyledPaper elevation={3}>
-            <Typography component="h1" variant="h5">
+            <Title variant="h5" component="h1">
                Регистрация
-            </Typography>
+            </Title>
+
             <StyledForm onSubmit={handleSubmit(onSubmit)} noValidate>
                <Input
-                  margin="normal"
                   fullWidth
                   label="Имя"
-                  {...register('firstName', { required: 'Имя обязательно' })}
+                  {...register('firstName')}
                   error={!!errors.firstName}
                   helperText={errors.firstName?.message}
                />
 
                <Input
-                  margin="normal"
                   fullWidth
                   label="Фамилия"
-                  {...register('lastName', { required: 'Фамилия обязательна' })}
+                  {...register('lastName')}
                   error={!!errors.lastName}
                   helperText={errors.lastName?.message}
                />
 
                <Input
-                  margin="normal"
                   fullWidth
                   label="Телефон"
                   name="phone"
@@ -91,59 +91,39 @@ const Registration = () => {
                />
 
                <Input
-                  margin="normal"
                   fullWidth
                   label="Email"
-                  {...register('email', {
-                     required: 'Email обязателен',
-                     pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: 'Некорректный email',
-                     },
-                  })}
+                  {...register('email')}
                   error={!!errors.email}
                   helperText={errors.email?.message}
                />
 
                <Input
-                  margin="normal"
                   fullWidth
                   label="Пароль"
                   type="password"
-                  {...register('password', {
-                     required: 'Пароль обязателен',
-                     minLength: {
-                        value: 8,
-                        message: 'Пароль должен быть не менее 8 символов',
-                     },
-                  })}
+                  {...register('password')}
                   error={!!errors.password}
                   helperText={errors.password?.message}
                />
 
                <Input
-                  margin="normal"
                   fullWidth
                   label="Подтвердите пароль"
                   type="password"
-                  {...register('confirmPassword', {
-                     required: 'Подтвердите пароль',
-                     validate: (value) =>
-                        value === password || 'Пароли должны совпадать',
-                  })}
+                  {...register('confirmPassword')}
                   error={!!errors.confirmPassword}
                   helperText={errors.confirmPassword?.message}
                />
 
-               <Button
+               <StyledButton
                   type="submit"
                   fullWidth
                   variant="contained"
-                  color="primary"
                   disabled={isSubmitting}
                >
                   {isSubmitting ? 'Обработка...' : 'Создать аккаунт'}
-               </Button>
+               </StyledButton>
 
                <Box textAlign="center" mt={2}>
                   <Link href="/sign-in" variant="body2">
@@ -152,21 +132,39 @@ const Registration = () => {
                </Box>
             </StyledForm>
          </StyledPaper>
-      </Container>
+      </CenteredContainer>
    )
 }
 
 export default Registration
 
+const CenteredContainer = styled(Container)(({ theme }) => ({
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   minHeight: '100vh',
+   backgroundColor: '#f7f7f7',
+}))
+
 const StyledPaper = styled(Paper)(({ theme }) => ({
-   marginTop: theme.spacing(8),
    padding: theme.spacing(4),
+   maxWidth: 400,
+   width: '100%',
    display: 'flex',
    flexDirection: 'column',
    alignItems: 'center',
+   boxShadow: theme.shadows[3],
+}))
+
+const Title = styled(Typography)(({ theme }) => ({
+   marginBottom: theme.spacing(2),
 }))
 
 const StyledForm = styled('form')(({ theme }) => ({
    width: '100%',
-   marginTop: theme.spacing(2),
+   marginTop: theme.spacing(1),
+}))
+
+const StyledButton = styled(Button)(({ theme }) => ({
+   marginTop: theme.spacing(3),
 }))

@@ -2,11 +2,18 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { styled } from '@mui/material/styles'
-import { Box, Typography, Link, Container, Paper } from '@mui/material'
+import {
+   Box as MuiBox,
+   Typography as MuiTypography,
+   Link as MuiLink,
+   Container,
+   Paper as MuiPaper,
+} from '@mui/material'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/Button'
 import { resetForgotPasswordState } from '../../store/authSlice/authSlice'
 import { AUTH_THUNK } from '../../store/authSlice/authThunk'
+import { forgotPasswordSchema } from '../../utils/helpers/validation'
 
 const ForgotPassword = () => {
    const dispatch = useDispatch()
@@ -14,29 +21,31 @@ const ForgotPassword = () => {
    const { isLoading, error, forgotPasswordSuccess } = useSelector(
       (state) => state.auth
    )
+
    const [email, setEmail] = useState('')
    const [errors, setErrors] = useState({ email: '' })
 
-   const validate = () => {
-      const newErrors = { email: '' }
-      let isValid = true
-
-      if (!email) {
-         newErrors.email = 'Email обязателен'
-         isValid = false
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-         newErrors.email = 'Некорректный email'
-         isValid = false
+   const validate = async () => {
+      try {
+         await forgotPasswordSchema.validate({ email }, { abortEarly: false })
+         setErrors({ email: '' })
+         return true
+      } catch (validationError) {
+         const newErrors = { email: '' }
+         validationError.inner.forEach((err) => {
+            if (err.path in newErrors) {
+               newErrors[err.path] = err.message
+            }
+         })
+         setErrors(newErrors)
+         return false
       }
-
-      setErrors(newErrors)
-      return isValid
    }
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
       e.preventDefault()
-
-      if (validate()) {
+      const isValid = await validate()
+      if (isValid) {
          dispatch(AUTH_THUNK.forgotPassword({ email, navigate }))
       }
    }
@@ -44,29 +53,28 @@ const ForgotPassword = () => {
    return (
       <Container component="main" maxWidth="xs">
          <StyledPaper elevation={3}>
-            <Typography component="h1" variant="h5" align="center">
+            <StyledTitle component="h1" variant="h5">
                Восстановление пароля
-            </Typography>
+            </StyledTitle>
 
             {forgotPasswordSuccess ? (
-               <Box sx={{ mt: 3, textAlign: 'center' }}>
-                  <Typography variant="body1">
+               <SuccessBox>
+                  <StyledBody1>
                      Инструкции по восстановлению пароля отправлены на {email}
-                  </Typography>
-                  <Button
+                  </StyledBody1>
+                  <StyledButton
                      fullWidth
                      variant="contained"
                      onClick={() => navigate('/sign-in')}
-                     sx={{ mt: 3 }}
                   >
                      Вернуться к входу
-                  </Button>
-               </Box>
+                  </StyledButton>
+               </SuccessBox>
             ) : (
                <StyledForm onSubmit={handleSubmit}>
-                  <Typography variant="body2" sx={{ mb: 2 }}>
+                  <StyledBody2>
                      Введите email, указанный при регистрации
-                  </Typography>
+                  </StyledBody2>
 
                   <Input
                      margin="normal"
@@ -82,31 +90,24 @@ const ForgotPassword = () => {
                      helperText={errors.email}
                   />
 
-                  {error && (
-                     <Typography color="error" sx={{ mt: 1 }}>
-                        {error}
-                     </Typography>
-                  )}
+                  {error && <ErrorText>{error}</ErrorText>}
 
-                  <Button
+                  <StyledButton
                      type="submit"
                      fullWidth
                      variant="contained"
                      disabled={isLoading}
-                     sx={{ mt: 3, mb: 2 }}
                   >
                      {isLoading ? 'Отправка...' : 'Отправить инструкции'}
-                  </Button>
+                  </StyledButton>
 
-                  <Box textAlign="center">
-                     <Link
-                        href="/sign-in"
-                        variant="body2"
-                        onClick={() => dispatch(resetForgotPasswordState())}
-                     >
-                        Вспомнили пароль? Войти
-                     </Link>
-                  </Box>
+                  <StyledLink
+                     href="/sign-in"
+                     variant="body2"
+                     onClick={() => dispatch(resetForgotPasswordState())}
+                  >
+                     Вспомнили пароль? Войти
+                  </StyledLink>
                </StyledForm>
             )}
          </StyledPaper>
@@ -116,7 +117,7 @@ const ForgotPassword = () => {
 
 export default ForgotPassword
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledPaper = styled(MuiPaper)(({ theme }) => ({
    marginTop: theme.spacing(8),
    padding: theme.spacing(3),
    display: 'flex',
@@ -127,4 +128,40 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 const StyledForm = styled('form')(({ theme }) => ({
    width: '100%',
    marginTop: theme.spacing(1),
+}))
+
+const StyledTitle = styled(MuiTypography)({
+   textAlign: 'center',
+})
+
+const SuccessBox = styled(MuiBox)(({ theme }) => ({
+   marginTop: theme.spacing(3),
+   textAlign: 'center',
+}))
+
+const ErrorText = styled(MuiTypography)(({ theme }) => ({
+   color: theme.palette.error.main,
+   marginTop: theme.spacing(1),
+}))
+
+const StyledButton = styled(Button)(({ theme }) => ({
+   marginTop: theme.spacing(3),
+   marginBottom: theme.spacing(2),
+}))
+
+const StyledLink = styled(MuiLink)(({ theme }) => ({
+   display: 'block',
+   textAlign: 'center',
+}))
+
+const StyledBody1 = styled(MuiTypography)(({ theme }) => ({
+   fontSize: '16px',
+   lineHeight: '24px',
+   color: theme.palette.text.primary,
+}))
+
+const StyledBody2 = styled(MuiTypography)(({ theme }) => ({
+   fontSize: '14px',
+   lineHeight: '20px',
+   color: theme.palette.text.secondary,
 }))
