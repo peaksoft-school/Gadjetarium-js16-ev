@@ -1,8 +1,35 @@
-import gatget from '../../assets/images/gatget.png'
-import PeopleTc from '../../assets/images/PeopleTc.png'
-import GatgetStore from '../../assets/images/GatgetStore.png'
+import { Icons } from '../../assets/icons'
+import { Images } from '../../assets/images'
 
-export const products = [
+const POSSIBILITIES = [
+   {
+      icon: Icons.diary,
+      text: 'Официальный',
+      text2: 'дистрибьютер',
+   },
+   {
+      icon: Icons.repair,
+      text: 'Гарантийное ',
+      text2: 'обслуживание',
+   },
+   {
+      icon: Icons.cardPay,
+      text: 'Оплата любым',
+      text2: 'удобным способом',
+   },
+   {
+      icon: Icons.handshake,
+      text: 'Оптовые',
+      text2: 'продажи',
+   },
+   {
+      icon: Icons.delivery,
+      text: 'Доставка в любой',
+      text2: 'регион Кыргызстана',
+   },
+]
+
+const QUESTIONS = [
    {
       id: 1,
       // image: `${GatgetStore}`,
@@ -25,36 +52,39 @@ const SUBMENUS = {
    'По уменьшению цены': ['От дорогих к дешевым', 'Скидки'],
 }
 
-export { SUBMENUS }
-// ===========================================
-export const REVIEW_STATUSES = {
-   ALL: 'all',
-   UNREAD: 'unread',
-   ANSWERED: 'answered',
-}
-
-export const TAB_LABELS = {
-   [REVIEW_STATUSES.ALL]: 'Все отзывы',
-   [REVIEW_STATUSES.UNREAD]: 'Нeoтветченные',
-   [REVIEW_STATUSES.ANSWERED]: 'Отвеченные',
-}
-
-export const MOCK_STATS = {
-   totalReviews: 1775,
-   totalEarnings: 7556,
-   totalOrdersThisMonth: 34562,
-   dailyStats: {
-      orders: 12,
-      items: 56,
+const PHONE_SLIDER = [
+   {
+      id: 2,
+      image: Images.firstPhoneImage,
    },
-   periods: {
-      current: { amount: 120000, label: 'Текущий период' },
-      previous: { amount: 100500, label: 'Предыдущий период' },
+
+   {
+      id: 1,
+      image: Images.secondPhoneImage,
    },
-}
-// ======================================================================================
+
+   {
+      id: 3,
+      image: Images.thirdPhoneImage,
+   },
+
+   {
+      id: 4,
+      image: Images.fourthPhoneImage,
+   },
+
+   {
+      id: 5,
+      image: Images.fifthPhoneImage,
+   },
+
+   {
+      id: 6,
+      image: Images.sixthPhoneImage,
+   },
+]
+
 export { SUBMENUS, QUESTIONS, POSSIBILITIES, PHONE_SLIDER }
-export { SUBMENUS, QUESTIONS, POSSIBILITIES }
 
 export const catalogProductData = [
    {
