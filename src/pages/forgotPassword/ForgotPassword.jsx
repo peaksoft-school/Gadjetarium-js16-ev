@@ -51,67 +51,79 @@ const ForgotPassword = () => {
    }
 
    return (
-      <Container component="main" maxWidth="xs">
-         <StyledPaper elevation={3}>
-            <StyledTitle component="h1" variant="h5">
-               Восстановление пароля
-            </StyledTitle>
+      <div
+         style={{
+            background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
+            height: '100vh',
+            marginTop: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+         }}
+      >
+         <Container component="main" maxWidth="xs">
+            <StyledPaper elevation={3}>
+               <StyledTitle component="h1" variant="h5">
+                  Восстановление пароля
+               </StyledTitle>
 
-            {forgotPasswordSuccess ? (
-               <SuccessBox>
-                  <StyledBody1>
-                     Инструкции по восстановлению пароля отправлены на {email}
-                  </StyledBody1>
-                  <StyledButton
-                     fullWidth
-                     variant="contained"
-                     onClick={() => navigate('/sign-in')}
-                  >
-                     Вернуться к входу
-                  </StyledButton>
-               </SuccessBox>
-            ) : (
-               <StyledForm onSubmit={handleSubmit}>
-                  <StyledBody2>
-                     Введите email, указанный при регистрации
-                  </StyledBody2>
+               {forgotPasswordSuccess ? (
+                  <SuccessBox>
+                     <StyledBody1>
+                        Инструкции по восстановлению пароля отправлены на{' '}
+                        {email}
+                     </StyledBody1>
+                     <StyledButton
+                        fullWidth
+                        variant="contained"
+                        onClick={() => navigate('/sign-in')}
+                     >
+                        Вернуться к входу
+                     </StyledButton>
+                  </SuccessBox>
+               ) : (
+                  <StyledForm onSubmit={handleSubmit}>
+                     <StyledBody2>
+                        Введите email, указанный при регистрации
+                     </StyledBody2>
 
-                  <Input
-                     margin="normal"
-                     required
-                     fullWidth
-                     id="email"
-                     label="Email"
-                     name="email"
-                     autoComplete="email"
-                     value={email}
-                     onChange={(e) => setEmail(e.target.value)}
-                     error={!!errors.email}
-                     helperText={errors.email}
-                  />
+                     <Input
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        error={!!errors.email}
+                        helperText={errors.email}
+                     />
 
-                  {error && <ErrorText>{error}</ErrorText>}
+                     {error && <ErrorText>{error}</ErrorText>}
 
-                  <StyledButton
-                     type="submit"
-                     fullWidth
-                     variant="contained"
-                     disabled={isLoading}
-                  >
-                     {isLoading ? 'Отправка...' : 'Отправить инструкции'}
-                  </StyledButton>
+                     <StyledButton
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        disabled={isLoading}
+                     >
+                        {isLoading ? 'Отправка...' : 'Отправить инструкции'}
+                     </StyledButton>
 
-                  <StyledLink
-                     href="/sign-in"
-                     variant="body2"
-                     onClick={() => dispatch(resetForgotPasswordState())}
-                  >
-                     Вспомнили пароль? Войти
-                  </StyledLink>
-               </StyledForm>
-            )}
-         </StyledPaper>
-      </Container>
+                     <StyledLink
+                        href="/sign-in"
+                        variant="body2"
+                        onClick={() => dispatch(resetForgotPasswordState())}
+                     >
+                        Вспомнили пароль? Войти
+                     </StyledLink>
+                  </StyledForm>
+               )}
+            </StyledPaper>
+         </Container>
+      </div>
    )
 }
 
