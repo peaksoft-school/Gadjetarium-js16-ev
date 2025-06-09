@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://10.10.10.169:2025'; // Портту 2825 деп өзгөрттүк
+const BASE_URL = 'http://10.10.11.156:8015';
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
