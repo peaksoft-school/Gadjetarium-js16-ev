@@ -8,6 +8,7 @@ import {
    Link as MuiLink,
    Container,
    Paper as MuiPaper,
+   Box,
 } from '@mui/material'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/Button'
@@ -51,16 +52,7 @@ const ForgotPassword = () => {
    }
 
    return (
-      <div
-         style={{
-            background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
-            height: '100vh',
-            marginTop: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-         }}
-      >
+      <StyledBox>
          <Container component="main" maxWidth="xs">
             <StyledPaper elevation={3}>
                <StyledTitle component="h1" variant="h5">
@@ -69,10 +61,10 @@ const ForgotPassword = () => {
 
                {forgotPasswordSuccess ? (
                   <SuccessBox>
-                     <StyledBody1>
+                     <StyledInstruction>
                         Инструкции по восстановлению пароля отправлены на{' '}
                         {email}
-                     </StyledBody1>
+                     </StyledInstruction>
                      <StyledButton
                         fullWidth
                         variant="contained"
@@ -83,9 +75,9 @@ const ForgotPassword = () => {
                   </SuccessBox>
                ) : (
                   <StyledForm onSubmit={handleSubmit}>
-                     <StyledBody2>
+                     <StyledInfo>
                         Введите email, указанный при регистрации
-                     </StyledBody2>
+                     </StyledInfo>
 
                      <Input
                         margin="normal"
@@ -123,7 +115,7 @@ const ForgotPassword = () => {
                )}
             </StyledPaper>
          </Container>
-      </div>
+      </StyledBox>
    )
 }
 
@@ -166,14 +158,23 @@ const StyledLink = styled(MuiLink)(({ theme }) => ({
    textAlign: 'center',
 }))
 
-const StyledBody1 = styled(MuiTypography)(({ theme }) => ({
+const StyledInstruction = styled(MuiTypography)(({ theme }) => ({
    fontSize: '16px',
    lineHeight: '24px',
    color: theme.palette.text.primary,
 }))
 
-const StyledBody2 = styled(MuiTypography)(({ theme }) => ({
+const StyledInfo = styled(MuiTypography)(({ theme }) => ({
    fontSize: '14px',
    lineHeight: '20px',
    color: theme.palette.text.secondary,
 }))
+
+const StyledBox = styled(Box)({
+   background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
+   height: '100vh',
+   marginTop: 0,
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+})

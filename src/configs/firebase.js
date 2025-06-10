@@ -24,7 +24,7 @@ export const signInWithGoogle = async () => {
       throw error
    }
 }
-   
+
 export const logoutFirebase = async () => {
    await auth.signOut()
 }

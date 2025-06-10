@@ -54,17 +54,8 @@ const SignIn = () => {
    }
 
    return (
-      <div
-         style={{
-            background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
-            height: '100vh',
-            marginTop: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-         }}
-      >
-         <Container sx={{ bgcolor: 'white' }}>
+      <StyledBox>
+         <StyledContainer>
             <Typography variant="h5" align="center" gutterBottom>
                Вход в систему
             </Typography>
@@ -148,19 +139,20 @@ const SignIn = () => {
                   Забыли пароль?
                </Link>
             </StyledLinkText>
-         </Container>
-      </div>
+         </StyledContainer>
+      </StyledBox>
    )
 }
 
 export default SignIn
 
-const Container = styled(Box)(({ theme }) => ({
+const StyledContainer = styled(Box)(({ theme }) => ({
    maxWidth: '400px',
    margin: '2rem auto',
    padding: '2rem',
    boxShadow: theme.shadows[3],
    borderRadius: '8px',
+   backgroundColor: 'white',
 }))
 
 const GoogleButton = styled(Button)({
@@ -187,4 +179,13 @@ const SubmitButton = styled(Button)({
 const StyledLinkText = styled(Typography)({
    marginTop: '16px',
    textAlign: 'center',
+})
+
+const StyledBox = styled(Box)({
+   background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
+   height: '100vh',
+   marginTop: 0,
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
 })

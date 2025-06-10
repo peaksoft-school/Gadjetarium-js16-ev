@@ -57,16 +57,7 @@ const Registration = () => {
    }
 
    return (
-      <div
-         style={{
-            background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
-            height: '100%',
-            marginTop: 0,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-         }}
-      >
+      <StyledBox>
          <Container component="main" maxWidth="xs">
             <StyledPaper elevation={3}>
                <Typography component="h1" variant="h5">
@@ -148,7 +139,7 @@ const Registration = () => {
                </StyledForm>
             </StyledPaper>
          </Container>
-      </div>
+      </StyledBox>
    )
 }
 
@@ -166,3 +157,13 @@ const StyledForm = styled('form')(({ theme }) => ({
    width: '100%',
    marginTop: theme.spacing(2),
 }))
+
+const StyledBox = styled(Box)({
+   background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
+   height: '100%',
+   paddingBottom: '100px',
+   marginTop: 0,
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+})
