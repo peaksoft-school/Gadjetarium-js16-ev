@@ -12,11 +12,10 @@ import { fetchProducts } from '../store/products/productThunk'
 
 const Wrapper = styled(Box)({
    display: 'flex',
-   justifyContent: 'space-between',
-   alignItems: 'flex-start',
+   flexDirection: 'column',
    gap: '24px',
-   flexWrap: 'wrap',
    marginBottom: '24px',
+   padding: '0 24px',
 })
 
 const FiltersBlock = styled(Box)({
@@ -33,7 +32,8 @@ const StyledBoxTab = styled(Box)({
    height: '35px',
    display: 'flex',
    justifyContent: 'space-between',
-   padding: '10px 20px',
+   alignItems: 'center',
+   padding: '0 12px',
    cursor: 'pointer',
 })
 
@@ -59,11 +59,7 @@ const salesData = {
 
 const Products = () => {
    const dispatch = useDispatch()
-   const {
-      items: products,
-      loading,
-      error,
-   } = useSelector((state) => state.product)
+   const { items, loading, error } = useSelector((state) => state.product)
 
    const [openPicker, setOpenPicker] = useState(null)
    const [fromDate, setFromDate] = useState(null)
@@ -71,14 +67,15 @@ const Products = () => {
 
    useEffect(() => {
       dispatch(fetchProducts())
-   }, [])
+   }, [dispatch])
 
    const handleDateChange = (date) => {
       if (openPicker === 'from') setFromDate(date)
       if (openPicker === 'to') setToDate(date)
       setOpenPicker(null)
    }
-   console.log(products)
+
+   const productList = items?.data || []
 
    return (
       <>
@@ -86,6 +83,7 @@ const Products = () => {
          <Wrapper>
             <Toolbar />
             <Divider sx={{ width: '100%', mt: 2 }} />
+
             <FiltersBlock>
                <StyledTabs>
                   <StyledBoxTab onClick={() => setOpenPicker('from')}>
@@ -94,6 +92,7 @@ const Products = () => {
                      </span>
                      <img src={Icons.calendar} alt="calendar" />
                   </StyledBoxTab>
+
                   <StyledBoxTab onClick={() => setOpenPicker('to')}>
                      <span style={{ color: '#384255', fontSize: '13px' }}>
                         {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
@@ -104,8 +103,16 @@ const Products = () => {
             </FiltersBlock>
 
             {loading && <p>Загрузка...</p>}
-            {error && <p style={{ color: 'red' }}>Ошибка: {error}</p>}
-            {!loading && !error && <ProductTable data={products} />}
+
+            {error && (
+               <p style={{ color: 'red' }}>
+                  Ошибка: {typeof error === 'string'
+                     ? error
+                     : error.error || 'Произошла ошибка при загрузке'}
+               </p>
+            )}
+
+            {!loading && !error && <ProductTable data={productList} />}
 
             <Infographics data={salesData} />
          </Wrapper>

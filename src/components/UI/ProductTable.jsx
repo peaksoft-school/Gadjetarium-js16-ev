@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react'
+import { useState } from 'react'
 import {
+   Box,
    Table,
    TableBody,
    TableCell,
@@ -7,243 +8,161 @@ import {
    TableHead,
    TableRow,
    Paper,
-   Typography,
-   Box,
-   IconButton,
+   Checkbox,
    styled,
 } from '@mui/material'
-import {
-   useReactTable,
-   getCoreRowModel,
-   flexRender,
-} from '@tanstack/react-table'
-import Checkbox from './Checkbox'
-import { Icons } from '../../assets/icons'
 
-const ProductTable = ({ data = [] }) => {
-   const [selected, setSelected] = useState([])
+const ProductTable = ({ data }) => {
+   const [hoveredRow, setHoveredRow] = useState(null)
+   const [selectedIds, setSelectedIds] = useState([])
 
    const toggleCheckbox = (id) => {
-      setSelected((prev) =>
-         prev.includes(id) ? prev.filter((el) => el !== id) : [...prev, id]
+      setSelectedIds((prev) =>
+         prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
       )
    }
 
-   const columns = useMemo(
-      () => [
-         {
-            header: () => <StyledHeaderCell width="60px">ID</StyledHeaderCell>,
-            accessorKey: 'id',
-            cell: ({ row }) => (
-               <StyledCell width="60px">
-                  <CheckboxWrapper className="checkbox">
-                     <Checkbox
-                        checked={selected.includes(row.original.id)}
-                        onChange={() => toggleCheckbox(row.original.id)}
-                        size="small"
-                     />
-                  </CheckboxWrapper>
-                  <IdText className="idText">{row.original.id}</IdText>
-               </StyledCell>
-            ),
-         },
-         {
-            header: () => <StyledHeaderCell>Фото</StyledHeaderCell>,
-            accessorKey: 'photo',
-            cell: ({ getValue }) => (
-               <StyledCell>
-                  <ProductImage src={getValue()} alt="product" />
-               </StyledCell>
-            ),
-         },
-         {
-            header: () => <StyledHeaderCell>Артикул</StyledHeaderCell>,
-            accessorKey: 'article',
-            cell: ({ getValue }) => <StyledCell>{getValue()}</StyledCell>,
-         },
-         {
-            header: () => (
-               <StyledHeaderCell>Наименование товара</StyledHeaderCell>
-            ),
-            accessorKey: 'name',
-            cell: ({ row }) => (
-               <StyledCell>
-                  <Typography>{row.original.name}</Typography>
-                  <SubText>{row.original.subname}</SubText>
-               </StyledCell>
-            ),
-         },
-         {
-            header: () => <StyledHeaderCell>Дата создания</StyledHeaderCell>,
-            accessorKey: 'createdAt',
-            cell: ({ row }) => (
-               <StyledCell>
-                  <Typography>{row.original.createdAt}</Typography>
-                  <SubText>{row.original.createdTime}</SubText>
-               </StyledCell>
-            ),
-         },
-         {
-            header: () => <StyledHeaderCell>Кол-во</StyledHeaderCell>,
-            accessorKey: 'quantity',
-            cell: ({ getValue }) => <StyledCell>{getValue()}</StyledCell>,
-         },
-         {
-            header: () => <StyledHeaderCell>Цена товара</StyledHeaderCell>,
-            accessorKey: 'price',
-            cell: ({ row }) => (
-               <StyledCell>
-                  <Typography color="#2C68F5" fontWeight={500}>
-                     {row.original.price}
-                  </Typography>
-                  <Typography color="red" fontSize={13}>
-                     {row.original.discount}
-                  </Typography>
-               </StyledCell>
-            ),
-         },
-         {
-            header: () => <StyledHeaderCell>Текущая цена</StyledHeaderCell>,
-            accessorKey: 'currentPrice',
-            cell: ({ getValue }) => (
-               <StyledCell>
-                  <Typography color="#2C68F5">{getValue()}</Typography>
-               </StyledCell>
-            ),
-         },
-         {
-            header: () => <StyledHeaderCell>Действия</StyledHeaderCell>,
-            accessorKey: 'actions',
-            cell: () => (
-               <StyledCell>
-                  <IconButton>
-                     <img src={Icons.edit} alt="edit" />
-                  </IconButton>
-                  <IconButton>
-                     <img src={Icons.deleteb} alt="delete" />
-                  </IconButton>
-               </StyledCell>
-            ),
-         },
-      ],
-      [selected]
-   )
-
-   const table = useReactTable({
-      data,
-      columns,
-      getCoreRowModel: getCoreRowModel(),
-   })
-
    return (
-      <StyledTableContainer component={Paper}>
+      <TableWrapper component={Paper}>
          <StyledTable>
             <TableHead>
-               {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                     {headerGroup.headers.map((header) => (
-                        <React.Fragment key={header.id}>
-                           {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                           )}
-                        </React.Fragment>
-                     ))}
-                  </TableRow>
-               ))}
+               <StyledHeadRow>
+                  <StyledHeadCell>ID</StyledHeadCell>
+                  <StyledHeadCell>Фото</StyledHeadCell>
+                  <StyledHeadCell>Артикул</StyledHeadCell>
+                  <StyledHeadCell>Наименование товара</StyledHeadCell>
+                  <StyledHeadCell>Дата создания</StyledHeadCell>
+                  <StyledHeadCell>Кол-во</StyledHeadCell>
+                  <StyledHeadCell>Цена товара</StyledHeadCell>
+                  <StyledHeadCell>Текущая цена</StyledHeadCell>
+                  <StyledHeadCell>Действия</StyledHeadCell>
+               </StyledHeadRow>
             </TableHead>
             <TableBody>
-               {table.getRowModel().rows.map((row) => (
-                  <HoverableRow key={row.id}>
-                     {row.getVisibleCells().map((cell) => (
-                        <React.Fragment key={cell.id}>
-                           {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                           )}
-                        </React.Fragment>
-                     ))}
-                  </HoverableRow>
+               {data.map((item) => (
+                  <StyledBodyRow
+                     key={item.id}
+                     onMouseEnter={() => setHoveredRow(item.id)}
+                     onMouseLeave={() => setHoveredRow(null)}
+                  >
+                     <StyledBodyCell>
+                        {hoveredRow === item.id ? (
+                           <Checkbox
+                              checked={selectedIds.includes(item.id)}
+                              onChange={() => toggleCheckbox(item.id)}
+                              size="small"
+                           />
+                        ) : (
+                           item.id
+                        )}
+                     </StyledBodyCell>
+                     <StyledBodyCell>
+                        <img
+                           src={item.imageUrl}
+                           alt="Фото"
+                           style={{ width: 40, height: 40, borderRadius: 4 }}
+                        />
+                     </StyledBodyCell>
+                     <StyledBodyCell>{item.article}</StyledBodyCell>
+                     <StyledBodyCell>
+                        <Box>
+                           {item.name}
+                           <div style={{ fontSize: 12, color: '#91969E' }}>
+                              {item.model}
+                           </div>
+                        </Box>
+                     </StyledBodyCell>
+                     <StyledBodyCell>
+                        {item.date}
+                        <div style={{ fontSize: 12, color: '#91969E' }}>
+                           {item.time}
+                        </div>
+                     </StyledBodyCell>
+                     <StyledBodyCell>{item.quantity}</StyledBodyCell>
+                     <StyledBodyCell>
+                        <div style={{ color: '#F10000', fontWeight: 500 }}>
+                           {item.price}c
+                        </div>
+                        <div style={{ fontSize: 12, color: '#F10000' }}>
+                           {item.discount}%
+                        </div>
+                     </StyledBodyCell>
+                     <StyledBodyCell>
+                        <span style={{ color: '#2C68F5', fontWeight: 500 }}>
+                           {item.currentPrice}c
+                        </span>
+                     </StyledBodyCell>
+                     <StyledBodyCell>
+                        <img
+                           src={item.editIcon}
+                           alt="edit"
+                           style={{
+                              width: 20,
+                              marginRight: 8,
+                              cursor: 'pointer',
+                           }}
+                        />
+                        <img
+                           src={item.deleteIcon}
+                           alt="delete"
+                           style={{ width: 20, cursor: 'pointer' }}
+                        />
+                     </StyledBodyCell>
+                  </StyledBodyRow>
                ))}
             </TableBody>
          </StyledTable>
-      </StyledTableContainer>
+      </TableWrapper>
    )
 }
 
 export default ProductTable
 
-const StyledTableContainer = styled(TableContainer)(() => ({
-   borderRadius: 12,
-   border: '1px solid #e0e0e0',
-   backgroundColor: '#fff',
-   padding: '16px',
-   boxShadow: 'none',
+const TableWrapper = styled(TableContainer)(() => ({
+   borderRadius: 8,
+   overflow: 'hidden',
+   border: '1px solid #E0E0E0',
 }))
 
 const StyledTable = styled(Table)(() => ({
-   minWidth: 1200,
+   minWidth: 1000,
    borderCollapse: 'separate',
-   borderSpacing: '0 12px',
+   borderSpacing: '0px 4px',
 }))
 
-const StyledHeaderCell = styled(TableCell)(() => ({
-   backgroundColor: '#384255E5',
+const StyledHeadRow = styled(TableRow)(() => ({
+   background: '#384255',
+}))
+
+const StyledHeadCell = styled(TableCell)(() => ({
    color: '#fff',
-   fontWeight: 600,
+   fontWeight: 500,
    fontSize: 14,
-   border: 'none',
+   padding: '10px 12px',
    whiteSpace: 'nowrap',
-   padding: '12px 16px',
 }))
 
-const StyledCell = styled(TableCell)(() => ({
-   fontSize: 14,
-   color: '#333',
-   whiteSpace: 'nowrap',
-   position: 'relative',
-   padding: '12px 16px',
-   border: 'none',
-}))
-
-const HoverableRow = styled(TableRow)(() => ({
-   backgroundColor: '#fff',
-   borderRadius: 12,
-   boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+const StyledBodyRow = styled(TableRow)(() => ({
+   backgroundColor: '#FDFDFD',
+   boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.05)',
+   borderRadius: 8,
    '&:hover': {
-      backgroundColor: '#F5F5F5',
+      backgroundColor: '#F4F6F9',
    },
-   '& td': {
-      border: 'none',
+   '& td:first-of-type': {
+      borderTopLeftRadius: 8,
+      borderBottomLeftRadius: 8,
    },
-   '&:hover .checkbox': {
-      visibility: 'visible',
-   },
-   '&:hover .idText': {
-      visibility: 'hidden',
+   '& td:last-of-type': {
+      borderTopRightRadius: 8,
+      borderBottomRightRadius: 8,
    },
 }))
 
-const CheckboxWrapper = styled(Box)(() => ({
-   position: 'absolute',
-   top: '50%',
-   left: 10,
-   transform: 'translateY(-50%)',
-   visibility: 'hidden',
-}))
-
-const IdText = styled(Box)(() => ({
-   visibility: 'visible',
-}))
-
-const ProductImage = styled('img')(() => ({
-   width: 40,
-   height: 40,
-   objectFit: 'cover',
-   borderRadius: 6,
-}))
-
-const SubText = styled(Typography)(() => ({
-   fontSize: 12,
-   color: '#A1A1A1',
+const StyledBodyCell = styled(TableCell)(() => ({
+   fontSize: 14,
+   color: '#1A1A1A',
+   padding: '10px 12px',
+   border: 'none',
+   whiteSpace: 'nowrap',
 }))

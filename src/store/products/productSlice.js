@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { fetchProducts } from './productThunk'
 
+const initialState = {
+   items: [],
+   loading: false,
+   error: null,
+}
+
 const productSlice = createSlice({
    name: 'product',
-   initialState: {
-      items: [],
-      loading: false,
-      error: null,
-   },
+   initialState,
    reducers: {},
    extraReducers: (builder) => {
       builder
