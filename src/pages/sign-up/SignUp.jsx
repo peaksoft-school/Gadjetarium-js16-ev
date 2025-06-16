@@ -5,12 +5,13 @@ import { styled } from '@mui/material/styles'
 import { Box, Typography, Link, Container, Paper } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/Button'
 import { AUTH_THUNK } from '../../store/authSlice/authThunk'
 import { registrationSchema } from '../../utils/helpers/validation'
 
-const Registration = () => {
+const SignUp = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
    const [phone, setPhone] = useState('+996')
@@ -56,34 +57,36 @@ const Registration = () => {
       }
    }
 
+   const handleGoBack = () => navigate('/')
+
    return (
-      <StyledBox>
-         <Container component="main" maxWidth="xs">
+      <StyledWrapper>
+         <StyledContainer component="main">
             <StyledPaper elevation={3}>
-               <Typography component="h1" variant="h5">
+               <CloseButton onClick={() => handleGoBack()}>×</CloseButton>
+
+               <StyledTitle component="h1" variant="h5">
                   Регистрация
-               </Typography>
+               </StyledTitle>
+
                <StyledForm onSubmit={handleSubmit(onSubmit)} noValidate>
                   <Input
-                     margin="normal"
                      fullWidth
-                     label="Имя"
+                     label="Напишите ваше имя"
                      {...register('firstName')}
                      error={!!errors.firstName}
                      helperText={errors.firstName?.message}
                   />
 
                   <Input
-                     margin="normal"
                      fullWidth
-                     label="Фамилия"
+                     label="Напишите вашу фамилию"
                      {...register('lastName')}
                      error={!!errors.lastName}
                      helperText={errors.lastName?.message}
                   />
 
                   <Input
-                     margin="normal"
                      fullWidth
                      label="Телефон"
                      name="phone"
@@ -93,77 +96,136 @@ const Registration = () => {
                   />
 
                   <Input
-                     margin="normal"
                      fullWidth
-                     label="Email"
+                     label="Напишите email"
                      {...register('email')}
                      error={!!errors.email}
                      helperText={errors.email?.message}
                   />
 
                   <Input
-                     margin="normal"
                      fullWidth
-                     label="Пароль"
+                     label="Напишите пароль"
                      type="password"
+                     showToggle
                      {...register('password')}
                      error={!!errors.password}
                      helperText={errors.password?.message}
                   />
 
                   <Input
-                     margin="normal"
                      fullWidth
                      label="Подтвердите пароль"
                      type="password"
+                     showToggle
                      {...register('confirmPassword')}
                      error={!!errors.confirmPassword}
                      helperText={errors.confirmPassword?.message}
                   />
 
-                  <Button
-                     type="submit"
-                     fullWidth
-                     variant="contained"
-                     color="primary"
-                     disabled={isSubmitting}
-                  >
+                  <StyledButton type="submit" fullWidth disabled={isSubmitting}>
                      {isSubmitting ? 'Обработка...' : 'Создать аккаунт'}
-                  </Button>
+                  </StyledButton>
 
-                  <Box textAlign="center" mt={2}>
-                     <Link href="/sign-in" variant="body2">
-                        У вас уже есть аккаунт? Войти
-                     </Link>
-                  </Box>
+                  <StyledLinkBox>
+                     <StyledText>
+                        У вас уже есть аккаунт?
+                        <Link href="/sign-in">Войти</Link>
+                     </StyledText>
+                  </StyledLinkBox>
                </StyledForm>
             </StyledPaper>
-         </Container>
-      </StyledBox>
+         </StyledContainer>
+      </StyledWrapper>
    )
 }
 
-export default Registration
+export default SignUp
+
+const StyledWrapper = styled(Box)({
+   background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
+   minHeight: '100vh',
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+   padding: '20px',
+})
+
+const StyledContainer = styled(Container)({
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center',
+})
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-   marginTop: theme.spacing(8),
    padding: theme.spacing(4),
    display: 'flex',
    flexDirection: 'column',
    alignItems: 'center',
+   width: '100%',
+   maxWidth: '500px',
+   borderRadius: '16px',
+   boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+   position: 'relative',
+}))
+
+const StyledTitle = styled(Typography)(({ theme }) => ({
+   marginBottom: theme.spacing(2),
+   fontSize: '24px',
+   fontWeight: 600,
 }))
 
 const StyledForm = styled('form')(({ theme }) => ({
    width: '100%',
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   gap: theme.spacing(2),
    marginTop: theme.spacing(2),
 }))
 
-const StyledBox = styled(Box)({
-   background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
-   height: '100%',
-   paddingBottom: '100px',
-   marginTop: 0,
+const StyledButton = styled(Button)(({ theme }) => ({
+   marginTop: theme.spacing(3),
+   backgroundColor: '#D3138A',
+   fontWeight: 500,
+   fontSize: '16px',
+   '&:hover': {
+      backgroundColor: '#b50f74',
+   },
+   textTransform: 'none',
+   height: '48px',
+}))
+
+const StyledLinkBox = styled(Box)(({ theme }) => ({
+   textAlign: 'center',
+   marginTop: theme.spacing(2),
+   '& a': {
+      color: '#3B0DCD',
+      fontWeight: 500,
+      textDecoration: 'none',
+      '&:hover': {
+         textDecoration: 'underline',
+      },
+   },
+}))
+
+const StyledText = styled(Typography)({
+   fontSize: '14px',
+   color: 'black',
    display: 'flex',
+   gap: '5px',
    justifyContent: 'center',
-   alignItems: 'center',
+})
+
+const CloseButton = styled('div')({
+   position: 'absolute',
+   top: '12px',
+   right: '16px',
+   fontSize: '28px',
+   fontWeight: 'bold',
+   cursor: 'pointer',
+   color: '#999',
+   '&:hover': {
+      color: '#000',
+   },
 })

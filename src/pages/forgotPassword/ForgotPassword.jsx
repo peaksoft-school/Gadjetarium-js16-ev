@@ -9,6 +9,7 @@ import {
    Container,
    Paper as MuiPaper,
    Box,
+   Typography,
 } from '@mui/material'
 import Input from '../../components/UI/Input'
 import Button from '../../components/UI/Button'
@@ -18,7 +19,9 @@ import { forgotPasswordSchema } from '../../utils/helpers/validation'
 
 const ForgotPassword = () => {
    const dispatch = useDispatch()
+
    const navigate = useNavigate()
+
    const { isLoading, error, forgotPasswordSuccess } = useSelector(
       (state) => state.auth
    )
@@ -51,6 +54,8 @@ const ForgotPassword = () => {
       }
    }
 
+   const handleGoBack = () => navigate('/sign-in')
+
    return (
       <StyledBox>
          <Container component="main" maxWidth="xs">
@@ -65,13 +70,13 @@ const ForgotPassword = () => {
                         Инструкции по восстановлению пароля отправлены на{' '}
                         {email}
                      </StyledInstruction>
-                     <StyledButton
+                     <Button
                         fullWidth
                         variant="contained"
-                        onClick={() => navigate('/sign-in')}
+                        onClick={() => handleGoBack()}
                      >
                         Вернуться к входу
-                     </StyledButton>
+                     </Button>
                   </SuccessBox>
                ) : (
                   <StyledForm onSubmit={handleSubmit}>
@@ -95,22 +100,25 @@ const ForgotPassword = () => {
 
                      {error && <ErrorText>{error}</ErrorText>}
 
-                     <StyledButton
+                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         disabled={isLoading}
                      >
                         {isLoading ? 'Отправка...' : 'Отправить инструкции'}
-                     </StyledButton>
+                     </Button>
 
-                     <StyledLink
-                        href="/sign-in"
-                        variant="body2"
-                        onClick={() => dispatch(resetForgotPasswordState())}
-                     >
-                        Вспомнили пароль? Войти
-                     </StyledLink>
+                     <StyledText>
+                        Вспомнили пароль?
+                        <StyledLink
+                           href="/sign-in"
+                           variant="body2"
+                           onClick={() => dispatch(resetForgotPasswordState())}
+                        >
+                           Войти
+                        </StyledLink>
+                     </StyledText>
                   </StyledForm>
                )}
             </StyledPaper>
@@ -148,9 +156,11 @@ const ErrorText = styled(MuiTypography)(({ theme }) => ({
    marginTop: theme.spacing(1),
 }))
 
-const StyledButton = styled(Button)(({ theme }) => ({
-   marginTop: theme.spacing(3),
-   marginBottom: theme.spacing(2),
+const StyledText = styled(MuiTypography)(({ theme }) => ({
+   marginTop: '20px',
+   justifyContent: 'center',
+   display: 'flex',
+   alignItems: 'center',
 }))
 
 const StyledLink = styled(MuiLink)(({ theme }) => ({

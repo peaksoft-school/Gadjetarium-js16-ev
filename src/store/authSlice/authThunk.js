@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../configs/axiosInstans'
 import { signInWithGoogle } from '../../configs/firebase'
+import { showToast } from '../../utils/helpers/showToast'
 
 const getErrorMessage = (error, defaultMessage) => {
    const data = error.response?.data
@@ -24,12 +25,16 @@ export const AUTH_THUNK = {
             )
             const { token, email, role } = response.data
 
+            showToast({ message: 'Успешный вход!' })
+
             if (handleClose) handleClose()
             if (navigate) navigate('/')
 
             return { token, email, role }
          } catch (error) {
-            return rejectWithValue(getErrorMessage(error, 'Ошибка входа'))
+            const err = getErrorMessage(error, 'Ошибка входа')
+            showToast({ message: err.message, type: 'error' })
+            return rejectWithValue(err)
          } finally {
             setSubmitting(false)
          }
@@ -46,11 +51,15 @@ export const AUTH_THUNK = {
             )
             const { token, email, role } = response.data
 
+            showToast({ message: 'Регистрация прошла успешно!' })
+
             if (navigate) navigate('/')
 
             return { token, email, role }
          } catch (error) {
-            return rejectWithValue(getErrorMessage(error, 'Ошибка регистрации'))
+            const err = getErrorMessage(error, 'Ошибка регистрации')
+            showToast({ message: err.message, type: 'error' })
+            return rejectWithValue(err)
          } finally {
             setSubmitting(false)
          }
@@ -65,12 +74,14 @@ export const AUTH_THUNK = {
                params: { email },
             })
 
-            if (navigate) navigate('/check-email')
+            showToast({ message: 'Инструкции отправлены на почту' })
+
+            if (navigate) navigate('/sign-in')
             return { success: true }
          } catch (error) {
-            return rejectWithValue(
-               getErrorMessage(error, 'Ошибка отправки инструкций')
-            )
+            const err = getErrorMessage(error, 'Ошибка отправки инструкций')
+            showToast({ message: err.message, type: 'error' })
+            return rejectWithValue(err)
          } finally {
             if (setSubmitting) setSubmitting(false)
          }
@@ -88,12 +99,14 @@ export const AUTH_THUNK = {
                params: { token, password },
             })
 
+            showToast({ message: 'Пароль успешно сброшен!' })
+
             if (navigate) navigate('/login')
             return { success: true }
          } catch (error) {
-            return rejectWithValue(
-               getErrorMessage(error, 'Ошибка сброса пароля')
-            )
+            const err = getErrorMessage(error, 'Ошибка сброса пароля')
+            showToast({ message: err.message, type: 'error' })
+            return rejectWithValue(err)
          } finally {
             if (setSubmitting) setSubmitting(false)
          }
@@ -106,25 +119,24 @@ export const AUTH_THUNK = {
          try {
             const { idToken, email } = await signInWithGoogle()
 
-            console.log('ID Token:', idToken)
-
             const response = await axiosInstance.post(
                '/api/auth/google',
                null,
                {
-                  params: { idToken }, 
+                  params: { idToken },
                }
             )
 
             const { token, role } = response.data
 
+            showToast({ message: 'Успешный вход через Google' })
+
             if (navigate) navigate('/')
             return { token, email, role }
          } catch (error) {
-            console.error('Google SignIn Error:', error.response?.data)
-            return rejectWithValue(
-               getErrorMessage(error, 'Ошибка входа через Google')
-            )
+            const err = getErrorMessage(error, 'Ошибка входа через Google')
+            showToast({ message: err.message, type: 'error' })
+            return rejectWithValue(err)
          }
       }
    ),

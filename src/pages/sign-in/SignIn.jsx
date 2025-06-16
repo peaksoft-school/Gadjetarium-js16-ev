@@ -1,26 +1,25 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import {
-   Button,
-   Typography,
-   Box,
-   CircularProgress,
-   Alert,
-   Divider,
-   Link,
-   TextField,
-} from '@mui/material'
-import GoogleIcon from '@mui/icons-material/Google'
-import { styled } from '@mui/system'
-import { AUTH_THUNK } from '../../store/authSlice/authThunk'
 import { useForm } from 'react-hook-form'
+
+import { AUTH_THUNK } from '../../store/authSlice/authThunk'
+import Input from '../../components/UI/Input'
+import Button from '../../components/UI/Button'
+
+import GoogleIcon from '@mui/icons-material/Google'
+import { Typography, Box, CircularProgress, Alert, Link } from '@mui/material'
+import { styled } from '@mui/system'
 
 const SignIn = () => {
    const dispatch = useDispatch()
+
    const navigate = useNavigate()
+
    const [googleLoading, setGoogleLoading] = useState(false)
+
    const [error, setError] = useState(null)
+   
    const isLoading = useSelector((state) => state.auth.isLoading)
 
    const {
@@ -53,37 +52,21 @@ const SignIn = () => {
       }
    }
 
+   const handleGoBack = () => navigate('/')
+
    return (
-      <StyledBox>
-         <StyledContainer>
-            <Typography variant="h5" align="center" gutterBottom>
-               Вход в систему
-            </Typography>
+      <Wrapper>
+         <ModalBox>
+            <CloseButton onClick={() => handleGoBack()}>×</CloseButton>
 
-            <GoogleButton
-               fullWidth
-               variant="outlined"
-               onClick={handleGoogleSignIn}
-               disabled={googleLoading}
-               startIcon={
-                  googleLoading ? (
-                     <CircularProgress size={20} />
-                  ) : (
-                     <GoogleIcon />
-                  )
-               }
-            >
-               {googleLoading ? 'Вход...' : 'Войти через Google'}
-            </GoogleButton>
+            <Title variant="h4" align="center">
+               Войти
+            </Title>
 
-            <Divider sx={{ my: 2 }}>или</Divider>
-
-            <form onSubmit={handleSubmit(onSubmit)}>
-               <TextField
+            <Form onSubmit={handleSubmit(onSubmit)}>
+               <StyledInput
                   fullWidth
-                  margin="normal"
-                  label="Email"
-                  type="email"
+                  label="Напишите email"
                   {...register('email', {
                      required: 'Email обязателен',
                      pattern: {
@@ -95,11 +78,11 @@ const SignIn = () => {
                   helperText={errors.email?.message}
                />
 
-               <TextField
+               <StyledInput
                   fullWidth
-                  margin="normal"
-                  label="Пароль"
+                  label="Напишите пароль"
                   type="password"
+                  showToggle
                   {...register('password', {
                      required: 'Пароль обязателен',
                   })}
@@ -107,85 +90,171 @@ const SignIn = () => {
                   helperText={errors.password?.message}
                />
 
-               {error && (
-                  <Alert severity="error" sx={{ mt: 2 }}>
-                     {error}
-                  </Alert>
-               )}
+               {error && <StyledAlert severity="error">{error}</StyledAlert>}
 
-               <SubmitButton
+               <StyledButton
                   fullWidth
                   type="submit"
                   variant="contained"
                   disabled={isLoading}
                >
-                  {isLoading ? (
-                     <CircularProgress size={24} color="inherit" />
-                  ) : (
-                     'Войти'
-                  )}
-               </SubmitButton>
-            </form>
+                  {isLoading ? <StyledLoader size={24} /> : 'Войти'}
+               </StyledButton>
+            </Form>
 
-            <StyledLinkText>
+            <ForgotPasswordLink href="/forgot-password">
+               Забыли пароль?
+            </ForgotPasswordLink>
+
+            <TextLink>
                Нет аккаунта?
-               <Link href="/sign-up" underline="hover">
-                  Зарегистрироваться
-               </Link>
-            </StyledLinkText>
+               <StyledLink href="/sign-up"> Зарегистрироваться</StyledLink>
+            </TextLink>
 
-            <StyledLinkText>
-               <Link href="/forgot-password" underline="hover">
-                  Забыли пароль?
-               </Link>
-            </StyledLinkText>
-         </StyledContainer>
-      </StyledBox>
+            <StyledGoogleButton
+               type="button"
+               onClick={handleGoogleSignIn}
+               disabled={googleLoading}
+            >
+               {googleLoading ? (
+                  <StyledLoader size={20} />
+               ) : (
+                  <GoogleIconStyled />
+               )}
+               Войти через Google
+            </StyledGoogleButton>
+         </ModalBox>
+      </Wrapper>
    )
 }
 
 export default SignIn
 
-const StyledContainer = styled(Box)(({ theme }) => ({
-   maxWidth: '400px',
-   margin: '2rem auto',
-   padding: '2rem',
-   boxShadow: theme.shadows[3],
-   borderRadius: '8px',
-   backgroundColor: 'white',
-}))
-
-const GoogleButton = styled(Button)({
-   marginTop: '8px',
-   marginBottom: '16px',
-   color: '#4285F4',
-   borderColor: '#4285F4',
-   height: '48px',
-   '&:hover': {
-      borderColor: '#3367D6',
-      backgroundColor: 'rgba(66, 133, 244, 0.04)',
-   },
-})
-
-const SubmitButton = styled(Button)({
-   marginTop: '16px',
-   backgroundColor: '#D901A6',
-   height: '48px',
-   '&:hover': {
-      backgroundColor: '#b1008b',
-   },
-})
-
-const StyledLinkText = styled(Typography)({
-   marginTop: '16px',
-   textAlign: 'center',
-})
-
-const StyledBox = styled(Box)({
+const Wrapper = styled(Box)({
    background: 'linear-gradient(135deg, #D3138A 0%, #3B0DCD 100%)',
    height: '100vh',
-   marginTop: 0,
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
+   padding: '20px',
+})
+
+const ModalBox = styled(Box)(({ theme }) => ({
+   width: '100%',
+   maxWidth: '520px',
+   backgroundColor: '#fff',
+   borderRadius: '16px',
+   padding: '48px 40px',
+   boxShadow: theme.shadows[6],
+   position: 'relative',
+   textAlign: 'center',
+   display: 'flex',
+   flexDirection: 'column',
+}))
+
+const CloseButton = styled('div')({
+   position: 'absolute',
+   top: '16px',
+   right: '20px',
+   fontSize: '28px',
+   fontWeight: 'bold',
+   cursor: 'pointer',
+   color: '#999',
+   '&:hover': {
+      color: '#000',
+   },
+})
+
+const Title = styled(Typography)({
+   fontSize: '28px',
+   fontWeight: 600,
+   marginBottom: '32px',
+})
+
+const Form = styled('form')({
+   display: 'flex',
+   flexDirection: 'column',
+   gap: '20px',
+})
+
+const StyledButton = styled(Button)({
+   marginTop: '12px',
+   background: '#D3138A',
+   fontWeight: 600,
+   fontSize: '18px',
+   textTransform: 'none',
+   height: '52px',
+   borderRadius: '8px',
+   '&:hover': {
+      background: '#b10f75',
+   },
+})
+
+const StyledGoogleButton = styled(Button)({
+   marginTop: '24px',
+   textTransform: 'none',
+   fontWeight: 500,
+   fontSize: '16px',
+   color: '#444',
+   border: '1px solid #ddd',
+   backgroundColor: '#fff',
+   height: '50px',
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
+   gap: '10px',
+   '&:hover': {
+      backgroundColor: '#f5f5f5',
+   },
+})
+
+const StyledLink = styled(Link)({
+   color: '#0057FF',
+   fontWeight: 500,
+   textDecoration: 'none',
+   marginLeft: '6px',
+   fontSize: '16px',
+   '&:hover': {
+      textDecoration: 'underline',
+   },
+})
+
+const TextLink = styled(Typography)({
+   marginTop: '20px',
+   fontSize: '16px',
+   textAlign: 'center',
+})
+
+const ForgotPasswordLink = styled(Link)({
+   marginTop: '16px',
+   fontSize: '15px',
+   textAlign: 'center',
+   display: 'block',
+   color: '#3B0DCD',
+   textDecoration: 'none',
+   '&:hover': {
+      textDecoration: 'underline',
+   },
+})
+
+const StyledAlert = styled(Alert)({
+   fontSize: '16px',
+   marginTop: '12px',
+})
+
+const StyledLoader = styled(CircularProgress)({
+   color: 'white',
+})
+
+const GoogleIconStyled = styled(GoogleIcon)({
+   fontSize: '22px',
+   marginRight: '6px',
+})
+
+const StyledInput = styled(Input)({
+   '& input': {
+      height: '52px',
+      padding: '0 16px',
+      fontSize: '16px',
+   },
 })
