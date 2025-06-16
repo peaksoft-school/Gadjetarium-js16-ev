@@ -8,9 +8,10 @@ import {
    TableHead,
    TableRow,
    Paper,
-   Checkbox,
    styled,
 } from '@mui/material'
+import { Icons } from '../../assets/icons'
+import Checkbox from './Checkbox'
 
 const ProductTable = ({ data }) => {
    const [hoveredRow, setHoveredRow] = useState(null)
@@ -48,9 +49,9 @@ const ProductTable = ({ data }) => {
                      <StyledBodyCell>
                         {hoveredRow === item.id ? (
                            <Checkbox
+                              style={{ width: '5px' }}
                               checked={selectedIds.includes(item.id)}
                               onChange={() => toggleCheckbox(item.id)}
-                              size="small"
                            />
                         ) : (
                            item.id
@@ -60,14 +61,20 @@ const ProductTable = ({ data }) => {
                         <img
                            src={item.imageUrl}
                            alt="Фото"
-                           style={{ width: 40, height: 40, borderRadius: 4 }}
+                           style={{ width: 40, height: 40, borderRadius: 6 }}
                         />
                      </StyledBodyCell>
                      <StyledBodyCell>{item.article}</StyledBodyCell>
                      <StyledBodyCell>
                         <Box>
                            {item.name}
-                           <div style={{ fontSize: 12, color: '#91969E' }}>
+                           <div
+                              style={{
+                                 fontSize: 12,
+                                 color: '#91969E',
+                                 lineHeight: 1.3,
+                              }}
+                           >
                               {item.model}
                            </div>
                         </Box>
@@ -92,20 +99,16 @@ const ProductTable = ({ data }) => {
                            {item.currentPrice}c
                         </span>
                      </StyledBodyCell>
-                     <StyledBodyCell>
+                     <StyledBodyCell style={{ display: 'flex', gap: 10 }}>
                         <img
-                           src={item.editIcon}
+                           src={Icons.edit}
                            alt="edit"
-                           style={{
-                              width: 20,
-                              marginRight: 8,
-                              cursor: 'pointer',
-                           }}
+                           style={{ width: 20, height: 20, cursor: 'pointer' }}
                         />
                         <img
-                           src={item.deleteIcon}
+                           src={Icons.deleteb}
                            alt="delete"
-                           style={{ width: 20, cursor: 'pointer' }}
+                           style={{ width: 20, height: 20, cursor: 'pointer' }}
                         />
                      </StyledBodyCell>
                   </StyledBodyRow>
@@ -118,6 +121,8 @@ const ProductTable = ({ data }) => {
 
 export default ProductTable
 
+// ---------- Стили ----------
+
 const TableWrapper = styled(TableContainer)(() => ({
    borderRadius: 8,
    overflow: 'hidden',
@@ -127,7 +132,7 @@ const TableWrapper = styled(TableContainer)(() => ({
 const StyledTable = styled(Table)(() => ({
    minWidth: 1000,
    borderCollapse: 'separate',
-   borderSpacing: '0px 4px',
+   borderSpacing: '0 8px',
 }))
 
 const StyledHeadRow = styled(TableRow)(() => ({
@@ -135,17 +140,19 @@ const StyledHeadRow = styled(TableRow)(() => ({
 }))
 
 const StyledHeadCell = styled(TableCell)(() => ({
-   color: '#fff',
+   color: '#FFFFFF',
    fontWeight: 500,
    fontSize: 14,
-   padding: '10px 12px',
+   padding: '12px 16px',
    whiteSpace: 'nowrap',
+   borderBottom: 'none',
 }))
 
 const StyledBodyRow = styled(TableRow)(() => ({
    backgroundColor: '#FDFDFD',
-   boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.05)',
    borderRadius: 8,
+   boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.05)',
+   transition: 'background-color 0.3s ease',
    '&:hover': {
       backgroundColor: '#F4F6F9',
    },
@@ -160,9 +167,9 @@ const StyledBodyRow = styled(TableRow)(() => ({
 }))
 
 const StyledBodyCell = styled(TableCell)(() => ({
-   fontSize: 14,
+   fontSize: 16,
    color: '#1A1A1A',
-   padding: '10px 12px',
+   padding: '12px 16px',
    border: 'none',
    whiteSpace: 'nowrap',
 }))
