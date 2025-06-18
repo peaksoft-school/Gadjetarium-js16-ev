@@ -21,9 +21,10 @@ import { Icons } from '../../assets/icons'
 import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
 import { updateOrder, deleteOrder } from '../../pages/orderSlice'
-
+import { useNavigate } from 'react-router-dom'
 const UniversalTable = ({ variant, data = [] }) => {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
 
    const columns = useMemo(() => {
       if (variant === 'orders') {
@@ -82,6 +83,7 @@ const UniversalTable = ({ variant, data = [] }) => {
                   const order = row.original
 
                   const handleChange = (e) => {
+                     e.stopPropagation()
                      const newStatus = e.target.value
                      if (newStatus !== order.status) {
                         dispatch(
@@ -92,7 +94,7 @@ const UniversalTable = ({ variant, data = [] }) => {
 
                   return (
                      <StyledCell>
-                        <SelectWrapper>
+                        <SelectWrapper onClick={(e) => e.stopPropagation()}>
                            <SelectStyled
                               value={order.status}
                               onChange={handleChange}
@@ -117,7 +119,7 @@ const UniversalTable = ({ variant, data = [] }) => {
                header: () => <StyledHeaderCell>Действия</StyledHeaderCell>,
                accessorKey: 'actions',
                cell: ({ row }) => (
-                  <StyledCell>
+                  <StyledCell onClick={(e) => e.stopPropagation()}>
                      <IconButton
                         onClick={() => {
                            console.log('Удаляем заказ с ID:', row.original.id)
@@ -160,7 +162,10 @@ const UniversalTable = ({ variant, data = [] }) => {
             </TableHead>
             <TableBody>
                {table.getRowModel().rows.map((row) => (
-                  <HoverableRow key={row.id}>
+                  <HoverableRow
+                     key={row.id}
+                     onClick={() => navigate(`/orders/${row.original.id}`)}
+                  >
                      {row.getVisibleCells().map((cell) => (
                         <React.Fragment key={cell.id}>
                            {flexRender(
@@ -179,13 +184,13 @@ const UniversalTable = ({ variant, data = [] }) => {
 
 export default UniversalTable
 
-
 const StyledTableContainer = styled(TableContainer)(() => ({
    borderRadius: 12,
    border: '1px solid #e0e0e0',
    backgroundColor: '#fff',
    padding: '16px',
    boxShadow: 'none',
+   width: '1240px',
 }))
 
 const StyledTable = styled(Table)(() => ({
@@ -256,3 +261,5 @@ const SelectWrapper = styled(Box)(() => ({
    display: 'flex',
    justifyContent: 'start',
 }))
+
+/////////////////////////////////////////////////////////

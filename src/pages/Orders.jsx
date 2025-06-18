@@ -10,6 +10,8 @@ import InputAdornment from '@mui/material/InputAdornment'
 import { Container, styled, Box } from '@mui/material'
 import UniversalTable from '../components/UI/UniversalTable'
 import dayjs from 'dayjs'
+import { useNavigate } from 'react-router-dom'
+import Infographic from './Infograficks'
 
 export default function Orders() {
    const [searchValue, setSearchValue] = useState('')
@@ -19,6 +21,8 @@ export default function Orders() {
    const [openPicker, setOpenPicker] = useState(null)
 
    const dispatch = useDispatch()
+   const navigate = useNavigate()
+
    const {
       data: orders = [],
       loading,
@@ -84,6 +88,10 @@ export default function Orders() {
       { label: 'CANCELLED', value: 'CANCELLED' },
       { label: 'GET', value: 'GET' },
    ]
+
+   const handleOrderClick = (orderId) => {
+      navigate(`/orders/${orderId}`)
+   }
 
    return (
       <Box>
@@ -157,7 +165,20 @@ export default function Orders() {
 
             <br />
             {loading && <div>Загрузка...</div>}
-            {error && <div>Ошибка: {error}</div>}
+            {error && (
+               <Box
+                  sx={{
+                     color: 'red',
+                     whiteSpace: 'pre-wrap',
+                     fontWeight: 'bold',
+                  }}
+               >
+                  Ошибка:{' '}
+                  {typeof error === 'object'
+                     ? JSON.stringify(error, null, 2)
+                     : error}
+               </Box>
+            )}
 
             <UniversalTable
                variant="orders"
@@ -170,11 +191,12 @@ export default function Orders() {
                   total: order.totalPrice,
                   delivery: order.pickup ? 'Самовывоз' : 'Доставка',
                   status: order.status,
+                  onClick: () => handleOrderClick(order.id),
                }))}
             />
 
             {openPicker && (
-               <Box>
+               <Box sx={{ position: 'absolute', top: '45%', right: '48%' }}>
                   <DatePicker
                      date={openPicker === 'from' ? fromDate : toDate}
                      onChange={handleDateChange}
@@ -182,6 +204,7 @@ export default function Orders() {
                </Box>
             )}
          </Container>
+         <br />
       </Box>
    )
 }

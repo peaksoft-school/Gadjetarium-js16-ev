@@ -3,10 +3,12 @@ import { axiosInstance } from '../configs/axiosInstans'
 
 export const fetchOrders = createAsyncThunk(
    'orders/fetch',
-   async ({ search, from, to, status, page = 1, pageSize = 10 } = {}) => {
+   async (
+      { search, from, to, status, page = 1, pageSize = 10 } = {},
+      { rejectWithValue }
+   ) => {
       try {
          const params = {}
-
          if (search) params.search = search
          if (from) params.from = from
          if (to) params.to = to
@@ -14,27 +16,43 @@ export const fetchOrders = createAsyncThunk(
          params.page = page
          params.pageSize = pageSize
 
-         console.log('Отправляем запрос с параметрами:', params)
-
          const response = await axiosInstance.get('/api/orders', { params })
-
-         console.log('Ответ от сервера:', response.data)
-
          return response.data.content || response.data || []
       } catch (error) {
-         console.error('Ошибка при загрузке заказов:', error)
-         throw error
+         return rejectWithValue(
+            error?.response?.data || 'Ошибка при получении заказов'
+         )
+      }
+   }
+)
+
+export const fetchOrderById = createAsyncThunk(
+   'orders/fetchById',
+   async (id, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.get(`/api/orders/${id}`)
+         return response.data
+      } catch (error) {
+         return rejectWithValue(
+            error?.response?.data || 'Ошибка при загрузке заказа'
+         )
       }
    }
 )
 
 export const updateOrder = createAsyncThunk(
    'orders/update',
-   async ({ id, status }) => {
-      const response = await axiosInstance.put(
-         `/api/orders/${id}?status=${status}`
-      )
-      return { id, status: response.data }
+   async ({ id, status }, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.put(
+            `/api/orders/${id}?status=${status}`
+         )
+         return { id, status: response.data }
+      } catch (error) {
+         return rejectWithValue(
+            error?.response?.data || 'Ошибка при обновлении заказа'
+         )
+      }
    }
 )
 
@@ -42,13 +60,9 @@ export const deleteOrder = createAsyncThunk(
    'orders/delete',
    async (id, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.delete(`/api/orders/${id}`)
+         await axiosInstance.delete(`/api/orders/${id}`)
          return id
       } catch (error) {
-         console.error(
-            'Ошибка при удалении заказа:',
-            error?.response?.data || error.message
-         )
          return rejectWithValue(error?.response?.data || 'Ошибка при удалении')
       }
    }
@@ -58,12 +72,23 @@ const ordersSlice = createSlice({
    name: 'orders',
    initialState: {
       data: [],
+
       loading: false,
       error: null,
+
+      selectedOrder: null,
+      orderLoading: false,
+      orderError: null,
    },
    reducers: {
       clearError: (state) => {
          state.error = null
+         state.orderError = null
+      },
+      clearSelectedOrder: (state) => {
+         state.selectedOrder = null
+         state.orderLoading = false
+         state.orderError = null
       },
    },
    extraReducers: (builder) => {
@@ -73,14 +98,28 @@ const ordersSlice = createSlice({
             state.error = null
          })
          .addCase(fetchOrders.fulfilled, (state, action) => {
-            state.data = action.payload
             state.loading = false
-            state.error = null
+            state.data = action.payload
          })
          .addCase(fetchOrders.rejected, (state, action) => {
             state.loading = false
-            state.error = action.error.message
+            state.error = action.payload || action.error.message
          })
+
+         .addCase(fetchOrderById.pending, (state) => {
+            state.orderLoading = true
+            state.orderError = null
+            state.selectedOrder = null
+         })
+         .addCase(fetchOrderById.fulfilled, (state, action) => {
+            state.orderLoading = false
+            state.selectedOrder = action.payload
+         })
+         .addCase(fetchOrderById.rejected, (state, action) => {
+            state.orderLoading = false
+            state.orderError = action.payload || action.error.message
+         })
+
          .addCase(updateOrder.fulfilled, (state, action) => {
             const index = state.data.findIndex(
                (o) => o.id === action.payload.id
@@ -88,12 +127,18 @@ const ordersSlice = createSlice({
             if (index !== -1) {
                state.data[index].status = action.payload.status
             }
+            if (state.selectedOrder?.id === action.payload.id) {
+               state.selectedOrder.status = action.payload.status
+            }
          })
+
          .addCase(deleteOrder.fulfilled, (state, action) => {
-            state.data = state.data.filter((o) => o.id !== action.payload)
+            state.data = state.data.filter(
+               (order) => order.id !== action.payload
+            )
          })
    },
 })
 
-export const { clearError } = ordersSlice.actions
+export const { clearError, clearSelectedOrder } = ordersSlice.actions
 export default ordersSlice.reducer
