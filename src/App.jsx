@@ -1,6 +1,16 @@
-import './App.css'
-import AppRouter from './routes/AppRouter'
+// import './App.css'
+// import AppRouter from './routes/AppRouter'
 
-const App = () => <AppRouter />
+import OrderHistory from './pages/OrderHistory'
 
-export default App
+// const App = () => <AppRouter />
+
+// export default App
+
+export default function App() {
+   return (
+      <div>
+         <OrderHistory />
+      </div>
+   )
+}
