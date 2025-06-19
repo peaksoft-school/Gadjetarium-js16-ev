@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// const BASE_URL = 'http://3.147.74.119'
-const BASE_URL = 'http://192.168.0.121:2025'
+const BASE_URL = 'http://3.147.74.119'
+// const BASE_URL = 'http://192.168.0.121:2025'
 
 export const axiosInstance = axios.create({
    baseURL: BASE_URL,
@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
       const token = customStore.getState()?.auth?.token || null
 
       if (token) {
-         updateConfig.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFpYmVrQGdtYWlsLmNvbSIsImlkIjo1LCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NDk5OTI1NTYsImV4cCI6MTc0OTk5NjI1Nn0.Kxr0x9Dv0lhqABrK3Rfyzn7w5p_qtntusifyxe4Cvbk `
+         updateConfig.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFpYmVrQGdtYWlsLmNvbSIsImlkIjo1LCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTAyNDAxMTEsImV4cCI6MTc1MDI0MzgxMX0.zI-5BahAau40Fqu4WRJ-TeLaptIoiSyGy2NL8Wah9F4 `
       }
 
       return updateConfig

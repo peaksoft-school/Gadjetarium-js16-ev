@@ -1,3 +1,4 @@
+// Products.jsx
 import { Box, styled, Divider } from '@mui/material'
 import AdminHeader from '../layout/admin/AdminHeader'
 import Toolbar from './Toolbar'
@@ -6,127 +7,145 @@ import ProductTable from './UI/ProductTable'
 import DatePicker from './UI/DatePicker'
 import { useState, useEffect } from 'react'
 import { Icons } from '../assets/icons'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '../store/products/productThunk'
 
 const Wrapper = styled(Box)({
-   display: 'flex',
-   flexDirection: 'column',
-   gap: '24px',
-   marginBottom: '24px',
-   padding: '0 24px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '24px',
+  marginBottom: '24px',
+  padding: '0 24px',
 })
 
 const FiltersBlock = styled(Box)({
-   display: 'flex',
-   gap: '12px',
-   flexWrap: 'wrap',
-   alignItems: 'center',
+  display: 'flex',
+  gap: '12px',
+  flexWrap: 'wrap',
+  alignItems: 'center',
 })
 
 const StyledBoxTab = styled(Box)({
-   border: '1px solid #CDCDCD',
-   borderRadius: '6px',
-   width: '130px',
-   height: '35px',
-   display: 'flex',
-   justifyContent: 'space-between',
-   alignItems: 'center',
-   padding: '0 12px',
-   cursor: 'pointer',
+  border: '1px solid #CDCDCD',
+  borderRadius: '6px',
+  width: '130px',
+  height: '35px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '0 12px',
+  cursor: 'pointer',
 })
 
 const StyledTabs = styled(Box)({
-   display: 'flex',
-   gap: '20px',
+  display: 'flex',
+  gap: '20px',
 })
 
 const StyledBoxDate = styled(Box)({
-   position: 'absolute',
-   bottom: '4%',
-   left: '18%',
+  position: 'absolute',
+  bottom: '4%',
+  left: '18%',
 })
 
 const salesData = {
-   purchasedAmount: '7 556',
-   orderedAmount: '34 562',
-   purchasedCount: '12',
-   orderedCount: '56',
-   deliveredAmount: '120 000',
-   previousDeliveredAmount: '100 500',
+  purchasedAmount: '7 556',
+  orderedAmount: '34 562',
+  purchasedCount: '12',
+  orderedCount: '56',
+  deliveredAmount: '120 000',
+  previousDeliveredAmount: '100 500',
 }
 
 const Products = () => {
-   const dispatch = useDispatch()
-   const { items, loading, error } = useSelector((state) => state.product)
+  const dispatch = useDispatch()
+  const { items, total, loading, error } = useSelector((state) => state.product)
 
-   const [openPicker, setOpenPicker] = useState(null)
-   const [fromDate, setFromDate] = useState(null)
-   const [toDate, setToDate] = useState(null)
+  const [openPicker, setOpenPicker] = useState(null)
+  const [fromDate, setFromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
+  const [search, setSearch] = useState('')
+  const [action, setAction] = useState('all')
 
-   useEffect(() => {
-      dispatch(fetchProducts())
-   }, [dispatch])
+  const handleCleanDatePicker = () => {
+   setFromDate(null)
+   setToDate(null)
+  }
 
-   const handleDateChange = (date) => {
-      if (openPicker === 'from') setFromDate(date)
-      if (openPicker === 'to') setToDate(date)
-      setOpenPicker(null)
-   }
+  useEffect(() => {
+    dispatch(
+      fetchProducts({
+        name: search,
+        action,
+        startDate: fromDate ? fromDate.format('YYYY-MM-DD') : undefined,
+        endDate: toDate ? toDate.format('YYYY-MM-DD') : undefined,
+      })
+    )
+  }, [dispatch, search, action, fromDate, toDate])
 
-   const productList = items?.data || []
+  const handleDateChange = (date) => {
+    if (openPicker === 'from') setFromDate(date)
+    if (openPicker === 'to') setToDate(date)
+    setOpenPicker(null)
+  }
 
-   return (
-      <>
-         <AdminHeader />
-         <Wrapper>
-            <Toolbar />
-            <Divider sx={{ width: '100%', mt: 2 }} />
+  return (
+    <>
+      <AdminHeader />
+      <Wrapper>
+        <Toolbar
+          onSearch={(val) => setSearch(val)}
+          onActionChange={(val) => setAction(val)}
+          currentAction={action}
+        />
 
-            <FiltersBlock>
-               <StyledTabs>
-                  <StyledBoxTab onClick={() => setOpenPicker('from')}>
-                     <span style={{ color: '#384255', fontSize: '13px' }}>
-                        {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
-                     </span>
-                     <img src={Icons.calendar} alt="calendar" />
-                  </StyledBoxTab>
+        <Divider sx={{ width: '100%', mt: 2 }} />
 
-                  <StyledBoxTab onClick={() => setOpenPicker('to')}>
-                     <span style={{ color: '#384255', fontSize: '13px' }}>
-                        {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
-                     </span>
-                     <img src={Icons.calendar} alt="calendar" />
-                  </StyledBoxTab>
-               </StyledTabs>
-            </FiltersBlock>
+        <FiltersBlock>
+          <StyledTabs>
+            <StyledBoxTab onClick={() => setOpenPicker('from')}>
+              <span style={{ color: '#384255', fontSize: '13px' }}>
+                {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
+              </span>
+              <img src={Icons.calendar} alt="calendar" />
+            </StyledBoxTab>
 
-            {loading && <p>Загрузка...</p>}
+            <StyledBoxTab onClick={() => setOpenPicker('to')}>
+              <span style={{ color: '#384255', fontSize: '13px' }}>
+                {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
+              </span>
+              <img src={Icons.calendar} alt="calendar" />
+            </StyledBoxTab>
+          </StyledTabs>
+          <img src={Icons.cancel} onClick={()=>handleCleanDatePicker()}/>
+        </FiltersBlock>
 
-            {error && (
-               <p style={{ color: 'red' }}>
-                  Ошибка: {typeof error === 'string'
-                     ? error
-                     : error.error || 'Произошла ошибка при загрузке'}
-               </p>
-            )}
+        {loading && <p>Загрузка...</p>}
 
-            {!loading && !error && <ProductTable data={productList} />}
+        {error && (
+          <p style={{ color: 'red' }}>
+            Ошибка:{' '}
+            {typeof error === 'string'
+              ? error
+              : error.error || 'Произошла ошибка при загрузке'}
+          </p>
+        )}
 
-            <Infographics data={salesData} />
-         </Wrapper>
+        {!loading && !error && <ProductTable data={items || []} totalCount={total} />}
 
-         {openPicker && (
-            <StyledBoxDate>
-               <DatePicker
-                  date={openPicker === 'from' ? fromDate : toDate}
-                  onChange={handleDateChange}
-               />
-            </StyledBoxDate>
-         )}
-      </>
-   )
+        <Infographics data={salesData} />
+      </Wrapper>
+
+      {openPicker && (
+        <StyledBoxDate>
+          <DatePicker
+            date={openPicker === 'from' ? fromDate : toDate}
+            onChange={handleDateChange}
+          />
+        </StyledBoxDate>
+      )}
+    </>
+  )
 }
 
 export default Products

@@ -3,6 +3,7 @@ import { fetchProducts } from './productThunk'
 
 const initialState = {
    items: [],
+   total: 0,
    loading: false,
    error: null,
 }
@@ -19,7 +20,8 @@ const productSlice = createSlice({
          })
          .addCase(fetchProducts.fulfilled, (state, action) => {
             state.loading = false
-            state.items = action.payload
+            state.items = action.payload.data
+            state.total = action.payload.total
          })
          .addCase(fetchProducts.rejected, (state, action) => {
             state.loading = false
