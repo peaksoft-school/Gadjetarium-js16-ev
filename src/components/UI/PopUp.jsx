@@ -1,27 +1,28 @@
-import { useState } from 'react'
-import { styled } from '@mui/material'
-import { SUBMENUS } from '../../utils/constants/index'
+import { useState } from 'react';
+import { styled } from '@mui/material';
+import { SUBMENUS } from '../../utils/constants/index';
 
 const PopUp = () => {
-   const [isHovered, setIsHovered] = useState(false)
-   const [activeMenu, setActiveMenu] = useState(null)
-   const [activeItem, setActiveItem] = useState(null)
+   const [isHovered, setIsHovered] = useState(false);
+   const [activeMenu, setActiveMenu] = useState(null);
+   const [activeItem, setActiveItem] = useState(null);
 
-   const handleMenuClick = (menuKey) => {
-      setActiveMenu((prev) => (prev === menuKey ? null : menuKey))
+   const handleMenuHover = (menuKey) => {
+      setActiveMenu(menuKey);
+   };
 
-      setActiveItem(null)
-   }
-
-   const handleSubMenuClick = (item) => setActiveItem(item)
+   const handleSubMenuClick = (item) => {
+      setActiveItem(item);
+      console.log('Selected submenu item:', item);
+   };
 
    return (
       <Wrapper
          onMouseEnter={() => setIsHovered(true)}
          onMouseLeave={() => {
-            setIsHovered(false)
-            setActiveMenu(null)
-            setActiveItem(null)
+            setIsHovered(false);
+            setActiveMenu(null);
+            setActiveItem(null);
          }}
       >
          <Trigger>Сортировать ▼</Trigger>
@@ -32,7 +33,7 @@ const PopUp = () => {
                   {Object.keys(SUBMENUS).map((menuKey) => (
                      <MenuItem
                         key={menuKey}
-                        onClick={() => handleMenuClick(menuKey)}
+                        onMouseEnter={() => handleMenuHover(menuKey)}
                      >
                         <Text $active={activeMenu === menuKey}>{menuKey}</Text>
                      </MenuItem>
@@ -41,28 +42,34 @@ const PopUp = () => {
 
                {activeMenu && (
                   <SubMenu>
-                     {SUBMENUS[activeMenu].map((item) => (
-                        <MenuItem
-                           key={item}
-                           onClick={() => handleSubMenuClick(item)}
-                        >
-                           <Text $active={activeItem === item}>{item}</Text>
+                     {SUBMENUS[activeMenu].length > 0 ? (
+                        SUBMENUS[activeMenu].map((item) => (
+                           <MenuItem
+                              key={item}
+                              onClick={() => handleSubMenuClick(item)}
+                           >
+                              <Text $active={activeItem === item}>{item}</Text>
+                           </MenuItem>
+                        ))
+                     ) : (
+                        <MenuItem onClick={() => handleSubMenuClick(activeMenu)}>
+                           <Text>{activeMenu}</Text>
                         </MenuItem>
-                     ))}
+                     )}
                   </SubMenu>
                )}
             </MenuContainer>
          )}
       </Wrapper>
-   )
-}
+   );
+};
 
-export default PopUp
+export default PopUp;
 
 const Wrapper = styled('div')({
    position: 'relative',
    display: 'inline-block',
-})
+});
 
 const Trigger = styled('div')({
    border: '1px solid #ccc',
@@ -71,7 +78,7 @@ const Trigger = styled('div')({
    cursor: 'pointer',
    backgroundColor: '#f5f5f5',
    userSelect: 'none',
-})
+});
 
 const MenuContainer = styled('div')({
    position: 'absolute',
@@ -83,19 +90,19 @@ const MenuContainer = styled('div')({
    borderRadius: '6px',
    overflow: 'hidden',
    zIndex: 999,
-})
+});
 
 const MainMenu = styled('ul')({
    listStyle: 'none',
    margin: 0,
    padding: '8px 0',
    minWidth: '200px',
-})
+});
 
 const SubMenu = styled(MainMenu)({
    borderLeft: '1px solid #eee',
    backgroundColor: '#fafafa',
-})
+});
 
 const MenuItem = styled('li')({
    padding: '10px 16px',
@@ -105,9 +112,9 @@ const MenuItem = styled('li')({
    '&:hover': {
       backgroundColor: '#f5f5f5',
    },
-})
+});
 
 const Text = styled('span')(({ $active }) => ({
    color: $active ? 'hotpink' : '#333',
    fontWeight: $active ? 'bold' : 'normal',
-}))
+}));
