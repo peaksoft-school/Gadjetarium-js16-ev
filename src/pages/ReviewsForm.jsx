@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Rating from '@mui/material/Rating';
-import { axiosInstance } from '../configs/axiosInstans';
 
-const FormContainer = styled('form')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(2),
+import React, { useState } from 'react';
+import { Box, TextField, Rating, Button, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import { addReview } from '../store/ReviewsThunk';
+
+const FormContainer = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  backgroundColor: '#f5f5f5',
+  borderRadius: theme.shape.borderRadius,
   marginTop: theme.spacing(2),
-  maxWidth: '500px',
 }));
 
 const ReviewForm = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     productName: '',
     commentary: '',
@@ -21,55 +21,65 @@ const ReviewForm = () => {
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleRatingChange = (event, newValue) => {
-    setFormData({ ...formData, rating: newValue });
+    setFormData((prev) => ({ ...prev, rating: newValue }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await axiosInstance.post('/api/reviews', formData);
-      setFormData({ productName: '', commentary: '', rating: 0 });
-      alert('Отзыв успешно добавлен!');
-    } catch (error) {
-      console.error('Ошибка при добавлении отзыва:', error);
-      alert('Произошла ошибка при добавлении отзыва.');
-    }
+    dispatch(addReview(formData));
+    setFormData({ productName: '', commentary: '', rating: 0 });
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit}>
-      <TextField
-        name="productName"
-        label="Название товара"
-        value={formData.productName}
-        onChange={handleChange}
-        required
-      />
-      <TextField
-        name="commentary"
-        label="Комментарий"
-        value={formData.commentary}
-        onChange={handleChange}
-        multiline
-        rows={4}
-        required
-      />
-      <Rating
-        name="rating"
-        value={formData.rating}
-        onChange={handleRatingChange}
-        precision={0.5}
-        required
-      />
-      <Button type="submit" variant="contained" color="primary">
+    <FormContainer>
+      <Typography variant="h6" gutterBottom>
         Добавить отзыв
-      </Button>
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          fullWidth
+          name="productName"
+          label="Название продукта"
+          value={formData.productName}
+          onChange={handleChange}
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          fullWidth
+          name="commentary"
+          label="Комментарий"
+          value={formData.commentary}
+          onChange={handleChange}
+          margin="normal"
+          variant="outlined"
+          multiline
+          rows={4}
+        />
+        <Box sx={{ mt: 2 }}>
+          <Typography component="legend">Оценка</Typography>
+          <Rating
+            name="rating"
+            value={formData.rating}
+            onChange={handleRatingChange}
+          />
+        </Box>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2 }}
+        >
+          Отправить
+        </Button>
+      </form>
     </FormContainer>
   );
 };
 
-export default ReviewForm;
+export default ReviewForm

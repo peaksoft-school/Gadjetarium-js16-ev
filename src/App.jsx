@@ -8,7 +8,7 @@
 import ReviewsDashboard from './components/ReviewsDashboard';
 
 const App = () => {
-  return <ReviewsDashboard />;
+  return <ReviewsDashboard  />;
 };
 
 export default App;

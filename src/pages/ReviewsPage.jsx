@@ -1,8 +1,9 @@
+
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchReviews } from '../store/ReviewsThunk';
-import ReviewItem from './ReviewsItem';
-import ReviewForm from './ReviewsForm';
+import ReviewItem from './ReviewItem';
+import ReviewForm from './ReviewForm';
 import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import { axiosInstance, injectStore } from '../configs/axiosInstans';
@@ -19,7 +20,7 @@ const ReviewsPage = () => {
 
   useEffect(() => {
     injectStore(store);
-    dispatch(fetchReviews()); // fetchReviewsByStatus ордуна fetchReviews колдонобуз
+    dispatch(fetchReviews());
   }, [dispatch, store]);
 
   return (
@@ -33,4 +34,4 @@ const ReviewsPage = () => {
   );
 };
 
-export default ReviewsPage;
+export default ReviewsPage

@@ -28,4 +28,4 @@ injectStore(store);
 
 const persistor = persistStore(store);
 
-export { store, persistor };
+export { store, persistor }

@@ -30,3 +30,23 @@ axiosInstance.interceptors.response.use(
   (response) => Promise.resolve(response),
   (error) => Promise.reject(error)
 );
+
+export const updateReviewReply = async (reviewId, responseData) => {
+  try {
+    const response = await axiosInstance.put(`/api/reviews/response/${reviewId}`, responseData);
+    return response.data;
+  } catch (error) {
+    console.error('PUT review response error:', error);
+    throw error;
+  }
+};
+
+export const saveReviewResponse = async (reviewId, responseData) => {
+  try {
+    const response = await axiosInstance.post(`/api/reviews/save/${reviewId}`, responseData);
+    return response.data;
+  } catch (error) {
+    console.error('POST review save error:', error);
+    throw error;
+  }
+};
