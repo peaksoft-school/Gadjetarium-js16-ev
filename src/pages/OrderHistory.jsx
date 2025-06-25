@@ -1,171 +1,165 @@
-// import { useEffect, useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { fetchOrderHistory } from '../pages/features/orders/orderHistoryThink'
-// import { Box, Typography, Chip } from '@mui/material'
-
-// const OrderHistory = () => {
-//    const dispatch = useDispatch()
-//    const {
-//       data: orders,
-//       status,
-//       error,
-//    } = useSelector((state) => state.orderHistory)
-
-//    const [selectedStatus, setSelectedStatus] = useState(null)
-
-//    useEffect(() => {
-//       dispatch(fetchOrderHistory())
-//    }, [dispatch])
-
-//    const handleStatusFilter = (status) => {
-//       setSelectedStatus((prev) => (prev === status ? null : status))
-//    }
-
-//    const filteredOrders = selectedStatus
-//       ? orders.filter((order) => order.status === selectedStatus)
-//       : orders
-
-//    if (status === 'loading') return <Typography>Загрузка...</Typography>
-//    if (status === 'failed')
-//       return <Typography>Ошибка: {error?.message || error}</Typography>
-
-//    const uniqueStatuses = [...new Set(orders.map((order) => order.status))]
-
-//    return (
-//       <Box>
-//          <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-//             {uniqueStatuses.map((status) => (
-//                <Chip
-//                   key={status}
-//                   label={status}
-//                   onClick={() => handleStatusFilter(status)}
-//                   sx={{
-//                      backgroundColor:
-//                         selectedStatus === status ? 'purple' : '#eee',
-//                      color: selectedStatus === status ? 'white' : 'black',
-//                      cursor: 'pointer',
-//                   }}
-//                />
-//             ))}
-//          </Box>
-
-//          {filteredOrders.map((order) => (
-//             <Box key={order.id} sx={{ border: '1px solid #ccc', p: 2, mb: 1 }}>
-//                <Typography>Номер: {order.orderNumber}</Typography>
-//                <Typography>Дата: {order.date}</Typography>
-//                <Typography>Статус: {order.status}</Typography>
-//                <Typography>Цена: {order.price}₸</Typography>
-//             </Box>
-//          ))}
-//       </Box>
-//    )
-// }
-
-// export default OrderHistory
-
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchOrderHistory } from '../pages/features/orders/orderHistoryThink'
-import { Box, Typography, Button } from '@mui/material'
-import AdminHeader from '../layout/admin/AdminHeader'
+import { fetchOrdersThunk } from './features/orders/orderHistoryThink'
+import { Box, Container, Typography, styled } from '@mui/material'
 import Footer from '../layout/Footer'
+import { useNavigate } from 'react-router-dom'
+import UserHeader from '../layout/user/UserHeader'
 
 const statusColors = {
-   Доставлен: '#00A500',
-   Отменен: '#FF6C6C',
-   'В обработке': '#FFA500',
-   'В пути': '#00BFFF',
+   READY_FOR_PICKUP: '#00A500',
+   CANCELLED: '#FF6C6C',
+   WAITING: '#FFA500',
+   DELIVERED: '#00BFFF',
 }
 
 const tabs = ['История заказов', 'Избранное', 'Профиль']
 
 const OrderHistory = () => {
    const dispatch = useDispatch()
-   const {
-      data: orders,
-      status,
-      error,
-   } = useSelector((state) => state.orderHistory)
+   const navigate = useNavigate()
+   const { orders, loading, error } = useSelector((state) => state.orders)
    const [activeTab, setActiveTab] = useState('История заказов')
 
    useEffect(() => {
       if (activeTab === 'История заказов') {
-         dispatch(fetchOrderHistory())
+         dispatch(fetchOrdersThunk())
       }
    }, [dispatch, activeTab])
 
-   if (status === 'loading') return <Typography>Загрузка...</Typography>
-   if (status === 'failed')
-      return <Typography>Ошибка: {error?.message || error}</Typography>
+   const handleOrderClick = (orderId) => {
+      navigate(`/orders/${orderId}`)
+   }
+
+   if (loading) return <Typography>Загрузка...</Typography>
+   if (error)
+      return (
+         <Typography>
+            Ошибка: {typeof error === 'string' ? error : 'Неизвестная ошибка'}
+         </Typography>
+      )
 
    return (
-      <div>
-         <AdminHeader />
-         <Box sx={{ maxWidth: 900, mx: 'auto', mt: 4 }}>
-            <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+      <StyledDiv1>
+         <UserHeader />
+         <h2 style={{ position: 'relative', left: '12.2%', marginTop: '2%' }}>
+            История заказов
+         </h2>
+         <br />
+         <hr style={{ width: '75.5%', margin: 'auto' }} />
+         <StyledKingBox sx={{ maxWidth: 950, mx: 'auto', mt: 4, px: 2 }}>
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                {tabs.map((tab) => (
-                  <Button
+                  <TabButton
                      key={tab}
-                     variant={activeTab === tab ? 'contained' : 'outlined'}
+                     active={activeTab === tab ? 1 : 0}
                      onClick={() => setActiveTab(tab)}
-                     sx={{
-                        textTransform: 'none',
-                        backgroundColor:
-                           activeTab === tab ? '#1f1f1f' : '#f0f0f0',
-                        color: activeTab === tab ? 'white' : '#000',
-                        borderRadius: '6px',
-                        fontWeight: 500,
-                        '&:hover': {
-                           backgroundColor:
-                              activeTab === tab ? '#333' : '#e0e0e0',
-                        },
-                     }}
                   >
                      {tab}
-                  </Button>
+                  </TabButton>
                ))}
             </Box>
 
             {activeTab === 'История заказов' && (
-               <Box>
-                  {orders.map((order, idx) => (
-                     <Box
-                        key={order.id || idx}
+               <>
+                  <Box
+                     sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}
+                  >
+                     <Typography
                         sx={{
-                           display: 'flex',
-                           justifyContent: 'space-between',
-                           alignItems: 'center',
-                           borderBottom: '1px solid #e0e0e0',
-                           py: 1.5,
-                           fontSize: 15,
+                           cursor: 'pointer',
+                           color: '#5A5A5A',
+                           fontSize: '14px',
+                           textDecoration: 'underline',
                         }}
                      >
-                        <Typography sx={{ width: 100, color: '#777' }}>
-                           {new Date(order.date).toLocaleDateString('ru-RU')}
-                        </Typography>
-                        <Typography fontWeight={600} sx={{ width: 180 }}>
-                           № {order.orderNumber}
-                        </Typography>
-                        <Typography
-                           sx={{
-                              width: 120,
-                              color: statusColors[order.status] || '#000',
-                              fontWeight: 500,
-                           }}
-                        >
-                           {order.status}
-                        </Typography>
-                        <Typography fontWeight={500}>
-                           {order.price.toLocaleString()} с
-                        </Typography>
-                     </Box>
-                  ))}
-               </Box>
+                        Очистить список заказов
+                     </Typography>
+                  </Box>
+
+                  <StyledBox2>
+                     {Array.isArray(orders) && orders.length > 0 ? (
+                        orders.map((order, idx) => (
+                           <OrderRow
+                              key={order.id || idx}
+                              onClick={() => handleOrderClick(order.id)}
+                              sx={{ cursor: 'pointer' }}
+                           >
+                              <Typography sx={{ width: 120, color: '#777' }}>
+                                 {order?.date
+                                    ? new Date(order.date).toLocaleDateString(
+                                         'ru-RU'
+                                      )
+                                    : '—'}
+                              </Typography>
+                              <Typography sx={{ width: 200, fontWeight: 600 }}>
+                                 № {order?.orderNumber || '—'}
+                              </Typography>
+                              <Typography
+                                 sx={{
+                                    width: 140,
+                                    color:
+                                       statusColors[order?.status] || '#000',
+                                    fontWeight: 500,
+                                 }}
+                              >
+                                 {order?.status || '—'}
+                              </Typography>
+                              <Typography fontWeight={500}>
+                                 {typeof order?.price === 'number'
+                                    ? `${order.price.toLocaleString()} с`
+                                    : '—'}
+                              </Typography>
+                           </OrderRow>
+                        ))
+                     ) : (
+                        <Typography>Нет заказов</Typography>
+                     )}
+                  </StyledBox2>
+               </>
             )}
-         </Box>
+         </StyledKingBox>
          <Footer />
-      </div>
+      </StyledDiv1>
    )
 }
 
 export default OrderHistory
+
+const TabButton = styled('button')(({ active }) => ({
+   backgroundColor: active ? '#1F1F1F' : '#F0F0F0',
+   color: active ? '#FFFFFF' : '#000000',
+   border: 'none',
+   borderRadius: '6px',
+   padding: '8px 16px',
+   fontWeight: 500,
+   cursor: 'pointer',
+   fontSize: '14px',
+   transition: '0.2s ease',
+   '&:hover': {
+      backgroundColor: active ? '#333' : '#e0e0e0',
+   },
+}))
+
+const OrderRow = styled(Box)(() => ({
+   display: 'grid',
+   gridTemplateColumns: '320px 350px 350px 120px',
+   alignItems: 'center',
+   borderBottom: '1px solid #e0e0e0',
+   padding: '12px 0',
+   fontSize: '15px',
+   gap: '16px',
+}))
+
+const StyledKingBox = styled(Container)(() => ({
+   marginBottom: '5%',
+}))
+
+const StyledDiv1 = styled('div')(() => ({
+   overflow: 'hidden',
+}))
+const StyledBox2 = styled(Box)(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   gap: '12px',
+}))

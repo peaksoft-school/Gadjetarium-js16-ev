@@ -1,16 +1,22 @@
 // import './App.css'
 // import AppRouter from './routes/AppRouter'
 
-import OrderHistory from './pages/OrderHistory'
-
 // const App = () => <AppRouter />
 
 // export default App
 
-export default function App() {
+import { Routes, Route, Navigate } from 'react-router-dom'
+import OrderHistory from './pages/OrderHistory'
+import OrderDetails from './pages/OrdersDetails'
+
+function App() {
    return (
-      <div>
-         <OrderHistory />
-      </div>
+      <Routes>
+         <Route path="/" element={<Navigate to="/orders" />} />
+         <Route path="/orders" element={<OrderHistory />} />
+         <Route path="/orders/:id" element={<OrderDetails />} />
+      </Routes>
    )
 }
+
+export default App

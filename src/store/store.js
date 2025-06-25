@@ -2,8 +2,11 @@
 // import persistReducer from 'redux-persist/es/persistReducer'
 // import persistStore from 'redux-persist/es/persistStore'
 // import storage from 'redux-persist/lib/storage'
+// import orderHistoryReducer from '../pages/features/orders/orderHistorySlice'
 
-// const rootReducer = combineReducers({})
+// const rootReducer = combineReducers({
+//    orderHistory: orderHistoryReducer,
+// })
 
 // const persistConfig = {
 //    key: 'GADJETARIUM',
@@ -14,7 +17,6 @@
 
 // const store = configureStore({
 //    reducer: persistedReducer,
-
 //    middleware: (getDefaultMiddleware) =>
 //       getDefaultMiddleware({
 //          serializableCheck: false,
@@ -32,7 +34,7 @@ import storage from 'redux-persist/lib/storage'
 import orderHistoryReducer from '../pages/features/orders/orderHistorySlice'
 
 const rootReducer = combineReducers({
-   orderHistory: orderHistoryReducer,
+   orders: orderHistoryReducer, 
 })
 
 const persistConfig = {

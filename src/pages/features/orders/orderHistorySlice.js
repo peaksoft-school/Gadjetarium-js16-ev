@@ -1,28 +1,50 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchOrderHistory } from './orderHistoryThink';
+import { createSlice } from '@reduxjs/toolkit'
+import { fetchOrdersThunk, fetchOrderDetailsThunk } from './orderHistoryThink'
 
-const orderHistorySlice = createSlice({
-  name: 'orders',
-  initialState: {
-    data: [],
-    status: 'idle',
-    error: null,
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchOrderHistory.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchOrderHistory.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.data = action.payload.sort((a, b) => a.id - b.id);
-      })
-      .addCase(fetchOrderHistory.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
-      });
-  },
-});
+const initialState = {
+   orders: [],
+   selectedOrder: null,
+   loading: false,
+   error: null,
+}
 
-export default orderHistorySlice.reducer;
+const orderSlice = createSlice({
+   name: 'orders',
+   initialState,
+   reducers: {
+      clearSelectedOrder(state) {
+         state.selectedOrder = null
+      },
+   },
+   extraReducers: (builder) => {
+      builder
+         .addCase(fetchOrdersThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchOrdersThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.orders = Array.isArray(action.payload) ? action.payload : []
+         })
+         .addCase(fetchOrdersThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload || action.error.message
+         })
+
+         .addCase(fetchOrderDetailsThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchOrderDetailsThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.selectedOrder = action.payload
+         })
+         .addCase(fetchOrderDetailsThunk.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload || action.error.message
+         })
+   },
+})
+
+export const { clearSelectedOrder } = orderSlice.actions
+export default orderSlice.reducer
