@@ -1,31 +1,59 @@
+import { useState } from 'react'
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
 import { styled } from '@mui/system'
 import { Icons } from '../../assets/icons'
+import Modal from '../../components/UI/Modal'
+import NewsletterForm from '../../components/Mailing'
 
-const AdminHeader = () => (
-   <StyledAppBar sx={{ backgroundColor: '#1A1A25' }} position="static">
-      <StyledToolbar>
-         <StyledNavs>
-            <Logo src={Icons.gadgetarium} alt="Gadgetarium" />
-            <Box>
-               <NavLink>Товары</NavLink>
-               <NavLink>Заказы</NavLink>
-               <NavLink>Отзывы и рейтинг</NavLink>
+const AdminHeader = () => {
+   const [isModalOpen, setIsModalOpen] = useState(false)
+
+   const handleOpenModal = () => setIsModalOpen(true)
+   const handleCloseModal = () => setIsModalOpen(false)
+
+   return (
+      <>
+         <StyledAppBar sx={{ backgroundColor: '#1A1A25' }} position="static">
+            <StyledToolbar>
+               <StyledNavs>
+                  <Logo src={Icons.gadgetarium} alt="Gadgetarium" />
+                  <Box>
+                     <NavLink>Товары</NavLink>
+                     <NavLink>Заказы</NavLink>
+                     <NavLink>Отзывы и рейтинг</NavLink>
+                  </Box>
+               </StyledNavs>
+
+               <StyledButton variant="contained" onClick={handleOpenModal}>
+                  Создать рассылку
+               </StyledButton>
+
+               <AdminBox>
+                  <UserIcon src={Icons.user} alt="Администратор" />
+                  <Typography color="#fff">Администратор</Typography>
+               </AdminBox>
+            </StyledToolbar>
+         </StyledAppBar>
+
+         <Modal open={isModalOpen} onClose={handleCloseModal}>
+            <Box sx={{ padding: '20px', width: '100%', maxWidth: '600px' }}>
+               <Typography variant="h6" mb={2}>
+                  Рассылка
+               </Typography>
+
+               <NewsletterForm
+                  onCancel={handleCloseModal}
+                  onSubmit={handleCloseModal}
+               />
             </Box>
-         </StyledNavs>
-
-         <StyledButton variant="contained">Создать рассылку</StyledButton>
-
-         <AdminBox>
-            <UserIcon src={Icons.user} alt="Администратор" />
-            <Typography color="#fff">Администратор</Typography>
-         </AdminBox>
-      </StyledToolbar>
-   </StyledAppBar>
-)
+         </Modal>
+      </>
+   )
+}
 
 export default AdminHeader
 
+// Стили
 const StyledNavs = styled(Box)({
    display: 'flex',
    alignItems: 'center',

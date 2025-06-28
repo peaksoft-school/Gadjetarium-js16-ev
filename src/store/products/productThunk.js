@@ -12,3 +12,17 @@ export const fetchProducts = createAsyncThunk(
       }
    }
 )
+
+export const deleteProduct = createAsyncThunk(
+   'product/deleteProduct',
+   async (id, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.delete(
+            `/api/product/delete/${id}`
+         )
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.response?.data || error.message)
+      }
+   }
+)

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchProducts } from './productThunk'
+import { fetchProducts, deleteProduct } from './productThunk'
 
 const initialState = {
    items: [],
@@ -24,6 +24,20 @@ const productSlice = createSlice({
             state.total = action.payload.total
          })
          .addCase(fetchProducts.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         .addCase(deleteProduct.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(deleteProduct.fulfilled, (state, action) => {
+            state.loading = false
+            state.items = state.items.filter(
+               (item) => item.id !== action.meta.arg
+            )
+         })
+         .addCase(deleteProduct.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

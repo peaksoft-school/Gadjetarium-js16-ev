@@ -1,4 +1,3 @@
-// ProductTable.jsx
 import { useState } from 'react'
 import {
    Box,
@@ -13,19 +12,40 @@ import {
    Typography,
    Pagination,
 } from '@mui/material'
+import { useDispatch } from 'react-redux'
 import { Icons } from '../../assets/icons'
 import Checkbox from './Checkbox'
+import { deleteProduct } from '../../store/products/productThunk'
+import Modal from '../UI/Modal'
+import Button from '../UI/Button'
 
-const ProductTable = ({ data }) => {
+const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
+   const dispatch = useDispatch()
    const [hoveredRow, setHoveredRow] = useState(null)
-   const [selectedIds, setSelectedIds] = useState([])
    const [page, setPage] = useState(1)
+   const [isModalOpen, setIsModalOpen] = useState(false)
+   const [deleteId, setDeleteId] = useState(null)
    const rowsPerPage = 7
 
    const toggleCheckbox = (id) => {
       setSelectedIds((prev) =>
-         prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+         prev.includes(id)
+            ? prev.filter((itemId) => itemId !== id)
+            : [...prev, id]
       )
+   }
+
+   const openDeleteModal = (id) => {
+      if (!selectedIds.includes(id)) return
+      setDeleteId(id)
+      setIsModalOpen(true)
+   }
+
+   const confirmDelete = () => {
+      dispatch(deleteProduct(deleteId))
+      setSelectedIds((prev) => prev.filter((itemId) => itemId !== deleteId))
+      setIsModalOpen(false)
+      setDeleteId(null)
    }
 
    const paginatedData = Array.isArray(data)
@@ -57,70 +77,83 @@ const ProductTable = ({ data }) => {
                   </StyledHeadRow>
                </TableHead>
                <TableBody>
-                  {paginatedData.map((item, index) => (
-                     <StyledBodyRow
-                        key={item.id}
-                        onMouseEnter={() => setHoveredRow(item.id)}
-                        onMouseLeave={() => setHoveredRow(null)}
-                     >
-                        <StyledBodyCell>
-                           <FixedWidthBox>
-                              {hoveredRow === item.id ? (
-                                 <Checkbox
-                                    checked={selectedIds.includes(item.id)}
-                                    onChange={() => toggleCheckbox(item.id)}
-                                 />
+                  {paginatedData.map((item, index) => {
+                     const isSelected = selectedIds.includes(item.id)
+                     return (
+                        <StyledBodyRow
+                           key={item.id}
+                           onMouseEnter={() => setHoveredRow(item.id)}
+                           onMouseLeave={() => setHoveredRow(null)}
+                        >
+                           <StyledBodyCell>
+                              <FixedWidthBox>
+                                 {hoveredRow === item.id ? (
+                                    <Checkbox
+                                       checked={isSelected}
+                                       onChange={() => toggleCheckbox(item.id)}
+                                    />
+                                 ) : (
+                                    <span>
+                                       {(page - 1) * rowsPerPage + index + 1}
+                                    </span>
+                                 )}
+                              </FixedWidthBox>
+                           </StyledBodyCell>
+
+                           <StyledBodyCell>
+                              {item.imageUrl ? (
+                                 <ProductImage src={item.imageUrl} alt="Фото" />
                               ) : (
-                                 <span>
-                                    {(page - 1) * rowsPerPage + index + 1}
-                                 </span>
+                                 <ImagePlaceholder />
                               )}
-                           </FixedWidthBox>
-                        </StyledBodyCell>
+                           </StyledBodyCell>
 
-                        <StyledBodyCell>
-                           {item.imageUrl ? (
-                              <ProductImage src={item.imageUrl} alt="Фото" />
-                           ) : (
-                              <ImagePlaceholder />
-                           )}
-                        </StyledBodyCell>
+                           <StyledBodyCell>{item.article}</StyledBodyCell>
 
-                        <StyledBodyCell>{item.article}</StyledBodyCell>
+                           <StyledBodyCell>
+                              <Box>
+                                 Кол-во товара {item.quantity}шт.
+                                 <ProductNameText>{item.name}</ProductNameText>
+                              </Box>
+                           </StyledBodyCell>
 
-                        <StyledBodyCell>
-                           <Box>
-                              Кол-во товара {item.quantity}шт.
-                              <ProductNameText>{item.name}</ProductNameText>
-                           </Box>
-                        </StyledBodyCell>
+                           <StyledBodyCell>
+                              {item.date}
+                              <SubText>{item.time || ''}</SubText>
+                           </StyledBodyCell>
 
-                        <StyledBodyCell>
-                           {item.date}
-                           <SubText>{item.time || ''}</SubText>
-                        </StyledBodyCell>
+                           <StyledBodyCell>{item.quantity}</StyledBodyCell>
 
-                        <StyledBodyCell>{item.quantity}</StyledBodyCell>
+                           <StyledBodyCell>
+                              <PriceText>{item.price}c</PriceText>
+                              <DiscountText>{item.discountPrice}%</DiscountText>
+                           </StyledBodyCell>
 
-                        <StyledBodyCell>
-                           <PriceText>{item.price}c</PriceText>
-                           <DiscountText>{item.discountPrice}%</DiscountText>
-                        </StyledBodyCell>
+                           <StyledBodyCell>
+                              <PriceText>
+                                 {item.totalPrice || item.currentPrice}c
+                              </PriceText>
+                           </StyledBodyCell>
 
-                        <StyledBodyCell>
-                           <PriceText>
-                              {item.totalPrice || item.currentPrice}c
-                           </PriceText>
-                        </StyledBodyCell>
-
-                        <StyledBodyCell>
-                           <ActionWrapper>
-                              <ActionIcon src={Icons.edit} alt="edit" />
-                              <ActionIcon src={Icons.deleteb} alt="delete" />
-                           </ActionWrapper>
-                        </StyledBodyCell>
-                     </StyledBodyRow>
-                  ))}
+                           <StyledBodyCell>
+                              <ActionWrapper>
+                                 <ActionIcon src={Icons.edit} alt="edit" />
+                                 <ActionIcon
+                                    src={Icons.deleteb}
+                                    alt="delete"
+                                    onClick={() => openDeleteModal(item.id)}
+                                    sx={{
+                                       opacity: isSelected ? 1 : 0.3,
+                                       pointerEvents: isSelected
+                                          ? 'auto'
+                                          : 'none',
+                                    }}
+                                 />
+                              </ActionWrapper>
+                           </StyledBodyCell>
+                        </StyledBodyRow>
+                     )
+                  })}
                </TableBody>
             </StyledTable>
          </TableWrapper>
@@ -135,11 +168,32 @@ const ProductTable = ({ data }) => {
                />
             </Box>
          )}
+
+         <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Box sx={{ padding: '20px', textAlign: 'center' }}>
+               <Typography sx={{ mb: 2, fontSize: '18px' }}>
+                  Вы уверены, что хотите удалить этот товар?
+               </Typography>
+               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+                  <Button
+                     variant="outlined"
+                     onClick={() => setIsModalOpen(false)}
+                  >
+                     Отмена
+                  </Button>
+                  <Button variant="contained" onClick={confirmDelete}>
+                     Удалить
+                  </Button>
+               </Box>
+            </Box>
+         </Modal>
       </Box>
    )
 }
 
 export default ProductTable
+
+// ...стили оставь без изменений
 
 const TableWrapper = styled(TableContainer)(() => ({
    borderRadius: 12,
@@ -238,8 +292,12 @@ const ActionWrapper = styled(Box)(() => ({
    gap: 10,
 }))
 
-const ActionIcon = styled('img')(() => ({
+const ActionIcon = styled('img', {
+   shouldForwardProp: (prop) => prop !== 'sx',
+})(({ sx }) => ({
    width: 20,
    height: 20,
    cursor: 'pointer',
+   opacity: sx?.opacity ?? 1,
+   pointerEvents: sx?.pointerEvents ?? 'auto',
 }))

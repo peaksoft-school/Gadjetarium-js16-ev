@@ -1,4 +1,3 @@
-// Products.jsx
 import { Box, styled, Divider } from '@mui/material'
 import AdminHeader from '../layout/admin/AdminHeader'
 import Toolbar from './Toolbar'
@@ -9,6 +8,9 @@ import { useState, useEffect } from 'react'
 import { Icons } from '../assets/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '../store/products/productThunk'
+import Modal from './UI/Modal'
+import BannerUploadModal from './BannerUploadModal'
+import DiscountModal from './DiscountModal'
 
 const Wrapper = styled(Box)({
   display: 'flex',
@@ -59,17 +61,24 @@ const salesData = {
 
 const Products = () => {
   const dispatch = useDispatch()
-  const { items, total, loading, error } = useSelector((state) => state.product)
+  const { items, total, loading, error } = useSelector(
+    (state) => state.product
+  )
 
   const [openPicker, setOpenPicker] = useState(null)
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
   const [search, setSearch] = useState('')
   const [action, setAction] = useState('all')
+  const [openBannerModal, setOpenBannerModal] = useState(false)
+  const [openDiscountModal, setOpenDiscountModal] = useState(false)
+
+  // Вынес выбранные ID сюда
+  const [selectedIds, setSelectedIds] = useState([])
 
   const handleCleanDatePicker = () => {
-   setFromDate(null)
-   setToDate(null)
+    setFromDate(null)
+    setToDate(null)
   }
 
   useEffect(() => {
@@ -89,6 +98,19 @@ const Products = () => {
     setOpenPicker(null)
   }
 
+  const handleUploadBanner = (files) => {
+    console.log('Загружаем баннеры:', files)
+    setOpenBannerModal(false)
+  }
+
+  const handleDiscountSubmit = (discountData) => {
+    console.log('Скидка применена на товары:', discountData)
+    // discountData.productIds содержит выбранные id товаров
+    setOpenDiscountModal(false)
+    // Очистим выбранные товары, если нужно:
+    setSelectedIds([])
+  }
+
   return (
     <>
       <AdminHeader />
@@ -97,6 +119,8 @@ const Products = () => {
           onSearch={(val) => setSearch(val)}
           onActionChange={(val) => setAction(val)}
           currentAction={action}
+          onUploadBanner={() => setOpenBannerModal(true)}
+          onOpenDiscount={() => setOpenDiscountModal(true)}
         />
 
         <Divider sx={{ width: '100%', mt: 2 }} />
@@ -117,7 +141,7 @@ const Products = () => {
               <img src={Icons.calendar} alt="calendar" />
             </StyledBoxTab>
           </StyledTabs>
-          <img src={Icons.cancel} onClick={()=>handleCleanDatePicker()}/>
+          <img src={Icons.cancel} onClick={handleCleanDatePicker} />
         </FiltersBlock>
 
         {loading && <p>Загрузка...</p>}
@@ -131,7 +155,14 @@ const Products = () => {
           </p>
         )}
 
-        {!loading && !error && <ProductTable data={items || []} totalCount={total} />}
+        {!loading && !error && (
+          <ProductTable
+            data={items || []}
+            totalCount={total}
+            selectedIds={selectedIds}
+            setSelectedIds={setSelectedIds}
+          />
+        )}
 
         <Infographics data={salesData} />
       </Wrapper>
@@ -144,6 +175,19 @@ const Products = () => {
           />
         </StyledBoxDate>
       )}
+      <Modal open={openBannerModal} onClose={() => setOpenBannerModal(false)}>
+        <BannerUploadModal
+          onClose={() => setOpenBannerModal(false)}
+          onUpload={handleUploadBanner}
+        />
+      </Modal>
+      <Modal open={openDiscountModal} onClose={() => setOpenDiscountModal(false)}>
+        <DiscountModal
+          selectedIds={selectedIds}
+          onClose={() => setOpenDiscountModal(false)}
+          onSubmit={handleDiscountSubmit}
+        />
+      </Modal>
     </>
   )
 }

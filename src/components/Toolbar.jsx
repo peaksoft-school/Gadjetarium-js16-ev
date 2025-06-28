@@ -10,7 +10,13 @@ import {
 import Button from './UI/Button'
 import { Icons } from '../assets/icons'
 
-const Toolbar = ({ onSearch, onActionChange, currentAction }) => {
+const Toolbar = ({
+   onSearch,
+   onActionChange,
+   currentAction,
+   onUploadBanner,
+   onOpenDiscount,
+}) => {
    const [searchValue, setSearchValue] = useState('')
 
    const handleSearchChange = (e) => {
@@ -66,9 +72,11 @@ const Toolbar = ({ onSearch, onActionChange, currentAction }) => {
          <RightColumn>
             <ActionButtons>
                <Button variant="outlined">Добавить товар</Button>
-               <Button variant="outlined">Создать скидку</Button>
+               <Button variant="outlined" onClick={onOpenDiscount}>
+                  Создать скидку
+               </Button>
             </ActionButtons>
-            <UploadBanner>
+            <UploadBanner onClick={onUploadBanner}>
                <img src={Icons.link} alt="link" />
                Загрузить баннер
             </UploadBanner>
