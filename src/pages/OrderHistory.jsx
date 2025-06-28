@@ -73,7 +73,7 @@ const OrderHistory = () => {
                            textDecoration: 'underline',
                         }}
                      >
-                        Очистить список заказов
+                        {/* Очистить список заказов */}
                      </Typography>
                   </Box>
 

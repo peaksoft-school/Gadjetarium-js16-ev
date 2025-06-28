@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import { fetchOrderDetailsThunk } from './features/orders/orderHistoryThink'
@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
+import CompactCard from '../components/UI/cards/CompactCard'
 
 const OrderDetails = () => {
    const { id } = useParams()
@@ -44,7 +45,36 @@ const OrderDetails = () => {
             <Typography variant="h6" mb={2}>
                № {selectedOrder.article}
             </Typography>
-
+            <StyledBoxCards>
+               <CompactCard
+                  image="https://s-mobile.shop/wa-data/public/shop/products/70/02/270/images/604/604.970.jpg"
+                  title="Bluetooth Наушники Yison Е6"
+                  price={2000}
+                  rating={5}
+                  reviews={78}
+               />
+               <CompactCard
+                  image="https://s-mobile.shop/wa-data/public/shop/products/70/02/270/images/604/604.970.jpg"
+                  title="Bluetooth Наушники Yison Е6"
+                  price={2000}
+                  rating={5}
+                  reviews={78}
+               />
+               <CompactCard
+                  image="https://s-mobile.shop/wa-data/public/shop/products/70/02/270/images/604/604.970.jpg"
+                  title="Bluetooth Наушники Yison Е6"
+                  price={2000}
+                  rating={5}
+                  reviews={78}
+               />
+               <CompactCard
+                  image="https://s-mobile.shop/wa-data/public/shop/products/70/02/270/images/604/604.970.jpg"
+                  title="Bluetooth Наушники Yison Е6"
+                  price={2000}
+                  rating={5}
+                  reviews={78}
+               />
+            </StyledBoxCards>
             <Grid container spacing={3} mt={4}>
                <Grid item xs={12} md={6}>
                   <Field label="Статус">{selectedOrder.status}</Field>
@@ -64,9 +94,7 @@ const OrderDetails = () => {
                   {/* <Field label="Город">—</Field> */}
                </Grid>
             </Grid>
-
             <Divider sx={{ my: 4 }} />
-
             <Grid container spacing={2}>
                <Grid item>
                   <Typography>
@@ -123,3 +151,8 @@ const Field = ({ label, children }) => (
       <Typography fontWeight={500}>{children}</Typography>
    </Box>
 )
+
+const StyledBoxCards = styled(Box)(({ theme }) => ({
+   display: 'flex',
+   gap: '15px',
+}))
