@@ -11,7 +11,6 @@ import { Container, styled, Box } from '@mui/material'
 import UniversalTable from '../components/UI/UniversalTable'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
-import Infographic from './Infograficks'
 
 export default function Orders() {
    const [searchValue, setSearchValue] = useState('')
