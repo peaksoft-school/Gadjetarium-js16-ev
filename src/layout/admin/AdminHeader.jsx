@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material'
 import { styled } from '@mui/system'
 import { Icons } from '../../assets/icons'
 import Modal from '../../components/UI/Modal'
-import NewsletterForm from '../../components/Mailing'
+import Mailing from '../../components/Mailing'
 
 const AdminHeader = () => {
    const [isModalOpen, setIsModalOpen] = useState(false)
@@ -13,7 +13,7 @@ const AdminHeader = () => {
 
    return (
       <>
-         <StyledAppBar sx={{ backgroundColor: '#1A1A25' }} position="static">
+         <StyledAppBar position="static">
             <StyledToolbar>
                <StyledNavs>
                   <Logo src={Icons.gadgetarium} alt="Gadgetarium" />
@@ -36,16 +36,12 @@ const AdminHeader = () => {
          </StyledAppBar>
 
          <Modal open={isModalOpen} onClose={handleCloseModal}>
-            <Box sx={{ padding: '20px', width: '100%', maxWidth: '600px' }}>
-               <Typography variant="h6" mb={2}>
-                  Рассылка
-               </Typography>
-
-               <NewsletterForm
+            <ModalBox>
+               <Mailing
                   onCancel={handleCloseModal}
                   onSubmit={handleCloseModal}
                />
-            </Box>
+            </ModalBox>
          </Modal>
       </>
    )
@@ -53,7 +49,6 @@ const AdminHeader = () => {
 
 export default AdminHeader
 
-// Стили
 const StyledNavs = styled(Box)({
    display: 'flex',
    alignItems: 'center',
@@ -65,6 +60,7 @@ const StyledAppBar = styled(AppBar)`
    box-shadow: none;
    border-bottom: 2px solid #6a1b9a;
    padding: 0 20px;
+   background-color: #1a1a25;
 `
 
 const StyledToolbar = styled(Toolbar)`
@@ -113,4 +109,10 @@ const UserIcon = styled('img')`
    height: 40px;
    width: 40px;
    border-radius: 50%;
+`
+
+const ModalBox = styled(Box)`
+   padding: 20px;
+   width: 100%;
+   max-width: 600px;
 `

@@ -41,27 +41,18 @@ const Toolbar = ({
                   value={searchValue}
                   onChange={handleSearchChange}
                />
-               <IconButton sx={{ padding: 0 }}>
+               <StyledIconButton>
                   <img src={Icons.searchGrey} alt="search" />
-               </IconButton>
+               </StyledIconButton>
             </SearchBox>
 
             <Filters>
                {filterOptions.map(({ label, value }) => (
                   <StyledFilterButton
                      key={value}
+                     $active={currentAction === value}
                      onClick={() => onActionChange(value)}
                      variant="contained"
-                     sx={{
-                        backgroundColor:
-                           currentAction === value ? '#2D3A45' : '#F4F6F9',
-                        color: currentAction === value ? '#FFFFFF' : '#1A1A25',
-                        '&:hover': {
-                           backgroundColor:
-                              currentAction === value ? '#1c252c' : '#eaecee',
-                           boxShadow: 'none',
-                        },
-                     }}
                   >
                      {label}
                   </StyledFilterButton>
@@ -123,6 +114,10 @@ const StyledInput = styled(InputBase)({
    },
 })
 
+const StyledIconButton = styled(IconButton)({
+   padding: 0,
+})
+
 const Filters = styled(Box)({
    display: 'flex',
    gap: '8px',
@@ -130,7 +125,7 @@ const Filters = styled(Box)({
    marginTop: '8px',
 })
 
-const StyledFilterButton = styled(MUIButton)(({ theme }) => ({
+const StyledFilterButton = styled(MUIButton)(({ theme, $active }) => ({
    textTransform: 'none',
    fontWeight: 500,
    fontSize: '14px',
@@ -139,6 +134,12 @@ const StyledFilterButton = styled(MUIButton)(({ theme }) => ({
    padding: '6px 16px',
    boxShadow: 'none',
    border: 'none',
+   backgroundColor: $active ? '#2D3A45' : '#F4F6F9',
+   color: $active ? '#FFFFFF' : '#1A1A25',
+   '&:hover': {
+      backgroundColor: $active ? '#1c252c' : '#eaecee',
+      boxShadow: 'none',
+   },
 }))
 
 const RightColumn = styled(Box)({

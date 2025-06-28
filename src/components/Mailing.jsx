@@ -1,10 +1,12 @@
-import { Box, Typography, TextField, Button, IconButton } from '@mui/material'
+import { Box, Typography, TextField, Button } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers'
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { sendPromoMail } from '../store/mailing/mailThunk'
+import { styled } from '@mui/material/styles'
+import { Icons } from '../assets/icons'
 
-const NewsletterForm = ({ onCancel, onSubmit }) => {
+const Mailing = ({ onCancel }) => {
    const [startDate, setStartDate] = useState(null)
    const [endDate, setEndDate] = useState(null)
    const [title, setTitle] = useState('')
@@ -22,35 +24,26 @@ const NewsletterForm = ({ onCancel, onSubmit }) => {
    }
 
    const handleSubmit = () => {
-      const data = {
-         title,
-         description,
-         endDate,
-         image: imageFile,
+      if (!imageFile || !title || !description || !endDate) {
+         alert('Пожалуйста, заполните все поля и выберите изображение.')
+         return
       }
-      dispatch(sendNewsletter(data))
+
+      dispatch(
+         sendPromoMail({
+            subject: title,
+            text: description,
+            files: [imageFile],
+            promoEndDate: endDate?.toISOString(),
+         })
+      )
    }
 
    return (
-      <Box display="flex" flexDirection="column" height="100%">
-         <Typography variant="h6" align="center" mb={3}>
-            Создать рассылку
-         </Typography>
+      <Root>
+         <Title variant="h6">Создать рассылку</Title>
 
-         <Box
-            width={176}
-            height={176}
-            bgcolor="#F4F6F9"
-            borderRadius="12px"
-            mx="auto"
-            mb={3}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-            textAlign="center"
-            sx={{ cursor: 'pointer', overflow: 'hidden', position: 'relative' }}
-         >
+         <ImageBox>
             <input
                type="file"
                accept="image/*"
@@ -58,93 +51,181 @@ const NewsletterForm = ({ onCancel, onSubmit }) => {
                id="upload-banner"
                onChange={handleImageChange}
             />
-            <label
-               htmlFor="upload-banner"
-               style={{
-                  cursor: 'pointer',
-                  width: '100%',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-               }}
-            >
+            <ImageLabel htmlFor="upload-banner">
                {imagePreview ? (
-                  <img
-                     src={imagePreview}
-                     alt="preview"
-                     style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                     }}
-                  />
+                  <PreviewImg src={imagePreview} alt="preview" />
                ) : (
                   <>
-                     <AddPhotoAlternateIcon sx={{ fontSize: 40 }} />
-                     <Typography variant="caption">
+                     <img src={Icons.photo} alt="add" />
+
+                     <StyledCaption>
                         Нажмите для добавления фотографии
-                     </Typography>
+                     </StyledCaption>
                   </>
                )}
-            </label>
-         </Box>
+            </ImageLabel>
+         </ImageBox>
 
-         <TextField
+         <StyledTextField
             required
             label="Название рассылки"
             placeholder="Введите название рассылки"
             fullWidth
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            sx={{ mb: 2 }}
          />
 
-         <TextField
+         <StyledTextField
             required
             label="Описание рассылки"
             placeholder="Введите описание рассылки"
             fullWidth
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            sx={{ mb: 2 }}
          />
 
-         <Box display="flex" gap={2} mb={3}>
-            <DatePicker
-               label="Дата начала акции"
-               value={startDate}
-               onChange={setStartDate}
-               slotProps={{ textField: { fullWidth: true, required: true } }}
-            />
-            <DatePicker
-               label="Дата окончания акции"
-               value={endDate}
-               onChange={setEndDate}
-               slotProps={{ textField: { fullWidth: true, required: true } }}
-            />
-         </Box>
+         <DatesRow>
+            <StyledDatePickerBox>
+               <DatePicker
+                  label="Дата начала акции"
+                  value={startDate}
+                  onChange={setStartDate}
+                  slotProps={{ textField: { fullWidth: true, required: true } }}
+               />
+            </StyledDatePickerBox>
+            <StyledDatePickerBox>
+               <DatePicker
+                  label="Дата окончания акции"
+                  value={endDate}
+                  onChange={setEndDate}
+                  slotProps={{ textField: { fullWidth: true, required: true } }}
+               />
+            </StyledDatePickerBox>
+         </DatesRow>
 
-         <Box display="flex" justifyContent="space-between" mt="auto">
-            <Button
+         <Actions>
+            <StyledButton
                variant="outlined"
                color="secondary"
                onClick={onCancel}
-               sx={{ maxWidth: 180 }}
             >
                Отменить
-            </Button>
-            <Button
-               variant="contained"
-               sx={{ maxWidth: 180, bgcolor: '#D300A4' }}
-               onClick={handleSubmit}
-            >
+            </StyledButton>
+            <StyledButton variant="contained" onClick={handleSubmit}>
                Отправить
-            </Button>
-         </Box>
-      </Box>
+            </StyledButton>
+         </Actions>
+      </Root>
    )
 }
 
-export default NewsletterForm
+export default Mailing
+
+const Root = styled(Box)({
+   display: 'flex',
+   flexDirection: 'column',
+   height: '100%',
+})
+
+const Title = styled(Typography)({
+   textAlign: 'center',
+   marginBottom: 24,
+})
+
+const ImageBox = styled(Box)({
+   width: 176,
+   height: 176,
+   background: '#F4F6F9',
+   borderRadius: 12,
+   margin: '0 auto 24px auto',
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'center',
+   alignItems: 'center',
+   textAlign: 'center',
+   cursor: 'pointer',
+   overflow: 'hidden',
+   position: 'relative',
+})
+
+const ImageLabel = styled('label')({
+   cursor: 'pointer',
+   width: '100%',
+   height: '100%',
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   justifyContent: 'center',
+})
+
+const PreviewImg = styled('img')({
+   width: '100%',
+   height: '100%',
+   objectFit: 'cover',
+})
+
+const StyledCaption = styled(Typography)({
+   fontSize: 13,
+   color: '#7B7B7B',
+   marginTop: 8,
+})
+
+const StyledTextField = styled(TextField)({
+   marginBottom: 16,
+   '& .MuiInputBase-root': {
+      background: '#fff',
+      borderRadius: 6,
+      fontSize: 16,
+   },
+   '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#E3E4E8',
+   },
+})
+
+const DatesRow = styled(Box)({
+   display: 'flex',
+   gap: 16,
+   marginBottom: 24,
+})
+
+const Actions = styled(Box)({
+   display: 'flex',
+   justifyContent: 'space-between',
+   marginTop: 'auto',
+   gap: 16,
+})
+
+const StyledButton = styled(Button)(({ theme }) => ({
+   maxWidth: 180,
+   fontWeight: 500,
+   fontSize: 16,
+   height: 44,
+   borderRadius: 8,
+   boxShadow: 'none',
+   textTransform: 'none',
+   ...(theme.palette.mode === 'light'
+      ? {
+           '&.MuiButton-contained': {
+              background: '#D300A4',
+              '&:hover': { background: '#B000A4' },
+           },
+           '&.MuiButton-outlined': {
+              color: '#D100C9',
+              borderColor: '#D100C9',
+              '&:hover': { borderColor: '#D100C9', background: '#F9E6F9' },
+           },
+        }
+      : {}),
+}))
+
+const StyledDatePickerBox = styled(Box)({
+   width: '100%',
+   '& .MuiInputBase-root': {
+      background: '#fff',
+      borderRadius: 6,
+      fontSize: 16,
+   },
+   '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#E3E4E8',
+   },
+})

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../configs/axiosInstans'
+import { fileUploadInstance } from '../../configs/fileAxiosInstance'
 
 export const postBanner = createAsyncThunk(
    'banner/postBanner',
@@ -11,14 +12,9 @@ export const postBanner = createAsyncThunk(
             const formData = new FormData()
             formData.append('file', file)
 
-            const res = await axiosInstance.post(
+            const res = await fileUploadInstance.post(
                '/api/files/upload',
-               formData,
-               {
-                  headers: {
-                     'Content-Type': 'multipart/form-data',
-                  },
-               }
+               formData
             )
 
             uploadedUrls.push(res.data)

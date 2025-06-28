@@ -1,4 +1,3 @@
-// store/banner/bannerSlice.js
 import { createSlice } from '@reduxjs/toolkit'
 import { postBanner } from './bannerThunk'
 

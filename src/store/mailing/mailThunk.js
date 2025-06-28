@@ -1,29 +1,33 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../configs/axiosInstans'
+import { fileUploadInstance } from '../../configs/fileAxiosInstance'
 
 export const sendPromoMail = createAsyncThunk(
-   'mail/sendPromoMail',
-   async ({ file, subject, message, promoEndDate }, thunkAPI) => {
+   'mail/postMail',
+   async (mailData, thunkAPI) => {
       try {
-         // 1. Загрузка изображения в S3
-         const formData = new FormData()
-         formData.append('file', file)
+         const uploadedUrls = []
 
-         const uploadRes = await axiosInstance.post('/api/files/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+         for (const file of mailData.files) {
+            const formData = new FormData()
+            formData.append('file', file)
+
+            const res = await fileUploadInstance.post(
+               '/api/files/upload',
+               formData
+            )
+
+            uploadedUrls.push(res.data)
+         }
+
+         const mailRes = await axiosInstance.post('/api/mail/send', {
+            subject: mailData.subject,
+            message: mailData.text,
+            images: uploadedUrls,
+            promoEndDate: mailData.promoEndDate,
          })
 
-         const imageUrl = uploadRes.data // строка, а не объект
-
-         // 2. Отправка письма
-         const res = await axiosInstance.post('/api/mail/send', {
-            image: imageUrl,
-            subject,
-            message,
-            promoEndDate,
-         })
-
-         return res.data
+         return mailRes.data
       } catch (error) {
          return thunkAPI.rejectWithValue(
             error.response?.data || 'Ошибка при отправке письма'

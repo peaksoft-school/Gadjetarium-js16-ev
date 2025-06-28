@@ -54,12 +54,9 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
 
    return (
       <Box>
-         <Typography
-            variant="body2"
-            sx={{ color: '#384255', mb: 2, textAlign: 'left' }}
-         >
+         <StyledInfoText>
             Найдено {data.length} товаров
-         </Typography>
+         </StyledInfoText>
 
          <TableWrapper component={Paper}>
             <StyledTable>
@@ -138,16 +135,11 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
                            <StyledBodyCell>
                               <ActionWrapper>
                                  <ActionIcon src={Icons.edit} alt="edit" />
-                                 <ActionIcon
+                                 <StyledDeleteIcon
                                     src={Icons.deleteb}
                                     alt="delete"
                                     onClick={() => openDeleteModal(item.id)}
-                                    sx={{
-                                       opacity: isSelected ? 1 : 0.3,
-                                       pointerEvents: isSelected
-                                          ? 'auto'
-                                          : 'none',
-                                    }}
+                                    selected={isSelected}
                                  />
                               </ActionWrapper>
                            </StyledBodyCell>
@@ -159,22 +151,22 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
          </TableWrapper>
 
          {data.length > rowsPerPage && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+            <PaginationWrapper>
                <Pagination
                   count={Math.ceil(data.length / rowsPerPage)}
                   page={page}
                   onChange={(e, value) => setPage(value)}
                   color="primary"
                />
-            </Box>
+            </PaginationWrapper>
          )}
 
          <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-            <Box sx={{ padding: '20px', textAlign: 'center' }}>
-               <Typography sx={{ mb: 2, fontSize: '18px' }}>
+            <ModalContent>
+               <ModalText>
                   Вы уверены, что хотите удалить этот товар?
-               </Typography>
-               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+               </ModalText>
+               <ModalActions>
                   <Button
                      variant="outlined"
                      onClick={() => setIsModalOpen(false)}
@@ -184,8 +176,8 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
                   <Button variant="contained" onClick={confirmDelete}>
                      Удалить
                   </Button>
-               </Box>
-            </Box>
+               </ModalActions>
+            </ModalContent>
          </Modal>
       </Box>
    )
@@ -193,7 +185,41 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
 
 export default ProductTable
 
-// ...стили оставь без изменений
+const StyledInfoText = styled(Typography)(() => ({
+   color: '#384255',
+   marginBottom: 16,
+   textAlign: 'left',
+}))
+
+const PaginationWrapper = styled(Box)(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+   marginTop: 16,
+}))
+
+const ModalContent = styled(Box)(() => ({
+   padding: 20,
+   textAlign: 'center',
+}))
+
+const ModalText = styled(Typography)(() => ({
+   marginBottom: 16,
+   fontSize: 18,
+}))
+
+const ModalActions = styled(Box)(() => ({
+   display: 'flex',
+   justifyContent: 'center',
+   gap: 16,
+}))
+
+const StyledDeleteIcon = styled('img')(({ selected }) => ({
+   width: 20,
+   height: 20,
+   cursor: 'pointer',
+   opacity: selected ? 1 : 0.3,
+   pointerEvents: selected ? 'auto' : 'none',
+}))
 
 const TableWrapper = styled(TableContainer)(() => ({
    borderRadius: 12,
@@ -292,12 +318,8 @@ const ActionWrapper = styled(Box)(() => ({
    gap: 10,
 }))
 
-const ActionIcon = styled('img', {
-   shouldForwardProp: (prop) => prop !== 'sx',
-})(({ sx }) => ({
+const ActionIcon = styled('img')(() => ({
    width: 20,
    height: 20,
    cursor: 'pointer',
-   opacity: sx?.opacity ?? 1,
-   pointerEvents: sx?.pointerEvents ?? 'auto',
 }))
