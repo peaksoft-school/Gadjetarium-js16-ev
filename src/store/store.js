@@ -1,26 +1,28 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import persistReducer from 'redux-persist/es/persistReducer'
-import persistStore from 'redux-persist/es/persistStore'
-import storage from 'redux-persist/lib/storage'
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import persistReducer from 'redux-persist/es/persistReducer';
+import persistStore from 'redux-persist/es/persistStore';
+import storage from 'redux-persist/lib/storage';
+import favoritesReducer from '../store/favoriteSlice';
 
-const rootReducer = combineReducers({})
+const rootReducer = combineReducers({
+  favorite: favoritesReducer,
+});
 
 const persistConfig = {
-   key: 'GADJETARIUM',
-   storage,
-}
+  key: 'GADJETARIUM',
+  storage,
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-   reducer: persistedReducer,
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
 
-   middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-         serializableCheck: false,
-      }),
-})
+const persistor = persistStore(store);
 
-const persistor = persistStore(store)
-
-export { store, persistor }
+export { store, persistor };

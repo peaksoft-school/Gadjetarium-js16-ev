@@ -40,7 +40,7 @@ export default CompactCard
 const StyledCard = styled(MuiCard)({
    width: 210,
    height: 354,
-   borderRadius: 16,
+   borderRadius: 4,
    padding: 12,
    display: 'flex',
    flexDirection: 'column',
