@@ -9,6 +9,8 @@ import { injectStore } from './configs/axiosInstans.js'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from './store/store.js'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 
 injectStore(store)
 
@@ -18,7 +20,9 @@ createRoot(document.getElementById('root')).render(
          <PersistGate persistor={persistor}>
             <BrowserRouter>
                <Themes>
-                  <App />
+                 <LocalizationProvider dateAdapter={AdapterDayjs}>
+                     <App />
+                 </LocalizationProvider>
 
                   <Notifications />
                </Themes>

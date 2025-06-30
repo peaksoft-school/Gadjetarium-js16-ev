@@ -1,9 +1,10 @@
 import { Outlet } from 'react-router'
+import ProductActionsHeader from '../../components/Products'
 
 const Home = () => {
    return (
       <div>
-         <h1>HOME</h1>
+         <ProductActionsHeader/>
          <Outlet />
       </div>
    )
