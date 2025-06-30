@@ -5,7 +5,7 @@ export const fetchFavorites = () => async (dispatch) => {
   try {
     dispatch(setLoading());
     const response = await axiosInstance.get('/api/favorites');
-    dispatch(setFavorites(response.data || [])); // Ensure empty array if no data
+    dispatch(setFavorites(response.data || []));
   } catch (error) {
     const errorMessage =
       error.response?.data?.message ||
