@@ -2,6 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import persistReducer from 'redux-persist/es/persistReducer'
 import persistStore from 'redux-persist/es/persistStore'
 import storage from 'redux-persist/lib/storage'
+<<<<<<< HEAD
+import { authReducer } from './authSlice/authSlice'
+
+
+const rootReducer = combineReducers({
+   auth: authReducer,
+=======
 import { injectStore } from '../configs/axiosInstans'
 
 import productReducer from './products/productSlice'
@@ -14,11 +21,13 @@ const rootReducer = combineReducers({
    banner: bannerReducer,
    discount: discountReducer,
    mail: mailReducer,
+>>>>>>> development
 })
 
 const persistConfig = {
    key: 'GADJETARIUM',
    storage,
+   whitelist: ['auth'], 
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
