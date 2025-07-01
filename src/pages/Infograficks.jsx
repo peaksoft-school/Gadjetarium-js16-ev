@@ -1,190 +1,210 @@
-import { useState } from 'react'
-import { Box, Typography, Stack, styled } from '@mui/material'
+// import { useEffect } from 'react'
+// import { useDispatch, useSelector } from 'react-redux'
+// import { fetchInfographic, setPeriod } from '../pages/features/infographicSlice'
 
-const Infographics = ({ data }) => {
-   const [activePeriod, setActivePeriod] = useState('day')
+// const periods = {
+//    daily: 'За день',
+//    monthly: 'За месяц',
+//    yearly: 'За год',
+// }
 
-   const formatNumber = (num) => num.toLocaleString('ru-RU')
+// const Infographic = () => {
+//    const dispatch = useDispatch()
+//    const { data, status, error, period } = useSelector(
+//       (state) => state.infographic
+//    )
+
+//    useEffect(() => {
+//       dispatch(fetchInfographic(period))
+//    }, [dispatch, period])
+
+//    const formatNumber = (n) => n?.toLocaleString('ru-RU') ?? '—'
+
+//    return (
+//       <div className="p-6 font-sans max-w-md mx-auto">
+//          <h2 className="text-sm mb-4 font-medium uppercase text-gray-600">
+//             Инфографика
+//          </h2>
+
+//          <div className="flex justify-between mb-6">
+//             <div className="text-center">
+//                <span className="text-blue-600 text-2xl font-bold">
+//                   {formatNumber(data?.totalSalesToday)} с
+//                </span>
+//                <div className="text-sm text-gray-500">Выкупили на сумму</div>
+//                <div className="text-blue-600 text-base font-medium mt-1">
+//                   {formatNumber(data?.dailySaleUnits)} шт
+//                </div>
+//             </div>
+
+//             <div className="text-center">
+//                <span className="text-orange-500 text-2xl font-bold">
+//                   {formatNumber(data?.monthlyOrders)} с
+//                </span>
+//                <div className="text-sm text-gray-500">Заказали на сумму</div>
+//                <div className="text-orange-500 text-base font-medium mt-1">
+//                   {formatNumber(data?.totalOrdersThisMonth)} шт
+//                </div>
+//             </div>
+//          </div>
+
+//          <div className="flex space-x-4 mb-4">
+//             {Object.entries(periods).map(([key, label]) => (
+//                <div
+//                   key={key}
+//                   className={`cursor-pointer pb-1 border-b-2 ${
+//                      period === key
+//                         ? 'border-black'
+//                         : 'border-transparent text-gray-500'
+//                   }`}
+//                   onClick={() => dispatch(setPeriod(key))}
+//                >
+//                   {label}
+//                </div>
+//             ))}
+//          </div>
+
+//          <div className="bg-blue-50 rounded-xl p-4 text-center">
+//             <div className="text-sm text-gray-600 mb-2">
+//                Доставлено товаров на сумму
+//             </div>
+//             <div className="text-green-600 text-xl font-bold">
+//                {formatNumber(data?.currentDeliveryCost)} с
+//             </div>
+//             <div className="text-green-500 text-base">
+//                {formatNumber(data?.previousDeliveryCost)} с{' '}
+//                <span className="text-gray-500 text-sm">
+//                   (предыдущий период)
+//                </span>
+//             </div>
+//          </div>
+
+//          {status === 'loading' && (
+//             <div className="text-sm mt-4 text-gray-500">Загрузка...</div>
+//          )}
+//          {status === 'failed' && (
+//             <div className="text-sm mt-4 text-red-500">{error}</div>
+//          )}
+//       </div>
+//    )
+// }
+
+// export default Infographic
+
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchInfographic, setPeriod } from '../pages/features/infographicSlice'
+import { Box, Typography, Tabs, Tab } from '@mui/material'
+import { styled } from '@mui/system'
+
+const Infographic = () => {
+   const dispatch = useDispatch()
+   const { data, period, status } = useSelector((state) => state.infographic)
+
+   useEffect(() => {
+      dispatch(fetchInfographic(period))
+   }, [dispatch, period])
+
+   const format = (value) => value?.toLocaleString('ru-RU') ?? '—'
+
+   const periods = {
+      daily: 'За день',
+      monthly: 'За месяц',
+      yearly: 'За год',
+   }
 
    return (
       <Container>
-         <Title variant="h6">ИНФОГРАФИКА</Title>
+         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Инфографика
+         </Typography>
 
-         <InfoRow>
-            <InfoBox>
-               <ValueBox>
-                  <Value sx={{ color: '#2196F3' }}>
-                     {formatNumber(data.purchasedAmount)}
-                  </Value>
-                  <Unit>с</Unit>
-               </ValueBox>
-               <Label>Выкупили на сумму</Label>
-               <Count sx={{ color: '#2196F3' }}>{data.purchasedCount} шт</Count>
-            </InfoBox>
+         <InfoBlock>
+            <InfoColumn color="#1976d2">
+               <Typography variant="h6">
+                  {format(data?.totalSalesToday)} с
+               </Typography>
+               <Typography variant="body2" color="text.secondary">
+                  Выкупили на сумму
+               </Typography>
+               <Typography variant="subtitle1">
+                  {format(data?.dailySaleUnits)} шт
+               </Typography>
+            </InfoColumn>
 
-            <Separator />
+            <InfoColumn color="#f57c00">
+               <Typography variant="h6">
+                  {format(data?.monthlyOrders)} с
+               </Typography>
+               <Typography variant="body2" color="text.secondary">
+                  Заказали на сумму
+               </Typography>
+               <Typography variant="subtitle1">
+                  {format(data?.totalOrdersThisMonth)} шт
+               </Typography>
+            </InfoColumn>
+         </InfoBlock>
 
-            <InfoBox>
-               <ValueBox>
-                  <Value sx={{ color: '#FF9800' }}>
-                     {formatNumber(data.orderedAmount)}
-                  </Value>
-                  <Unit>с</Unit>
-               </ValueBox>
-               <Label>Заказали на сумму</Label>
-               <Count sx={{ color: '#FF9800' }}>{data.orderedCount} шт</Count>
-            </InfoBox>
-         </InfoRow>
-
-         <PeriodSelector>
-            {[
-               { id: 'day', label: 'ЗА ДЕНЬ' },
-               { id: 'month', label: 'ЗА МЕСЯЦ' },
-               { id: 'year', label: 'ЗА ГОД' },
-            ].map((period) => (
-               <PeriodButton
-                  key={period.id}
-                  active={activePeriod === period.id}
-                  onClick={() => setActivePeriod(period.id)}
-               >
-                  {period.label}
-               </PeriodButton>
+         <Tabs
+            value={period}
+            onChange={(e, newValue) => dispatch(setPeriod(newValue))}
+            textColor="primary"
+            indicatorColor="primary"
+         >
+            {Object.entries(periods).map(([key, label]) => (
+               <Tab key={key} label={label} value={key} />
             ))}
-         </PeriodSelector>
+         </Tabs>
 
-         <InfoCard>
-            <Typography
-               sx={{ color: '#666', marginBottom: 2, fontWeight: 500 }}
-            >
+         <DeliveryBox mt={3}>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
                Доставлено товаров на сумму
             </Typography>
-            <Stack direction="row" spacing={4}>
-               <Box>
-                  <ValueBox>
-                     <SmallValue>
-                        {formatNumber(data.deliveredAmount)}
-                     </SmallValue>
-                     <Unit>с</Unit>
-                  </ValueBox>
-                  <Label>Текущий период</Label>
-               </Box>
-               <Box>
-                  <ValueBox>
-                     <PreviousValue>
-                        {formatNumber(data.previousDeliveredAmount)}
-                     </PreviousValue>
-                     <Unit>с</Unit>
-                  </ValueBox>
-                  <Label>Предыдущий период</Label>
-               </Box>
-            </Stack>
-         </InfoCard>
+            <Typography variant="h6" color="green">
+               {format(data?.currentDeliveryCost)} с
+            </Typography>
+            <Typography variant="subtitle1" color="green">
+               {format(data?.previousDeliveryCost)} с{' '}
+               <Typography
+                  component="span"
+                  color="text.secondary"
+                  variant="body2"
+               >
+                  (предыдущий период)
+               </Typography>
+            </Typography>
+         </DeliveryBox>
+
+         {status === 'loading' && (
+            <Typography mt={2} variant="body2" color="text.secondary">
+               Загрузка...
+            </Typography>
+         )}
       </Container>
    )
 }
 
-export default Infographics
+export default Infographic
 
-const Container = styled(Box)({
-   maxWidth: 600,
-   margin: '0 auto',
-   padding: 16,
-})
-
-const Title = styled(Typography)({
-   marginBottom: 24,
-   fontWeight: 600,
-})
-
-const InfoRow = styled(Stack)({
-   flexDirection: 'row',
-   gap: 32,
-   marginBottom: 32,
-})
-
-const InfoBox = styled(Box)({
-   flex: 1,
-})
-
-const Separator = styled(Box)({
-   width: '1px',
-   backgroundColor: '#E0E0E0',
-   marginTop: 8,
-   marginBottom: 8,
-})
-
-const InfoCard = styled(Box)({
-   background: '#F4F6F9',
-   borderRadius: 8,
-   padding: 16,
-})
-
-const PeriodSelector = styled(Box)({
-   display: 'flex',
-   borderBottom: '1px solid #E0E0E0',
-   marginBottom: 24,
-})
-
-const PeriodButton = styled('button', {
-   shouldForwardProp: (prop) => prop !== 'active',
-})(({ active }) => ({
-   flex: 1,
-   padding: 12,
-   background: 'none',
-   border: 'none',
-   cursor: 'pointer',
-   position: 'relative',
-   color: active ? '#000' : '#666',
-   fontWeight: active ? 600 : 400,
-   transition: 'color 0.2s ease',
-   '&:after': active
-      ? {
-           content: '""',
-           position: 'absolute',
-           bottom: 0,
-           left: 0,
-           width: '100%',
-           height: '2px',
-           background: '#000',
-        }
-      : {},
+const Container = styled(Box)(({ theme }) => ({
+   width: 400,
+   padding: theme.spacing(4),
 }))
 
-const ValueBox = styled(Box)({
+const InfoBlock = styled(Box)(({ theme }) => ({
    display: 'flex',
-   alignItems: 'baseline',
-   gap: 4,
-})
+   justifyContent: 'space-between',
+   marginBottom: theme.spacing(4),
+}))
 
-const Value = styled(Typography)({
-   fontSize: 32,
-   fontWeight: 700,
-   lineHeight: 1,
-})
+const InfoColumn = styled(Box)(({ color }) => ({
+   textAlign: 'center',
+   color: color || '#000',
+}))
 
-const SmallValue = styled(Value)({
-   fontSize: 28,
-   color: '#4CAF50',
-})
-
-const PreviousValue = styled(Value)({
-   fontSize: 24,
-   fontWeight: 500,
-   color: '#666',
-})
-
-const Unit = styled(Typography)({
-   fontSize: 14,
-   color: '#666',
-})
-
-const Label = styled(Typography)({
-   fontSize: 14,
-   color: '#666',
-   marginTop: 8,
-})
-
-const Count = styled(Typography)({
-   fontSize: 14,
-   marginTop: 4,
-})
+const DeliveryBox = styled(Box)(({ theme }) => ({
+   backgroundColor: '#eefaff',
+   padding: theme.spacing(2),
+   borderRadius: 12,
+   textAlign: 'center',
+}))

@@ -4,7 +4,6 @@ const BASE_URL = 'http://3.147.74.119'
 
 export const axiosInstance = axios.create({
    baseURL: BASE_URL,
-
    headers: {
       'Content-Type': 'application/json',
    },
@@ -20,7 +19,10 @@ axiosInstance.interceptors.request.use(
    (config) => {
       const updateConfig = { ...config }
 
-      const { token } = customStore.getState()?.auth
+      // const token = customStore?.getState()?.auth?.token || null
+
+      const token =
+         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFpYmVrQGdtYWlsLmNvbSIsImlkIjo1LCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NTEyOTk4ODcsImV4cCI6MTc1MTMwMzU4N30.ux_kGay7NP-ksAfjAe7o2xvERjl-CSZto2jWnbIdnJQ'
 
       if (token) {
          updateConfig.headers.Authorization = `Bearer ${token}`
@@ -28,18 +30,10 @@ axiosInstance.interceptors.request.use(
 
       return updateConfig
    },
-
-   (error) => {
-      return Promise.reject(error)
-   }
+   (error) => Promise.reject(error)
 )
 
 axiosInstance.interceptors.response.use(
-   (response) => {
-      return Promise.resolve(response)
-   },
-
-   (error) => {
-      return Promise.reject(error)
-   }
+   (response) => response,
+   (error) => Promise.reject(error)
 )
