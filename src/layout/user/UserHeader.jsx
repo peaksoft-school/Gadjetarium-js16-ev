@@ -271,7 +271,7 @@ const SearchContainer = styled(Box)({
          color: 'grey',
       },
       
-      '& img': {     // делаем иконку серой
+      '& img': {     
          filter: 'brightness(0) saturate(100%) invert(50%)',
       },
    },
@@ -284,7 +284,7 @@ const SearchContainer = styled(Box)({
          color: 'black',
       },
 
-      '& img': {    // делаем иконку черной
+      '& img': {  
          filter: 'brightness(0) saturate(100%)',
       },
    },

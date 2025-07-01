@@ -1,28 +1,42 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import persistReducer from 'redux-persist/es/persistReducer';
-import persistStore from 'redux-persist/es/persistStore';
-import storage from 'redux-persist/lib/storage';
-import favoritesReducer from '../store/favoriteSlice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import persistReducer from 'redux-persist/es/persistReducer'
+import persistStore from 'redux-persist/es/persistStore'
+import storage from 'redux-persist/lib/storage'
+import favoritesReducer from './favorite/favoriteSlice'
+import authSlice from './authSlice/authSlice'
+import { injectStore } from '../configs/axiosInstans'
+import productReducer from './products/productSlice'
+import bannerReducer from './banner/bannerSlice'
+import discountReducer from './discount/DiscountSlice'
+import mailReducer from './mailing/mailSlice'
 
 const rootReducer = combineReducers({
-  favorite: favoritesReducer,
-});
+   [authSlice.name]: authSlice.reducer,
+   product: productReducer,
+   banner: bannerReducer,
+   discount: discountReducer,
+   mail: mailReducer,
+   favorite: favoritesReducer,
+})
 
 const persistConfig = {
-  key: 'GADJETARIUM',
-  storage,
-};
+   key: 'GADJETARIUM',
+   storage,
+   whitelist: ['auth'],
+}
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
-});
+   reducer: persistedReducer,
+   middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+         serializableCheck: false,
+      }),
+})
 
-const persistor = persistStore(store);
+injectStore(store)
 
-export { store, persistor };
+const persistor = persistStore(store)
+
+export { store, persistor }

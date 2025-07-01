@@ -1,4 +1,3 @@
-
 import Phone from './pngs/phone.png'
 import KyrgyzJerim from './pngs/KyrgyzJerim.png'
 import GatgetStore from './pngs/GatgetStore.png'

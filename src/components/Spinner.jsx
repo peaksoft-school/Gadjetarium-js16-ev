@@ -26,6 +26,8 @@ const Spinner = () => {
    )
 }
 
+export default Spinner
+
 const StyledSpinner = styled('div')({
    width: '96px',
    height: '96px',

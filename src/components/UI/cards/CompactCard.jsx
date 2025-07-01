@@ -9,12 +9,14 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 
-const CompactCard = ({ image, title, price, rating, reviews }) => {
+const CompactCard = ({ card }) => {
+   const { image, productName, productPrice, discountPrice, productRating } = card;
+
    return (
       <StyledCard>
-         <StyledCardMedia component="img" image={image} alt={title} />
+         <StyledCardMedia component="img" image={image} alt={productName} />
          <StyledCardContent>
-            <TitleTypography variant="body2">{title}</TitleTypography>
+            <TitleTypography variant="body2">{productName}</TitleTypography>
             <RatingStack
                direction="row"
                justifyContent="center"
@@ -24,12 +26,12 @@ const CompactCard = ({ image, title, price, rating, reviews }) => {
                <Typography variant="caption" color="text.secondary">
                   Рейтинг
                </Typography>
-               <Rating value={rating} precision={0.5} readOnly size="small" />
+               <Rating value={discountPrice} precision={0.5} readOnly size="small" />
                <Typography variant="caption" color="text.secondary">
-                  ({reviews})
+                  ({productRating})
                </Typography>
             </RatingStack>
-            <PriceTypography variant="h6">{price} с</PriceTypography>
+            <PriceTypography variant="h6">{productPrice} с</PriceTypography>
          </StyledCardContent>
       </StyledCard>
    )
@@ -71,8 +73,22 @@ const RatingStack = styled(Stack)({
 })
 
 const PriceTypography = styled(Typography)({
-   fontWeight: 700,
-   marginTop: 8,
-   paddingRight: 12.8,
-   textAlign: 'start',
-})
+  fontWeight: 700,
+  marginTop: 8,
+  paddingRight: 12.8,
+  textAlign: 'start',
+  position: 'relative',
+  display: 'inline-block',
+  fontSize: '1.25rem', 
+
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    right:12,
+    bottom: -2, 
+    width: '15%',
+    height: '1.5px',
+    backgroundColor: 'currentColor',
+  },
+});
+

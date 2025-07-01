@@ -1,9 +1,10 @@
 import { Outlet } from 'react-router'
+import LKfavorites from '../LKfavorites'
 
 const Home = () => {
    return (
       <div>
-         <h1>HOME</h1>
+         <LKfavorites/>
          <Outlet />
       </div>
    )

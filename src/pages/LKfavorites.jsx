@@ -1,134 +1,114 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchFavorites } from '../store/favoritesThunk'
+import { fetchFavorites } from '../store/favorite/favoritesThunk'
 import { Box, Typography, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import CompactCard from '../components/UI/cards/CompactCard'
-import UserHeader from '../layout/user/UserHeader'
-import Footer from '../layout/Footer'
 import { Images } from '../assets/images'
+import Breadcrumbs from '../components/UI/BreadCrums'
 
 const LKfavorites = () => {
    const dispatch = useDispatch()
-   const { favorites, loading, error } = useSelector((state) => state.favorite)
-   const [activeTab, setActiveTab] = React.useState('favorites')
+   const { favorites } = useSelector((state) => state.favorite)
+   const [activeTab, setActiveTab] = useState('favorites')
 
    useEffect(() => {
       dispatch(fetchFavorites())
    }, [dispatch])
-
-   useEffect(() => {}, [favorites])
 
    const handleTabClick = (tabName) => {
       setActiveTab(tabName)
       console.log('Switching to tab:', tabName)
    }
 
-   if (loading) {
-      return (
-         <MainContainer>
-            <LoadingContainer>
-               <Typography>Загрузка...</Typography>
-            </LoadingContainer>
-         </MainContainer>
-      )
-   }
-
-   if (error) {
-      return (
-         <MainContainer>
-            <ErrorContainer>
-               <Typography>Ошибка: {error}</Typography>
-            </ErrorContainer>
-         </MainContainer>
-      )
-   }
-
    return (
-      <>
-         <UserHeader />
-         <MainContainer>
-            <BreadcrumbContainer>
-               <Typography variant="body2">
-                  Личный кабинет » Избранное
-               </Typography>
-            </BreadcrumbContainer>
+      <MainContainer>
+         <StyledBreadCrumbs>
+            <Breadcrumbs
+               baseLabel="Личный кабинет"
+               pathLabels={{
+                  orders: 'История заказов',
+                  favorites: 'Избранное',
+                  profile: 'Профиль',
+               }}
+            />
+         </StyledBreadCrumbs>
 
-            <PageTitle variant="h4">Избранное</PageTitle>
+         <PageTitle variant="h4">Избранное</PageTitle>
 
-            <NavigationContainer>
-               <NavigationButton
-                  className={activeTab === 'orders' ? 'active' : ''}
-                  onClick={() => handleTabClick('orders')}
-               >
-                  История заказов
-               </NavigationButton>
-               <NavigationButton
-                  className={activeTab === 'favorites' ? 'active' : ''}
-                  onClick={() => handleTabClick('favorites')}
-               >
-                  Избранное
-               </NavigationButton>
-               <NavigationButton
-                  className={activeTab === 'profile' ? 'active' : ''}
-                  onClick={() => handleTabClick('profile')}
-               >
-                  Профиль
-               </NavigationButton>
-            </NavigationContainer>
+         <NavigationContainer>
+            <NavigationButton
+               className={activeTab === 'orders' ? 'active' : ''}
+               onClick={() => handleTabClick('orders')}
+            >
+               История заказов
+            </NavigationButton>
+            <NavigationButton
+               className={activeTab === 'favorites' ? 'active' : ''}
+               onClick={() => handleTabClick('favorites')}
+            >
+               Избранное
+            </NavigationButton>
+            <NavigationButton
+               className={activeTab === 'profile' ? 'active' : ''}
+               onClick={() => handleTabClick('profile')}
+            >
+               Профиль
+            </NavigationButton>
+         </NavigationContainer>
 
-            {favorites.length === 0 ? (
+         {activeTab === 'favorites' && (
+            favorites?.length === 0 ? (
                <EmptyStateContainer>
                   <img
                      src={Images.izbrannyiImage}
                      alt="No favorites"
                      style={{ maxWidth: '200px', marginBottom: '20px' }}
                   />
-                  <EmptyStateText>В избранном пока нет товаров</EmptyStateText>
+                  <EmptyStateText>
+                     Воспользуйтесь поиском или каталогом,
+                     <br /> выберите нужные товары и добавьте их в избранное!
+                  </EmptyStateText>
                   <ContinueShoppingButton variant="outlined">
-                     Продолжить покупки
+                     К покупкам
                   </ContinueShoppingButton>
                </EmptyStateContainer>
             ) : (
                <>
                   <ProductsGrid>
                      {favorites.map((item) => (
-                        <CompactCard
-                           key={item.productId}
-                           image={item.image || ''}
-                           title={item.productName || 'Без названия'}
-                           price={item.productPrice || 0}
-                           rating={item.productRating || 0}
-                           reviews={item.discountPrice || 0} // Note: Verify if discountPrice is correct for reviews
-                        />
+                        <CompactCard key={item.productId} card={item} />
                      ))}
                   </ProductsGrid>
+
                   <ContinueShoppingContainer>
                      <ContinueShoppingButton variant="outlined">
                         Продолжить покупки
                      </ContinueShoppingButton>
                   </ContinueShoppingContainer>
                </>
-            )}
-         </MainContainer>
-         <Footer />
-      </>
+            )
+         )}
+      </MainContainer>
    )
 }
 
-// Styled components
+export default LKfavorites
+
 const MainContainer = styled(Box)({
    padding: '20px 40px',
    minHeight: '100vh',
    maxWidth: '1200px',
    margin: '0 auto',
+   cursor: 'pointer',
 })
 
-const BreadcrumbContainer = styled(Box)({
-   marginBottom: '20px',
-   color: '#666666',
-   fontSize: '14px',
-})
+const StyledBreadCrumbs = styled(Box)(() => ({
+   marginTop: '2%',
+   position: 'relative',
+   top: '10px',
+   marginBottom: '4%',
+}))
 
 const PageTitle = styled(Typography)({
    marginBottom: '30px',
@@ -214,24 +194,6 @@ const ContinueShoppingButton = styled(Button)({
    },
 })
 
-const LoadingContainer = styled(Box)({
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-   minHeight: '200px',
-   fontSize: '16px',
-   color: '#666666',
-})
-
-const ErrorContainer = styled(Box)({
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center',
-   minHeight: '200px',
-   fontSize: '16px',
-   color: '#f44336',
-})
-
 const EmptyStateContainer = styled(Box)({
    display: 'flex',
    flexDirection: 'column',
@@ -247,5 +209,3 @@ const EmptyStateText = styled(Typography)({
    marginBottom: '20px',
    color: '#666666',
 })
-
-export default LKfavorites

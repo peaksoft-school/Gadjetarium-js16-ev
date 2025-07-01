@@ -61,8 +61,10 @@ import arrowRFiolet from './svgs/arrowRFiolet.svg'
 import arrowRightWhite from './svgs/arrowRightWhite.svg'
 import arrowLeftWhite from './svgs/arrowLeftWhite.svg'
 import gadgetarium from './svgs/gadgetarium.svg'
+import search from './svgs/search.svg'
 
 export const Icons = {
+   search,
    user,
    arrowDown,
    arrowLeft,
