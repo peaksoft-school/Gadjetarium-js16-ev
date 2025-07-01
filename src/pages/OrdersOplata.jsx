@@ -11,6 +11,7 @@ import {
    Divider,
 } from '@mui/material'
 import AdminHeader from '../layout/admin/AdminHeader'
+import Breadcrumbs from '../components/UI/BreadCrums'
 
 const OrderDetails = () => {
    const { Id } = useParams()
@@ -54,7 +55,15 @@ const OrderDetails = () => {
    return (
       <>
          <AdminHeader />
-         {/* <Breadcrumbs /> */}
+         <StyledBreadCrumbs>
+            <Breadcrumbs
+               baseLabel="Заказы"
+               pathLabels={{
+                  orders: 'По Айди -',
+               }}
+            />
+         </StyledBreadCrumbs>
+
          <ContainerBox>
             <Typography variant="h2" gutterBottom sx={{ marginLeft: '5%' }}>
                Оплата заказа {selectedOrder.id}
@@ -160,4 +169,10 @@ const TotalRow = styled(Typography)(() => ({
    fontSize: '16px',
    marginTop: '12px',
    marginLeft: '18%',
+}))
+const StyledBreadCrumbs = styled(Box)(() => ({
+   marginLeft: '7%',
+   marginTop: '2%',
+   position: 'relative',
+   top: '10px',
 }))
