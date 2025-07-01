@@ -1,10 +1,9 @@
-
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography } from '@mui/material'
 import ReviewsTable from '../components/RewiewsTable'
 import Infographic from '../pages/Infographic'
-import { fetchReviewsByStatus } from '../store/ReviewsThunk'
+import { fetchReviewsByStatus } from '../store/reviews/ReviewsThunk'
 import { styled } from '@mui/material/styles'
 import AdminHeader from '../layout/admin/AdminHeader'
 import Footer from '../layout/Footer'
@@ -30,7 +29,7 @@ const ReviewsDashboard = () => {
 
    return (
       <>
-      <AdminHeader/>
+         <AdminHeader />
          <DashboardContainer>
             {status === 'loading' && <Typography>Загрузка...</Typography>}
             {status === 'failed' && (
@@ -49,7 +48,7 @@ const ReviewsDashboard = () => {
                </ContentBox>
             )}
          </DashboardContainer>
-         <Footer/>
+         <Footer />
       </>
    )
 }

@@ -6,7 +6,7 @@ import {
    saveReviewResponse,
    postReviewResponse,
    deleteReview,
-} from '../store/ReviewsThunk'
+} from './ReviewsThunk'
 
 const reviewsSlice = createSlice({
    name: 'reviews',
@@ -51,7 +51,7 @@ const reviewsSlice = createSlice({
             if (index !== -1) state.items[index] = action.payload
          })
          .addCase(deleteReview.fulfilled, (state, action) => {
-            const reviewId = action.meta.arg 
+            const reviewId = action.meta.arg
             state.items = state.items.filter((item) => item.id !== reviewId)
          })
          .addCase(deleteReview.rejected, (state, action) => {

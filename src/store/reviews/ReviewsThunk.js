@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { axiosInstance } from '../configs/axiosInstans'
+import { axiosInstance } from '../../configs/axiosInstans'
 
 export const fetchReviewsByStatus = createAsyncThunk(
    'reviews/fetchByStatus',
