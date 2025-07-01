@@ -5,6 +5,7 @@ import { Box, Container, Typography, styled } from '@mui/material'
 import Footer from '../layout/Footer'
 import { useNavigate } from 'react-router-dom'
 import UserHeader from '../layout/user/UserHeader'
+import Breadcrumbs from '../components/UI/BreadCrums'
 
 const statusColors = {
    READY_FOR_PICKUP: '#00A500',
@@ -42,6 +43,16 @@ const OrderHistory = () => {
    return (
       <StyledDiv1>
          <UserHeader />
+         <StyledBreadCrumbs>
+            <Breadcrumbs
+               baseLabel="Личный кабинет"
+               pathLabels={{
+                  orders: 'История заказов',
+                  favorites: 'Избранное',
+                  profile: 'Профиль',
+               }}
+            />
+         </StyledBreadCrumbs>
          <h2 style={{ position: 'relative', left: '12.2%', marginTop: '2%' }}>
             История заказов
          </h2>
@@ -59,7 +70,6 @@ const OrderHistory = () => {
                   </TabButton>
                ))}
             </Box>
-
             {activeTab === 'История заказов' && (
                <>
                   <Box
@@ -72,9 +82,7 @@ const OrderHistory = () => {
                            fontSize: '14px',
                            textDecoration: 'underline',
                         }}
-                     >
-                        {/* Очистить список заказов */}
-                     </Typography>
+                     ></Typography>
                   </Box>
 
                   <StyledBox2>
@@ -162,4 +170,11 @@ const StyledBox2 = styled(Box)(() => ({
    display: 'flex',
    flexDirection: 'column',
    gap: '12px',
+}))
+
+const StyledBreadCrumbs = styled(Box)(() => ({
+   marginLeft: '12.2%',
+   marginTop: '2%',
+   position: 'relative',
+   top: '10px',
 }))
