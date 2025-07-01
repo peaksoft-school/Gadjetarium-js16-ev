@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchOrdersThunk } from './features/orders/orderHistoryThink'
+import { fetchOrdersThunk } from '../store/orders/orderHistoryThink'
 import { Box, Container, Typography, styled } from '@mui/material'
 import Footer from '../layout/Footer'
 import { useNavigate } from 'react-router-dom'

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import axiosInstance from '../../../configs/axiosInstans'
+import { axiosInstance } from '../../configs/axiosInstans'
 
 export const fetchOrdersThunk = createAsyncThunk(
    'orders/fetchOrders',
@@ -21,7 +21,9 @@ export const fetchOrderDetailsThunk = createAsyncThunk(
    'orders/fetchOrderDetails',
    async (orderId, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(`/api/orders/details/${orderId}`)
+         const response = await axiosInstance.get(
+            `/api/orders/details/${orderId}`
+         )
          return response.data
       } catch (error) {
          return rejectWithValue(

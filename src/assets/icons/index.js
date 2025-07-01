@@ -61,7 +61,8 @@ import scalesPirple from './svgs/scalesPirple.svg'
 import arrowLFiolet from './svgs/arrowLFiolet.svg'
 import arrowRFiolet from './svgs/arrowRFiolet.svg'
 import gadgetarium from './svgs/gadgetarium.svg'
-import search from './svgs/search.svg'
+import searchGrey from './svgs/searchGrey.svg'
+import search from './svgs/searchGrey.svg'
 
 export const Icons = {
    user,
@@ -130,4 +131,5 @@ export const Icons = {
    arrowLeftWhite,
    gadgetarium,
    search,
+   searchGrey,
 }

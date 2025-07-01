@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchOrdersThunk, fetchOrderDetailsThunk } from './orderHistoryThink'
+import { fetchOrderDetailsThunk, fetchOrdersThunk } from './orderHistoryThink'
 
 const initialState = {
    orders: [],

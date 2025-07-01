@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
-import { fetchOrderDetailsThunk } from './features/orders/orderHistoryThink'
+import { fetchOrderDetailsThunk } from '../store/orders/orderHistoryThink'
 import { Box, Typography, Grid, styled, Divider, Chip } from '@mui/material'
 import Footer from '../layout/Footer'
 import UserHeader from '../layout/user/UserHeader'
