@@ -240,7 +240,7 @@ const ReviewsTable = ({ data = [], onReply }) => {
                                        src={
                                           item.product?.image ||
                                           '/default-product-image.jpg'
-                                       } // Туура: product.image - бир URL
+                                       } 
                                        alt={item.product?.name}
                                        onClick={() =>
                                           handleImageClick(item.product?.image)
@@ -295,7 +295,7 @@ const ReviewsTable = ({ data = [], onReply }) => {
                                                          src={
                                                             img ||
                                                             '/default-review-image.jpg'
-                                                         } // Туура: images массивинен алынат
+                                                         } 
                                                          alt={`Review Image ${idx + 1}`}
                                                          onClick={() =>
                                                             handleImageClick(
@@ -307,7 +307,6 @@ const ReviewsTable = ({ data = [], onReply }) => {
                                              </ReviewImages>
                                           )}
 
-                                       {/* Дата и время под комментарием */}
                                        <ReviewDate
                                           variant="caption"
                                           display="block"
@@ -330,7 +329,7 @@ const ReviewsTable = ({ data = [], onReply }) => {
                                           src={
                                              item.user?.profile ||
                                              '/default-user-profile.jpg'
-                                          } // Туура: user.profile - бир URL
+                                          } 
                                           alt={item.user?.fullName}
                                           onClick={() =>
                                              handleImageClick(
@@ -588,7 +587,6 @@ const ReviewsTable = ({ data = [], onReply }) => {
 
 export default ReviewsTable
 
-// Styled Components
 const MainContainer = styled(Box)({
    backgroundColor: '#fff',
    padding: '24px',
