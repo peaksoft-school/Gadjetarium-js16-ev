@@ -32,18 +32,18 @@ const OrderDetails = () => {
    if (!selectedOrder) return <Typography>Нет данных</Typography>
 
    const {
-      orderNumber,
-      date,
-      status,
+      orderNumber = '',
+      date = '',
+      status = '',
       products = [],
-      firstName,
-      lastName,
-      address,
-      phone,
-      email,
-      paymentMethod,
-      discountAmount,
-      totalPrice,
+      firstName = '',
+      lastName = '',
+      address = '',
+      phone = '',
+      email = '',
+      paymentMethod = '',
+      discountAmount = 0,
+      totalPrice = 0,
    } = selectedOrder
 
    return (
@@ -80,19 +80,18 @@ const OrderDetails = () => {
                ))}
             </StyledBoxCards>
             <br />
-            <Field>Статус</Field>
-            <Box mb={2}>
+            <Field label="Статус">
                <Chip
                   label={getStatusLabel(status)}
                   color={getStatusColor(status)}
                   sx={{ mr: 1 }}
                />
-            </Box>
+            </Field>
 
             <Grid container spacing={3} mt={4}>
                <Grid item xs={12} md={6}>
                   <Field label="Клиент">{`${firstName} ${lastName}`}</Field>
-                  <Field label="Имя">{`${firstName}`}</Field>
+                  <Field label="Имя">{firstName}</Field>
                   <Field label="Адрес">{address}</Field>
                   <Field label="Телефон">{phone}</Field>
                   <Field label="Email">{email}</Field>
@@ -113,13 +112,14 @@ const OrderDetails = () => {
             <Grid container spacing={2}>
                <Grid item>
                   <Typography>
-                     Скидка: <strong>{discountAmount.toFixed(2)} с</strong>
+                     Скидка:{' '}
+                     <strong>{(discountAmount ?? 0).toFixed(2)} с</strong>
                   </Typography>
                </Grid>
 
                <Grid item>
                   <Typography>
-                     Итог: <strong>{totalPrice.toFixed(2)} с</strong>
+                     Итог: <strong>{(totalPrice ?? 0).toFixed(2)} с</strong>
                   </Typography>
                </Grid>
             </Grid>
@@ -141,6 +141,13 @@ const StyledBoxCards = styled(Box)(({ theme }) => ({
    display: 'flex',
    gap: '15px',
    flexWrap: 'wrap',
+}))
+
+const StyledBreadCrumbs = styled(Box)(() => ({
+   marginLeft: '12.2%',
+   marginTop: '2%',
+   position: 'relative',
+   top: '10px',
 }))
 
 const Field = ({ label, children }) => (
@@ -190,13 +197,7 @@ const formatPayment = (method) => {
 }
 
 const formatDate = (dateString) => {
+   if (!dateString) return ''
    const date = new Date(dateString)
    return date.toLocaleDateString('ru-RU')
 }
-
-const StyledBreadCrumbs = styled(Box)(() => ({
-   marginLeft: '12.2%',
-   marginTop: '2%',
-   position: 'relative',
-   top: '10px',
-}))
