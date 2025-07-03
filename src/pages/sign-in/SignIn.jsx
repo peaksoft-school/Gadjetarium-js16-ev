@@ -19,8 +19,8 @@ const SignIn = () => {
    const [googleLoading, setGoogleLoading] = useState(false)
 
    const [error, setError] = useState(null)
-   
-   const isLoading = useSelector((state) => state.auth.isLoading)
+
+   const isLoading = useSelector((state) => state.auth)
 
    const {
       register,

@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchProducts, deleteProduct } from './productThunk'
+import { fetchProducts, deleteProduct, fetchProductById } from './productThunk'
 
 const initialState = {
    items: [],
    total: 0,
    loading: false,
    error: null,
+
+   selectedProduct: null,
+   selectedLoading: false,
+   selectedError: null,
 }
 
 const productSlice = createSlice({
@@ -40,6 +44,18 @@ const productSlice = createSlice({
          .addCase(deleteProduct.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
+         })
+         .addCase(fetchProductById.pending, (state) => {
+            state.selectedLoading = true
+            state.selectedError = null
+         })
+         .addCase(fetchProductById.fulfilled, (state, action) => {
+            state.selectedLoading = false
+            state.selectedProduct = action.payload
+         })
+         .addCase(fetchProductById.rejected, (state, action) => {
+            state.selectedLoading = false
+            state.selectedError = action.payload
          })
    },
 })

@@ -63,57 +63,52 @@ const Products = () => {
 
    return (
       <>
-         <AdminHeader />
          <Wrapper>
-            <Toolbar
-               onSearch={(val) => setSearch(val)}
-               onActionChange={(val) => setAction(val)}
-               currentAction={action}
-               onUploadBanner={() => setOpenBannerModal(true)}
-               onOpenDiscount={() => setOpenDiscountModal(true)}
-            />
-
-            <Divider sx={{ width: '100%', mt: 2 }} />
-
-            <FiltersBlock>
-               <StyledTabs>
-                  <StyledBoxTab onClick={() => setOpenPicker('from')}>
-                     <span style={{ color: '#384255', fontSize: '13px' }}>
-                        {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
-                     </span>
-                     <img src={Icons.calendar} alt="calendar" />
-                  </StyledBoxTab>
-
-                  <StyledBoxTab onClick={() => setOpenPicker('to')}>
-                     <span style={{ color: '#384255', fontSize: '13px' }}>
-                        {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
-                     </span>
-                     <img src={Icons.calendar} alt="calendar" />
-                  </StyledBoxTab>
-               </StyledTabs>
-               <img src={Icons.cancel} onClick={handleCleanDatePicker} />
-            </FiltersBlock>
-
-            {loading && <p>Загрузка...</p>}
-
-            {error && (
-               <p style={{ color: 'red' }}>
-                  Ошибка:{' '}
-                  {typeof error === 'string'
-                     ? error
-                     : error.error || 'Произошла ошибка при загрузке'}
-               </p>
-            )}
-
-            {!loading && !error && (
-               <ProductTable
-                  data={items || []}
-                  totalCount={total}
-                  selectedIds={selectedIds}
-                  setSelectedIds={setSelectedIds}
+            <div>
+               <Toolbar
+                  onSearch={(val) => setSearch(val)}
+                  onActionChange={(val) => setAction(val)}
+                  currentAction={action}
+                  onUploadBanner={() => setOpenBannerModal(true)}
+                  onOpenDiscount={() => setOpenDiscountModal(true)}
                />
-            )}
+               <Divider sx={{ width: '100%', mt: 2, mb: 2 }} />
+               <FiltersBlock>
+                  <StyledTabs>
+                     <StyledBoxTab onClick={() => setOpenPicker('from')}>
+                        <span style={{ color: '#384255', fontSize: '13px' }}>
+                           {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
+                        </span>
+                        <img src={Icons.calendar} alt="calendar" />
+                     </StyledBoxTab>
 
+                     <StyledBoxTab onClick={() => setOpenPicker('to')}>
+                        <span style={{ color: '#384255', fontSize: '13px' }}>
+                           {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
+                        </span>
+                        <img src={Icons.calendar} alt="calendar" />
+                     </StyledBoxTab>
+                  </StyledTabs>
+                  <img src={Icons.cancel} onClick={handleCleanDatePicker} />
+               </FiltersBlock>
+               {loading && <p>Загрузка...</p>}
+               {error && (
+                  <p style={{ color: 'red' }}>
+                     Ошибка:{' '}
+                     {typeof error === 'string'
+                        ? error
+                        : error.error || 'Произошла ошибка при загрузке'}
+                  </p>
+               )}
+               {!loading && !error && (
+                  <ProductTable
+                     data={items || []}
+                     totalCount={total}
+                     selectedIds={selectedIds}
+                     setSelectedIds={setSelectedIds}
+                  />
+               )}
+            </div>
             <Infographics data={salesData} />
          </Wrapper>
 
@@ -152,7 +147,6 @@ export default Products
 
 const Wrapper = styled(Box)({
    display: 'flex',
-   flexDirection: 'column',
    gap: '24px',
    marginBottom: '24px',
    padding: '0 24px',

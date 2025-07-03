@@ -26,3 +26,15 @@ export const deleteProduct = createAsyncThunk(
       }
    }
 )
+
+export const fetchProductById = createAsyncThunk(
+   'product/fetchProductById',
+   async (id, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.get(`/api/product/get/${id}`)
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.response?.data || error.message)
+      }
+   }
+)

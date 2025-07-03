@@ -58,13 +58,10 @@ import watch from './svgs/watch.svg'
 import whatsappPirple from './svgs/whatsappPirple.svg'
 import whatsappWhite from './svgs/whatsappWhite.svg'
 import scalesPirple from './svgs/scalesPirple.svg'
-import arrowLFiolet from './svgs/arrowLFiolet.svg'
-import arrowRFiolet from './svgs/arrowRFiolet.svg'
-import arrowRightWhite from './svgs/arrowRightWhite.svg'
-import arrowLeftWhite from './svgs/arrowLeftWhite.svg'
 import gadgetarium from './svgs/gadgetarium.svg'
 import searchGrey from './svgs/searchGrey.svg'
-
+import link from './svgs/link.svg'
+   
 export const Icons = {
    user,
    arrowDown,
@@ -126,9 +123,7 @@ export const Icons = {
    whatsappPirple,
    whatsappWhite,
    scalesPirple,
-   arrowLFiolet,
-   arrowRFiolet,
-   arrowRightWhite,
-   arrowLeftWhite,
+   searchGrey,
    gadgetarium,
+   link,
 }
