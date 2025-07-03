@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { Box, Typography, Tabs, Tab } from '@mui/material'
-import { styled } from '@mui/system'
+import { Box, Typography, Tabs, Tab, styled } from '@mui/material'
 import { fetchInfographic, setPeriod } from '../pages/features/infographicSlice'
 
 const Infographic = () => {
-   const dispatch = useDispatch()
    const { data, period, status } = useSelector((state) => state.infographic)
+
+   const dispatch = useDispatch()
 
    useEffect(() => {
       dispatch(fetchInfographic(period))
@@ -15,38 +14,46 @@ const Infographic = () => {
 
    const format = (value) => value?.toLocaleString('ru-RU') ?? '—'
 
-   const periods = {
-      daily: 'За день',
-      monthly: 'За месяц',
-      yearly: 'За год',
-   }
+   const periods = [
+      { key: 'day', label: 'ЗА ДЕНЬ' },
+      { key: 'month', label: 'ЗА МЕСЯЦ' },
+      { key: 'year', label: 'ЗА ГОД' },
+   ]
+
+   const handleTabsChange = (_, newValue) => dispatch(setPeriod(newValue))
 
    return (
       <Container>
          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
             ИНФОГРАФИКА
          </Typography>
-         <br />
+
          <InfoBlock>
             <InfoColumn color="#1976d2">
                <Typography variant="h6">
                   {format(data?.totalSalesToday)} с
                </Typography>
+
                <Typography variant="body2" color="text.secondary">
                   Выкупили на сумму
                </Typography>
+
                <Typography variant="subtitle1">
                   {format(data?.dailySalesUnits)} шт
                </Typography>
             </InfoColumn>
+
             <hr />
+
             <InfoColumn color="#f57c00">
                <Typography variant="h6">
                   {format(data?.monthlyOrders)} с
                </Typography>
+
                <Typography variant="body2" color="text.secondary">
                   Заказали на сумму
                </Typography>
+
                <Typography variant="subtitle1">
                   {format(data?.totalOrdersThisMonth)} шт
                </Typography>
@@ -55,11 +62,11 @@ const Infographic = () => {
 
          <Tabs
             value={period}
-            onChange={(e, newValue) => dispatch(setPeriod(newValue))}
+            onChange={handleTabsChange}
             textColor="primary"
             indicatorColor="primary"
          >
-            {Object.entries(periods).map(([key, label]) => (
+            {periods.map(({ key, label }, i) => (
                <Tab key={key} label={label} value={key} />
             ))}
          </Tabs>
@@ -92,7 +99,6 @@ const Infographic = () => {
                </Typography>
             </StyledBox2>
          </DeliveryBox>
-
          {status === 'loading' && (
             <Typography mt={2} variant="body2" color="text.secondary">
                Загрузка...
