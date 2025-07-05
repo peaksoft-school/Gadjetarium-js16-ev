@@ -33,7 +33,7 @@ export const fetchProductById = createAsyncThunk(
       try {
          if (!id) throw new Error('ID is required for fetching product')
 
-         const token = localStorage.getItem('token') // если требуется
+         const token = localStorage.getItem('token')
 
          const response = await axiosInstance.get(`/api/product/get/${id}`, {
             headers: {
