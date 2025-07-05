@@ -1,5 +1,5 @@
 import { axiosInstance } from '../../configs/axiosInstans'
-import { setFavorites, setLoading, setError } from '../favorite/favoriteSlice'
+import { setFavorites, setLoading, setError } from './favoriteSlice'
 
 export const fetchFavorites = () => async (dispatch) => {
    try {

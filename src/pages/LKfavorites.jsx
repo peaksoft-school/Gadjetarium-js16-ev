@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchFavorites } from '../store/favorite/favoritesThunk'
+import { fetchFavorites } from '../store/lk-favorite/favoritesThunk'
 import { Box, Typography, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import CompactCard from '../components/UI/cards/CompactCard'
@@ -57,8 +57,8 @@ const LKfavorites = () => {
             </NavigationButton>
          </NavigationContainer>
 
-         {activeTab === 'favorites' && (
-            favorites?.length === 0 ? (
+         {activeTab === 'favorites' &&
+            (favorites?.length === 0 ? (
                <EmptyStateContainer>
                   <img
                      src={Images.izbrannyiImage}
@@ -66,6 +66,8 @@ const LKfavorites = () => {
                      style={{ maxWidth: '200px', marginBottom: '20px' }}
                   />
                   <EmptyStateText>
+                     <h3 style={{ color: 'black' }}>В ИЗБРАННОМ ПОКА ПУСТО</h3>
+                     <br />
                      Воспользуйтесь поиском или каталогом,
                      <br /> выберите нужные товары и добавьте их в избранное!
                   </EmptyStateText>
@@ -87,8 +89,7 @@ const LKfavorites = () => {
                      </ContinueShoppingButton>
                   </ContinueShoppingContainer>
                </>
-            )
-         )}
+            ))}
       </MainContainer>
    )
 }
