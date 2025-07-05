@@ -20,6 +20,7 @@ import {
 } from '../store/profile/profileSlice'
 import UserHeader from '../layout/user/UserHeader'
 import Breadcrumbs from '../components/UI/BreadCrums'
+import Footer from '../layout/Footer'
 
 const ProfileMain = ({
    form,
@@ -49,9 +50,9 @@ const ProfileMain = ({
             size="small"
             sx={{ mb: 2 }}
          >
+            <Tab label="Профиль" />
             <Tab label="История заказов" />
             <Tab label="Избранное" />
-            <Tab label="Профиль" />
          </Tabs>
          <br />
          <br />
@@ -156,7 +157,7 @@ const ProfileForm = () => {
       dispatch(uploadPhoto(file))
    }
 
-   const tabPaths = ['/profile', '/profile/orders', '/profile/favorites']
+   const tabPaths = ['/profile2', '/profile2/orders', '/profile2/favorites']
    const currentTab = tabPaths.indexOf(location.pathname)
    const tabValue = currentTab === -1 ? 0 : currentTab
 
@@ -213,7 +214,7 @@ const ProfileForm = () => {
                </Routes>
             </Box>
          </Container1>
-         {/* <Footer /> */}
+         <Footer />
       </div>
    )
 }
@@ -229,7 +230,7 @@ const Container1 = styled(Container)({})
 const StyledBox2 = styled(Box)({
    position: 'relative',
    left: '15%',
-   bottom: '24vh',
+   bottom: '20vh',
    marginLeft: '6%',
 })
 const Styledbox3 = styled(Box)({

@@ -62,6 +62,7 @@ import arrowLFiolet from './svgs/arrowLFiolet.svg'
 import arrowRFiolet from './svgs/arrowRFiolet.svg'
 import gadgetarium from './svgs/gadgetarium.svg'
 import searchGrey from './svgs/searchGrey.svg'
+import search from './svgs/search.svg'
 
 export const Icons = {
    user,
@@ -127,4 +128,6 @@ export const Icons = {
    arrowLFiolet,
    arrowRFiolet,
    gadgetarium,
+   search,
+   searchGrey,
 }
