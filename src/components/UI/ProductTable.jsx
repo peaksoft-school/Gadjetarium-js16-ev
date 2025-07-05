@@ -51,7 +51,8 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
    }
 
    const handleRowClick = (id) => {
-      navigate(`/products/${id}`)
+      navigate(`/admin/products/${id}`)
+      console.log('ss')
    }
 
    const paginatedData = Array.isArray(data)
@@ -85,7 +86,6 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
                            key={item.id}
                            onMouseEnter={() => setHoveredRow(item.id)}
                            onMouseLeave={() => setHoveredRow(null)}
-                           onClick={() => handleRowClick(item.id)}
                            className="clickable-row"
                         >
                            <StyledBodyCell>
@@ -116,7 +116,11 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
                            <StyledBodyCell>
                               <Box>
                                  Кол-во товара {item.quantity}шт.
-                                 <ProductNameText>{item.name}</ProductNameText>
+                                 <ProductNameText
+                                    onClick={() => handleRowClick(item.id)}
+                                 >
+                                    {item.name}
+                                 </ProductNameText>
                               </Box>
                            </StyledBodyCell>
 
@@ -145,7 +149,6 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
                                     alt="edit"
                                     onClick={(e) => {
                                        e.stopPropagation()
-                                       // navigate(`/products/${item.id}/edit`)
                                     }}
                                  />
                                  <StyledDeleteIcon

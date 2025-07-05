@@ -71,7 +71,7 @@ const AppRouter = () => (
          }
       />
       <Route
-         path="/admin"
+         path="/admin/*"
          element={
             <PrivateRouter
                component={<AdminRouter />}

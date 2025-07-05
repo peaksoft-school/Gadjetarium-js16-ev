@@ -1,10 +1,35 @@
 import { Box, Typography, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { Icons } from '../../assets/icons'
-import PhonesSlider from '../../components/PhonesSlider'
+import { Icons } from '../assets/icons'
+import PhonesSlider from '../components/PhonesSlider'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchProductById } from '../store/products/productThunk'
+import { useParams } from 'react-router'
+const ProductDetails = () => {
+   const { id } = useParams()
+   const dispatch = useDispatch()
+   const { selectedProduct, selectedLoading, selectedError } = useSelector(
+      (state) => state.product
+   )
 
-const ProductDetails = ({ product }) => {
-   if (!product) return null
+   useEffect(() => {
+      if (id) dispatch(fetchProductById(id))
+   }, [id, dispatch])
+
+   if (selectedLoading) return <Box p={4}>Загрузка...</Box>
+   if (selectedError)
+      return (
+         <Box p={4} color="red">
+            {selectedError}
+         </Box>
+      )
+   if (!selectedProduct)
+      return (
+         <Box p={4} color="red">
+            Товар не найден
+         </Box>
+      )
 
    const {
       name,
@@ -16,7 +41,7 @@ const ProductDetails = ({ product }) => {
       oldPrice,
       discount,
       images = [],
-   } = product
+   } = selectedProduct
 
    const phoneImages = images
 

@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router'
 import ProductActionsHeader from '../../components/Products'
-import ProductCard from '../products/GetByIdProd'
 
 const Home = () => {
    const product = {

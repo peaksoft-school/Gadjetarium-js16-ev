@@ -79,7 +79,7 @@ const Toolbar = ({
 export default Toolbar
 
 const Wrapper = styled(Box)({
-   width: '80vw',
+   width: '100%',
    margin: '32px auto 0 auto',
    display: 'flex',
    justifyContent: 'space-between',

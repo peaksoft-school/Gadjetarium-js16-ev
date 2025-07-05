@@ -1,5 +1,4 @@
 import { Box, styled, Divider } from '@mui/material'
-import AdminHeader from '../layout/admin/AdminHeader'
 import Toolbar from './Toolbar'
 import Infographics from './Infographics'
 import ProductTable from './UI/ProductTable'
@@ -149,6 +148,8 @@ const Wrapper = styled(Box)({
    display: 'flex',
    gap: '24px',
    marginBottom: '24px',
+   width: '100%',
+   position: 'relative',
    padding: '0 24px',
 })
 

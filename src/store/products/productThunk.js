@@ -31,9 +31,23 @@ export const fetchProductById = createAsyncThunk(
    'product/fetchProductById',
    async (id, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get(`/api/product/get/${id}`)
+         if (!id) throw new Error('ID is required for fetching product')
+
+         const token = localStorage.getItem('token') // если требуется
+
+         const response = await axiosInstance.get(`/api/product/get/${id}`, {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         })
+
+         if (response.data?.product) {
+            return response.data.product
+         }
+
          return response.data
       } catch (error) {
+         console.error('fetchProductById error:', error)
          return rejectWithValue(error.response?.data || error.message)
       }
    }
