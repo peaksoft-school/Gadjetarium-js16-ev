@@ -18,7 +18,6 @@ const LKfavorites = () => {
 
    const handleTabClick = (tabName) => {
       setActiveTab(tabName)
-      console.log('Switching to tab:', tabName)
    }
 
    return (
