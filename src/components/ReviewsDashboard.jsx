@@ -2,11 +2,11 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography } from '@mui/material'
 import ReviewsTable from '../components/RewiewsTable'
-import Infographic from '../pages/Infographic'
 import { fetchReviewsByStatus } from '../store/reviews/ReviewsThunk'
 import { styled } from '@mui/material/styles'
 import AdminHeader from '../layout/admin/AdminHeader'
 import Footer from '../layout/Footer'
+import Infographic from '../components/Infographics'
 
 const DashboardContainer = styled(Box)(({ theme }) => ({
    p: 3,
@@ -19,7 +19,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
    gap: 2,
 }))
 
-const ReviewsDashboard = () => {
+const ReviewsDashboardd = () => {
    const dispatch = useDispatch()
    const { reviews, status, error } = useSelector((state) => state.reviews)
 
@@ -53,4 +53,4 @@ const ReviewsDashboard = () => {
    )
 }
 
-export default ReviewsDashboard
+export default ReviewsDashboardd
