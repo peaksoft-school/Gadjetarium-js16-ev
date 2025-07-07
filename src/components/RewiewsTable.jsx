@@ -759,13 +759,13 @@ const ActionButton = styled(Button)(({ variant }) => ({
    position: 'relative',
    textTransform: 'none',
    borderRadius: '6px',
-   padding: '6px 16px',
+   padding: '6px 10px',
    fontSize: '13px',
    backgroundColor: '#CB11AB',
    color: 'white',
    width: '222px',
    height: '43px',
-   marginLeft: '220px',
+   marginLeft: '200px',
 }))
 
 const StyledTextField = styled(TextField)({
@@ -798,7 +798,7 @@ const SaveButton = styled(Button)({
    backgroundColor: '#CB11AB',
    color: '#fff',
    borderRadius: '4px',
-   padding: '8px 96px',
+   padding: '8px 84px',
    width: '100px',
    '&:hover': { backgroundColor: '#b01496' },
 })

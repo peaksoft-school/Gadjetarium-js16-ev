@@ -42,7 +42,7 @@ const ReviewsDashboardd = () => {
                   <Box sx={{ flex: 2 }}>
                      <ReviewsTable data={reviews} />
                   </Box>
-                  <Box sx={{ flex: 1 }}>
+                  <Box sx={{ flex: 1, marginLeft:"10%" }}>
                      <Infographic />
                   </Box>
                </ContentBox>
