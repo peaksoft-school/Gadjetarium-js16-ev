@@ -85,6 +85,7 @@ const SliderWrapper = styled('div')({
 
 const MainImage = styled('img')({
    height: '364px',
+   width: '365px',
    marginBottom: '100px',
    cursor: 'pointer',
 })
@@ -137,8 +138,8 @@ const ModalImageContainer = styled('div')({
 })
 
 const ZoomedImage = styled('img')({
-   maxWidth: '100%',
-   maxHeight: '100%',
+   width: '400px',
+   height: '400px',
 })
 
 const ArrowIcon = styled('img')(({ position }) => ({
