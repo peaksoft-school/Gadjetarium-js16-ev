@@ -5,14 +5,29 @@ import App from './App.jsx'
 import { Themes } from './Theme/Themes.jsx'
 import { Notifications } from './components/Notification.jsx'
 import { BrowserRouter } from 'react-router'
+import { injectStore } from './configs/axiosInstans.js'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { persistor, store } from './store/store.js'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
+
+injectStore(store)
 
 createRoot(document.getElementById('root')).render(
    <StrictMode>
-      <Themes>
-         <BrowserRouter>
-            <App />
-            <Notifications />
-         </BrowserRouter>
-      </Themes>
+      <Provider store={store}>
+         <PersistGate persistor={persistor}>
+            <BrowserRouter>
+               <Themes>
+                 <LocalizationProvider dateAdapter={AdapterDayjs}>
+                     <App />
+                 </LocalizationProvider>
+
+                  <Notifications />
+               </Themes>
+            </BrowserRouter>
+         </PersistGate>
+      </Provider>
    </StrictMode>
 )

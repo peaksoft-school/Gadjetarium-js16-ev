@@ -20,6 +20,7 @@ const Checkbox = forwardRef(
 export default Checkbox
 
 const StyledCheckbox = styled(MuiCheckbox)(({ theme, className }) => ({
+   width: '16px',
    '&:hover': {
       color:
          className === 'green'
@@ -27,7 +28,7 @@ const StyledCheckbox = styled(MuiCheckbox)(({ theme, className }) => ({
             : theme.palette.primary.main,
       background: 'none',
    },
-   '$:active': { 
+   '$:active': {
       background: 'none',
    },
 
