@@ -4,13 +4,11 @@ import { fetchOrders } from '../pages/orderSlice'
 import { Icons } from '../assets/icons'
 import Chip from '../components/UI/Chip'
 import Input from '../components/UI/Input'
-import AdminHeader from '../layout/admin/AdminHeader'
 import DatePicker from '../components/UI/DatePicker'
 import InputAdornment from '@mui/material/InputAdornment'
 import { Container, styled, Box } from '@mui/material'
 import UniversalTable from '../components/UI/UniversalTable'
-import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 export default function Orders() {
    const [searchValue, setSearchValue] = useState('')
@@ -80,21 +78,19 @@ export default function Orders() {
    }))
 
    const statusOptions = [
-      { label: 'WAITING', value: 'WAITING' },
-      { label: 'READY_FOR_PICKUP', value: 'READY_FOR_PICKUP' },
-      { label: 'COURIER_ON_THE_WAY', value: 'COURIER_ON_THE_WAY' },
-      { label: 'DELIVERED', value: 'DELIVERED' },
-      { label: 'CANCELLED', value: 'CANCELLED' },
-      { label: 'GET', value: 'GET' },
+      { value: 'WAITING', label: 'В ожидании' },
+      { value: 'READY_FOR_PICKUP', label: 'В обработке ' },
+      { value: 'COURIER_ON_THE_WAY', label: 'Курьер в пути ' },
+      { value: 'DELIVERED', label: 'Доставлено' },
+      { value: 'CANCELLED', label: 'Отменены' },
    ]
 
    const handleOrderClick = (orderId) => {
-      navigate(`/orders/${orderId}`)
+      navigate(`/admin/orders/${orderId}`)
    }
 
    return (
       <Box>
-         <AdminHeader />
          <StyledDiv1>
             <StyledInput
                placeholder="Поиск по артикулу или ..."

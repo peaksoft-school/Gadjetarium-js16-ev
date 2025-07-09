@@ -1,20 +1,19 @@
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrderById, clearSelectedOrder } from './orderSlice'
-import {
-   Typography,
-   Paper,
-   CircularProgress,
-   Box,
-   styled,
-   Divider,
-} from '@mui/material'
+import { Typography, Paper, CircularProgress, Box, styled } from '@mui/material'
 import AdminHeader from '../layout/admin/AdminHeader'
 import Breadcrumbs from '../components/UI/BreadCrums'
 
+const useOrderIdFromPath = () => {
+   const location = useLocation()
+   const match = location.pathname.match(/\/orders\/(\d+)/) 
+   return match ? match[1] : null
+}
+
 const OrderDetails = () => {
-   const { Id } = useParams()
+   const Id = useOrderIdFromPath()
    const dispatch = useDispatch()
    const { selectedOrder, orderLoading, orderError } = useSelector(
       (state) => state.orders
@@ -54,12 +53,11 @@ const OrderDetails = () => {
 
    return (
       <>
-         <AdminHeader />
          <StyledBreadCrumbs>
             <Breadcrumbs
                baseLabel="Заказы"
                pathLabels={{
-                  orders: 'По Айди -',
+                  orders: 'Заказы',
                }}
             />
          </StyledBreadCrumbs>
@@ -89,7 +87,6 @@ const OrderDetails = () => {
                         <InfoRow>
                            <b>Сумма скидки:</b> {item.discountPrice} с
                         </InfoRow>
-
                         <hr style={{ width: '30%' }} />
                      </Box>
                   ))}
@@ -170,6 +167,7 @@ const TotalRow = styled(Typography)(() => ({
    marginTop: '12px',
    marginLeft: '18%',
 }))
+
 const StyledBreadCrumbs = styled(Box)(() => ({
    marginLeft: '7%',
    marginTop: '2%',

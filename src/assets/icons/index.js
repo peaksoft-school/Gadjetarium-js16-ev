@@ -58,11 +58,10 @@ import whatsappWhite from './svgs/whatsappWhite.svg'
 import scalesPirple from './svgs/scalesPirple.svg'
 import arrowLFiolet from './svgs/arrowLFiolet.svg'
 import arrowRFiolet from './svgs/arrowRFiolet.svg'
-import arrowRightWhite from './svgs/arrowRightWhite.svg'
-import arrowLeftWhite from './svgs/arrowLeftWhite.svg'
 import gadgetarium from './svgs/gadgetarium.svg'
-import search from './svgs/search.svg'
 import searchGrey from './svgs/searchGrey.svg'
+import link from './svgs/link.svg'
+import search from './svgs/search.svg'
 
 export const Icons = {
    user,
@@ -70,8 +69,6 @@ export const Icons = {
    arrowLeft,
    arrowR,
    arrowRight,
-   arrowLeftWhite,
-   arrowRightWhite,
    arrowUp,
    basket,
    blueLike,
@@ -127,9 +124,8 @@ export const Icons = {
    scalesPirple,
    arrowLFiolet,
    arrowRFiolet,
-   arrowRightWhite,
-   arrowLeftWhite,
    gadgetarium,
-   search,
    searchGrey,
+   link,
+   search,
 }
