@@ -23,7 +23,9 @@ const AdminHeader = () => {
                      <NavLink onClick={() => navigate('/admin/products')}>
                         Товары
                      </NavLink>
-                     <NavLink>Заказы</NavLink>
+                     <NavLink onClick={() => navigate('/admin/orders')}>
+                        Заказы
+                     </NavLink>
                      <NavLink onClick={() => navigate('/admin/reviews')}>
                         Отзывы и рейтинг
                      </NavLink>

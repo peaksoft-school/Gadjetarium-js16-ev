@@ -1,12 +1,13 @@
 import { Chip as MuiChip, styled } from '@mui/material'
 import { forwardRef } from 'react'
-import { Icons } from '../../../assets/icons'
+import { Icons } from '../../assets/icons'
 
-const Chip = forwardRef(({ label, onDelete }, ref) => (
+const Chip = forwardRef(({ label, onDelete, onClick }, ref) => (
    <StyledCustomChip
       ref={ref}
       label={label}
       onDelete={onDelete}
+      onClick={onClick}
       deleteIcon={<img src={Icons.cancel} />}
    />
 ))
@@ -21,16 +22,17 @@ const StyledCustomChip = styled(MuiChip)(() => ({
    height: 'auto',
    maxHeight: '50px',
    width: 'auto',
-   maxWidth: '150px',
+   maxWidth: '190px',
    display: 'flex',
    justifyContent: 'center',
    alignItems: 'center',
    padding: '6px 10px',
+   marginTop: '15px',
 
    '.MuiChip-label': {
       height: '20px',
       fontWeight: 400,
-      fontSize: '14px',
+      fontSize: '12px',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',

@@ -1,7 +1,8 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import persistReducer from 'redux-persist/es/persistReducer'
 import persistStore from 'redux-persist/es/persistStore'
 import storage from 'redux-persist/lib/storage'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import ordersReducer from '../pages/orderSlice'
 import reviewsReducer from './reviews/ReviewsSlice'
 import { injectStore } from '../configs/axiosInstans'
 import { authReducer } from './authSlice/authSlice'
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
    mail: mailReducer,
    infographic: infographicReducer,
    auth: authReducer,
+   orders: ordersReducer,
 })
 
 const persistConfig = {
