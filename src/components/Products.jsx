@@ -1,5 +1,4 @@
 import { Box, styled, Divider } from '@mui/material'
-import AdminHeader from '../layout/admin/AdminHeader'
 import Toolbar from './Toolbar'
 import Infographics from './Infographics'
 import ProductTable from './UI/ProductTable'
@@ -63,7 +62,6 @@ const Products = () => {
 
    return (
       <>
-         <AdminHeader />
          <Wrapper>
             <Toolbar
                onSearch={(val) => setSearch(val)}

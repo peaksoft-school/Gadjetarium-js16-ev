@@ -71,7 +71,7 @@ const AppRouter = () => (
          }
       />
       <Route
-         path="/admin"
+         path="/admin/*"
          element={
             <PrivateRouter
                component={<AdminRouter />}
@@ -81,7 +81,7 @@ const AppRouter = () => (
          }
       />
       <Route
-         path="/user"
+         path="/user/*"
          element={
             <PrivateRouter
                component={<UserRouter />}
