@@ -70,8 +70,6 @@ export const Icons = {
    arrowLeft,
    arrowR,
    arrowRight,
-   arrowLeftWhite,
-   arrowRightWhite,
    arrowUp,
    basket,
    blueLike,
@@ -129,5 +127,5 @@ export const Icons = {
    arrowRFiolet,
    gadgetarium,
    searchGrey,
-   link
+   link,
 }
