@@ -12,11 +12,13 @@ import {
    Box,
 } from '@mui/material'
 import { Icons } from '../../assets/icons'
+import { useNavigate } from 'react-router'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
 
    const [isScrolled, setIsScrolled] = useState(false)
+   const navigate = useNavigate()
 
    useEffect(() => {
       const handleScroll = () => {
@@ -46,9 +48,12 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
             </TopInfo>
 
             <ContactBox>
-               <PhoneText>+996 (400) 00-00-00</PhoneText>
+               <PhoneText>+996 (999) 160 609</PhoneText>
 
-               <WhiteIcon aria-label="user profile">
+               <WhiteIcon
+                  aria-label="user profile"
+                  onClick={() => navigate('/user/account')}
+               >
                   <IconImage src={Icons.user} alt="User" />
                </WhiteIcon>
             </ContactBox>
@@ -216,7 +221,6 @@ const IconImage = styled('img')({
    transition: 'all 0.3s ease',
 })
 
-
 const Logo = styled('img')({
    width: '160px',
    height: 'auto',
@@ -270,8 +274,8 @@ const SearchContainer = styled(Box)({
       '& .MuiInputBase-input::placeholder': {
          color: 'grey',
       },
-      
-      '& img': {     
+
+      '& img': {
          filter: 'brightness(0) saturate(100%) invert(50%)',
       },
    },
@@ -284,12 +288,11 @@ const SearchContainer = styled(Box)({
          color: 'black',
       },
 
-      '& img': {  
+      '& img': {
          filter: 'brightness(0) saturate(100%)',
       },
    },
 })
-
 
 const StyledInputBase = styled(InputBase)({
    color: '#ffffff',
@@ -309,8 +312,8 @@ const StyledInputBase = styled(InputBase)({
       },
    },
    '& .MuiInputBase-input:focus': {
-      backgroundColor: 'white', 
-      color: 'black', 
+      backgroundColor: 'white',
+      color: 'black',
    },
 })
 

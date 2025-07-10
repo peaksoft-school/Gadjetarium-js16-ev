@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router'
 
 const PrivateRouter = ({ roles, component, fallBackPath }) => {
-   const role = 'GUEST'
+   const role = 'USER'  
 
    const allowedRole = roles.includes(role)
 

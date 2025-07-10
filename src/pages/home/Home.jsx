@@ -1,11 +1,13 @@
 import { Outlet } from 'react-router'
-import LKfavorites from '../LKfavorites'
+import UserHeader from '../../layout/user/UserHeader'
+import Footer from '../../layout/Footer'
 
 const Home = () => {
    return (
       <div>
-         <LKfavorites/>
+         <UserHeader />
          <Outlet />
+         <Footer />  
       </div>
    )
 }

@@ -1,32 +1,32 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { Themes } from './Theme/Themes.jsx'
 import { Notifications } from './components/Notification.jsx'
-import { BrowserRouter } from 'react-router'
-import { injectStore } from './configs/axiosInstans.js'
+import { injectStore } from '../src/configs/axiosInstans.js'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from './store/store.js'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { StrictMode } from 'react'
+import { BrowserRouter } from 'react-router'
 import { LocalizationProvider } from '@mui/x-date-pickers'
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 
 injectStore(store)
+
 
 createRoot(document.getElementById('root')).render(
    <StrictMode>
       <Provider store={store}>
-         <PersistGate persistor={persistor}>
-            <BrowserRouter>
-               <Themes>
-                 <LocalizationProvider dateAdapter={AdapterDayjs}>
+         <PersistGate loading={null} persistor={persistor}>
+            <Themes>
+               <BrowserRouter>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
                      <App />
-                 </LocalizationProvider>
-
+                  </LocalizationProvider>
                   <Notifications />
-               </Themes>
-            </BrowserRouter>
+               </BrowserRouter>
+            </Themes>
          </PersistGate>
       </Provider>
    </StrictMode>

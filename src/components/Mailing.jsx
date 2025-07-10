@@ -122,6 +122,8 @@ const Mailing = ({ onCancel }) => {
 export default Mailing
 
 const Root = styled(Box)({
+   background: '#fff',
+   padding: '12px',
    display: 'flex',
    flexDirection: 'column',
    height: '100%',
