@@ -190,7 +190,7 @@ const StyledTableContainer = styled(TableContainer)(() => ({
    backgroundColor: '#fff',
    padding: '16px',
    boxShadow: 'none',
-   width: '1240px',
+   width: '1200px',
 }))
 
 const StyledTable = styled(Table)(() => ({

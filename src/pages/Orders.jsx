@@ -9,6 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import { Container, styled, Box } from '@mui/material'
 import UniversalTable from '../components/UI/UniversalTable'
 import { useNavigate } from 'react-router'
+import Infographic from '../components/Infographics'
 
 export default function Orders() {
    const [searchValue, setSearchValue] = useState('')
@@ -90,105 +91,108 @@ export default function Orders() {
    }
 
    return (
-      <Box>
-         <StyledDiv1>
-            <StyledInput
-               placeholder="Поиск по артикулу или ..."
-               value={searchValue}
-               onChange={handleSearchChange}
-               InputProps={{
-                  endAdornment: (
-                     <InputAdornment position="end">
-                        <img
-                           src={Icons.searchGrey}
-                           alt="search"
-                           style={{ width: 20, height: 20, cursor: 'pointer' }}
-                        />
-                     </InputAdornment>
-                  ),
-               }}
-            />
-         </StyledDiv1>
-
-         <br />
-         <StyledDiv2>
-            {statusOptions.map((status) => (
-               <Chip
-                  key={status.value}
-                  label={status.label}
-                  onClick={() => handleStatusClick(status.value)}
-                  variant={
-                     selectedStatuses.includes(status.value)
-                        ? 'filled'
-                        : 'outlined'
-                  }
-               />
-            ))}
-         </StyledDiv2>
-
-         <br />
-
-         <StyledDiv2>
-            {statusCounts.map(({ status, count }) => (
-               <Chip
-                  key={status}
-                  label={`${status} × ${count}`}
-                  onDelete={() => handleStatusDelete(status)}
-               />
-            ))}
-         </StyledDiv2>
-
-         <br />
-         <hr style={{ width: '60%', marginLeft: '12.5%' }} />
-         <br />
-
-         <Container>
-            <StyledTabs>
-               <StyledBoxTab onClick={() => setOpenPicker('from')}>
-                  <span style={{ color: '#384255', fontSize: '13px' }}>
-                     {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
-                  </span>
-                  <img src={Icons.calendar} alt="calendar" />
-               </StyledBoxTab>
-               <StyledBoxTab onClick={() => setOpenPicker('to')}>
-                  <span style={{ color: '#384255', fontSize: '13px' }}>
-                     {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
-                  </span>
-                  <img src={Icons.calendar} alt="calendar" />
-               </StyledBoxTab>
-            </StyledTabs>
-
-            <br />
-            {loading && <div>Загрузка...</div>}
-            {error && (
-               <Box
-                  sx={{
-                     color: 'red',
-                     whiteSpace: 'pre-wrap',
-                     fontWeight: 'bold',
+      <Wrapper>
+         <MainContent>
+            <StyledDiv1>
+               <StyledInput
+                  placeholder="Поиск по артикулу или ..."
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                     endAdornment: (
+                        <InputAdornment position="end">
+                           <img
+                              src={Icons.searchGrey}
+                              alt="search"
+                              style={{
+                                 width: 20,
+                                 height: 20,
+                                 cursor: 'pointer',
+                              }}
+                           />
+                        </InputAdornment>
+                     ),
                   }}
-               >
-                  Ошибка:{' '}
-                  {typeof error === 'object'
-                     ? JSON.stringify(error, null, 2)
-                     : error}
-               </Box>
-            )}
+               />
+            </StyledDiv1>
 
-            <UniversalTable
-               variant="orders"
-               data={filteredOrders.map((order) => ({
-                  id: order.id,
-                  fio: order.fullName,
-                  number: order.number,
-                  createdAt: order.createdAt,
-                  count: order.count,
-                  total: order.totalPrice,
-                  delivery: order.pickup ? 'Самовывоз' : 'Доставка',
-                  status: order.status,
-                  onClick: () => handleOrderClick(order.id),
-               }))}
-            />
+            <StyledDiv2>
+               {statusOptions.map((status) => (
+                  <Chip
+                     key={status.value}
+                     label={status.label}
+                     onClick={() => handleStatusClick(status.value)}
+                     variant={
+                        selectedStatuses.includes(status.value)
+                           ? 'filled'
+                           : 'outlined'
+                     }
+                  />
+               ))}
+            </StyledDiv2>
+
+            {/* <br /> */}
+
+            <StyledDiv2>
+               {statusCounts.map(({ status, count }) => (
+                  <Chip
+                     key={status}
+                     label={`${status} × ${count}`}
+                     onDelete={() => handleStatusDelete(status)}
+                  />
+               ))}
+            </StyledDiv2>
+
+            <div style={{ marginLeft: '22px' }}>
+               <hr style={{ width: '100%', marginBottom: '30px' }} />
+
+               <StyledTabs marginBottom={5}>
+                  <StyledBoxTab onClick={() => setOpenPicker('from')}>
+                     <span style={{ color: '#384255', fontSize: '13px' }}>
+                        {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
+                     </span>
+                     <img src={Icons.calendar} alt="calendar" />
+                  </StyledBoxTab>
+                  <StyledBoxTab onClick={() => setOpenPicker('to')}>
+                     <span style={{ color: '#384255', fontSize: '13px' }}>
+                        {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
+                     </span>
+                     <img src={Icons.calendar} alt="calendar" />
+                  </StyledBoxTab>
+               </StyledTabs>
+
+               <br />
+               {loading && <div>Загрузка...</div>}
+               {error && (
+                  <Box
+                     sx={{
+                        color: 'red',
+                        whiteSpace: 'pre-wrap',
+                        fontWeight: 'bold',
+                     }}
+                  >
+                     Ошибка:{' '}
+                     {typeof error === 'object'
+                        ? JSON.stringify(error, null, 2)
+                        : error}
+                  </Box>
+               )}
+
+               <UniversalTable
+                  variant="orders"
+                  data={filteredOrders.map((order) => ({
+                     id: order.id,
+                     fio: order.fullName,
+                     number: order.number,
+                     createdAt: order.createdAt,
+                     count: order.count,
+                     total: order.totalPrice,
+                     delivery: order.pickup ? 'Самовывоз' : 'Доставка',
+                     status: order.status,
+                     onClick: () => handleOrderClick(order.id),
+                  }))}
+               />
+            </div>
 
             {openPicker && (
                <Box sx={{ position: 'absolute', top: '45%', right: '48%' }}>
@@ -198,17 +202,44 @@ export default function Orders() {
                   />
                </Box>
             )}
-         </Container>
-         <br />
-      </Box>
+         </MainContent>
+
+         <Sidebar>
+            <Infographic />
+         </Sidebar>
+      </Wrapper>
    )
 }
 
-const StyledDiv1 = styled(Container)({ paddingTop: '40px' })
+const Wrapper = styled('div')({
+   display: 'flex',
+   flexDirection: 'row',
+   marginTop: '15px',
+   alignItems: 'flex-start',
+   padding: '40px 0px 40px 40px ',
+   gap: '40px',
+})
+
+const MainContent = styled('div')({
+   flex: 1,
+   maxWidth: 'calc(95% - 360px)',
+   display: 'flex',
+   flexDirection: 'column',
+   gap: '20px',
+})
+
+const Sidebar = styled('div')({
+   width: '320px',
+   minHeight: '100%',
+   marginTop: '-70px',
+})
+
+const StyledDiv1 = styled(Container)({ paddingTop: '0px' })
 const StyledDiv2 = styled(Container)({
    display: 'flex',
    gap: '14px',
    flexWrap: 'wrap',
+   paddingLeft: 0,
 })
 const StyledInput = styled(Input)({ width: '559px', height: '39px' })
 const StyledBoxTab = styled(Box)({

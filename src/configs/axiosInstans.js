@@ -1,9 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://3.147.74.119/'
-// const BASE_URL = 'http://10.10.11.156:8015/'
-
-// const BASE_URL = 'http://192.168.0.121:2025'
+const BASE_URL = 'http://3.147.74.119'
 
 export const axiosInstance = axios.create({
    baseURL: BASE_URL,
@@ -24,7 +21,7 @@ axiosInstance.interceptors.request.use(
 
       const token = customStore?.getState()?.auth?.token || null
 
-      if (true) {
+      if (token) {
          updateConfig.headers.Authorization = `Bearer ${token}`
       }
 

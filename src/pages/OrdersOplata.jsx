@@ -8,7 +8,7 @@ import Breadcrumbs from '../components/UI/BreadCrums'
 
 const useOrderIdFromPath = () => {
    const location = useLocation()
-   const match = location.pathname.match(/\/orders\/(\d+)/) 
+   const match = location.pathname.match(/\/orders\/(\d+)/)
    return match ? match[1] : null
 }
 
@@ -55,9 +55,10 @@ const OrderDetails = () => {
       <>
          <StyledBreadCrumbs>
             <Breadcrumbs
-               baseLabel="Заказы"
+               baseLabel=""
                pathLabels={{
                   orders: 'Заказы',
+                  admin: ' ',
                }}
             />
          </StyledBreadCrumbs>

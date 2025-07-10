@@ -68,7 +68,6 @@ const StyledAppBar = styled(AppBar)`
    background-color: #1a1a25;
    box-shadow: none;
    padding: 0 20px;
-   background-color: #1a1a25;
 `
 
 const StyledToolbar = styled(Toolbar)`

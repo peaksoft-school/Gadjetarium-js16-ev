@@ -19,8 +19,8 @@ const rootReducer = combineReducers({
    banner: bannerReducer,
    discount: discountReducer,
    mail: mailReducer,
+   orders: ordersReducer,
    infographic: infographicReducer,
-   auth: authReducer,
    orders: ordersReducer,
 })
 
