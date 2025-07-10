@@ -4,13 +4,11 @@ import { fetchOrders } from '../pages/orderSlice'
 import { Icons } from '../assets/icons'
 import Chip from '../components/UI/Chip'
 import Input from '../components/UI/Input'
-import AdminHeader from '../layout/admin/AdminHeader'
 import DatePicker from '../components/UI/DatePicker'
 import InputAdornment from '@mui/material/InputAdornment'
 import { Container, styled, Box } from '@mui/material'
 import UniversalTable from '../components/UI/UniversalTable'
-import dayjs from 'dayjs'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import Infographic from '../components/Infographics'
 
 export default function Orders() {
@@ -81,105 +79,105 @@ export default function Orders() {
    }))
 
    const statusOptions = [
-      { label: 'WAITING', value: 'WAITING' },
-      { label: 'READY_FOR_PICKUP', value: 'READY_FOR_PICKUP' },
-      { label: 'COURIER_ON_THE_WAY', value: 'COURIER_ON_THE_WAY' },
-      { label: 'DELIVERED', value: 'DELIVERED' },
-      { label: 'CANCELLED', value: 'CANCELLED' },
-      { label: 'GET', value: 'GET' },
+      { value: 'WAITING', label: 'В ожидании' },
+      { value: 'READY_FOR_PICKUP', label: 'В обработке ' },
+      { value: 'COURIER_ON_THE_WAY', label: 'Курьер в пути ' },
+      { value: 'DELIVERED', label: 'Доставлено' },
+      { value: 'CANCELLED', label: 'Отменены' },
    ]
 
    const handleOrderClick = (orderId) => {
-      navigate(`/orders/${orderId}`)
+      navigate(`/admin/orders/${orderId}`)
    }
 
    return (
-      <StyledDiv0>
-         <AdminHeader />
-         <StyledDiv1>
-            <StyledInput
-               placeholder="Поиск по артикулу или ..."
-               value={searchValue}
-               onChange={handleSearchChange}
-               InputProps={{
-                  endAdornment: (
-                     <InputAdornment position="end">
-                        <img
-                           src={Icons.searchGrey}
-                           alt="search"
-                           style={{ width: 20, height: 20, cursor: 'pointer' }}
-                        />
-                     </InputAdornment>
-                  ),
-               }}
-            />
-         </StyledDiv1>
-
-         <br />
-         <StyledDiv2>
-            {statusOptions.map((status) => (
-               <Chip
-                  key={status.value}
-                  label={status.label}
-                  onClick={() => handleStatusClick(status.value)}
-                  variant={
-                     selectedStatuses.includes(status.value)
-                        ? 'filled'
-                        : 'outlined'
-                  }
-               />
-            ))}
-         </StyledDiv2>
-
-         <br />
-
-         <StyledDiv2>
-            {statusCounts.map(({ status, count }) => (
-               <Chip
-                  key={status}
-                  label={`${status} × ${count}`}
-                  onDelete={() => handleStatusDelete(status)}
-               />
-            ))}
-         </StyledDiv2>
-
-         <br />
-         <hr style={{ width: '60%', marginLeft: '12.5%' }} />
-         <br />
-
-         <Container>
-            <StyledTabs>
-               <StyledBoxTab onClick={() => setOpenPicker('from')}>
-                  <span style={{ color: '#384255', fontSize: '13px' }}>
-                     {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
-                  </span>
-                  <img src={Icons.calendar} alt="calendar" />
-               </StyledBoxTab>
-               <StyledBoxTab onClick={() => setOpenPicker('to')}>
-                  <span style={{ color: '#384255', fontSize: '13px' }}>
-                     {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
-                  </span>
-                  <img src={Icons.calendar} alt="calendar" />
-               </StyledBoxTab>
-            </StyledTabs>
-
-            <br />
-            {loading && <div>Загрузка...</div>}
-            {error && (
-               <Box
-                  sx={{
-                     color: 'red',
-                     whiteSpace: 'pre-wrap',
-                     fontWeight: 'bold',
+      <Wrapper>
+         <MainContent>
+            <StyledDiv1>
+               <StyledInput
+                  placeholder="Поиск по артикулу или ..."
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  InputProps={{
+                     endAdornment: (
+                        <InputAdornment position="end">
+                           <img
+                              src={Icons.searchGrey}
+                              alt="search"
+                              style={{
+                                 width: 20,
+                                 height: 20,
+                                 cursor: 'pointer',
+                              }}
+                           />
+                        </InputAdornment>
+                     ),
                   }}
-               >
-                  Ошибка:{' '}
-                  {typeof error === 'object'
-                     ? JSON.stringify(error, null, 2)
-                     : error}
-               </Box>
-            )}
-            <StyledDiv5>
+               />
+            </StyledDiv1>
+
+            <StyledDiv2>
+               {statusOptions.map((status) => (
+                  <Chip
+                     key={status.value}
+                     label={status.label}
+                     onClick={() => handleStatusClick(status.value)}
+                     variant={
+                        selectedStatuses.includes(status.value)
+                           ? 'filled'
+                           : 'outlined'
+                     }
+                  />
+               ))}
+            </StyledDiv2>
+
+            {/* <br /> */}
+
+            <StyledDiv2>
+               {statusCounts.map(({ status, count }) => (
+                  <Chip
+                     key={status}
+                     label={`${status} × ${count}`}
+                     onDelete={() => handleStatusDelete(status)}
+                  />
+               ))}
+            </StyledDiv2>
+
+            <div style={{ marginLeft: '22px' }}>
+               <hr style={{ width: '100%', marginBottom: '30px' }} />
+
+               <StyledTabs marginBottom={5}>
+                  <StyledBoxTab onClick={() => setOpenPicker('from')}>
+                     <span style={{ color: '#384255', fontSize: '13px' }}>
+                        {fromDate ? fromDate.format('DD.MM.YYYY') : 'С'}
+                     </span>
+                     <img src={Icons.calendar} alt="calendar" />
+                  </StyledBoxTab>
+                  <StyledBoxTab onClick={() => setOpenPicker('to')}>
+                     <span style={{ color: '#384255', fontSize: '13px' }}>
+                        {toDate ? toDate.format('DD.MM.YYYY') : 'До'}
+                     </span>
+                     <img src={Icons.calendar} alt="calendar" />
+                  </StyledBoxTab>
+               </StyledTabs>
+
+               <br />
+               {loading && <div>Загрузка...</div>}
+               {error && (
+                  <Box
+                     sx={{
+                        color: 'red',
+                        whiteSpace: 'pre-wrap',
+                        fontWeight: 'bold',
+                     }}
+                  >
+                     Ошибка:{' '}
+                     {typeof error === 'object'
+                        ? JSON.stringify(error, null, 2)
+                        : error}
+                  </Box>
+               )}
+
                <UniversalTable
                   variant="orders"
                   data={filteredOrders.map((order) => ({
@@ -194,8 +192,8 @@ export default function Orders() {
                      onClick: () => handleOrderClick(order.id),
                   }))}
                />
-               <Infographic />
-            </StyledDiv5>
+            </div>
+
             {openPicker && (
                <Box sx={{ position: 'absolute', top: '45%', right: '48%' }}>
                   <DatePicker
@@ -204,18 +202,44 @@ export default function Orders() {
                   />
                </Box>
             )}
-         </Container>
+         </MainContent>
 
-         <br />
-      </StyledDiv0>
+         <Sidebar>
+            <Infographic />
+         </Sidebar>
+      </Wrapper>
    )
 }
 
-const StyledDiv1 = styled(Container)({ paddingTop: '40px' })
+const Wrapper = styled('div')({
+   display: 'flex',
+   flexDirection: 'row',
+   marginTop: '15px',
+   alignItems: 'flex-start',
+   padding: '40px 0px 40px 40px ',
+   gap: '40px',
+})
+
+const MainContent = styled('div')({
+   flex: 1,
+   maxWidth: 'calc(95% - 360px)',
+   display: 'flex',
+   flexDirection: 'column',
+   gap: '20px',
+})
+
+const Sidebar = styled('div')({
+   width: '320px',
+   minHeight: '100%',
+   marginTop: '-70px',
+})
+
+const StyledDiv1 = styled(Container)({ paddingTop: '0px' })
 const StyledDiv2 = styled(Container)({
    display: 'flex',
    gap: '14px',
    flexWrap: 'wrap',
+   paddingLeft: 0,
 })
 const StyledInput = styled(Input)({ width: '559px', height: '39px' })
 const StyledBoxTab = styled(Box)({
@@ -229,6 +253,3 @@ const StyledBoxTab = styled(Box)({
    cursor: 'pointer',
 })
 const StyledTabs = styled(Box)({ display: 'flex', gap: '20px' })
-
-const StyledDiv5 = styled('div')({})
-const StyledDiv0 = styled('div')({})

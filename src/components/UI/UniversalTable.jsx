@@ -21,7 +21,7 @@ import { Icons } from '../../assets/icons'
 import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
 import { updateOrder, deleteOrder } from '../../pages/orderSlice'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 const UniversalTable = ({ variant, data = [] }) => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -164,7 +164,7 @@ const UniversalTable = ({ variant, data = [] }) => {
                {table.getRowModel().rows.map((row) => (
                   <HoverableRow
                      key={row.id}
-                     onClick={() => navigate(`/orders/${row.original.id}`)}
+                     onClick={() => navigate(`/admin/orders/${row.original.id}`)}
                   >
                      {row.getVisibleCells().map((cell) => (
                         <React.Fragment key={cell.id}>
