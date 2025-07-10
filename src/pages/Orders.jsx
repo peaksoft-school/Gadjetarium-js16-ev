@@ -11,6 +11,7 @@ import { Container, styled, Box } from '@mui/material'
 import UniversalTable from '../components/UI/UniversalTable'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
+import Infographic from '../components/Infographics'
 
 export default function Orders() {
    const [searchValue, setSearchValue] = useState('')
@@ -93,7 +94,7 @@ export default function Orders() {
    }
 
    return (
-      <Box>
+      <StyledDiv0>
          <AdminHeader />
          <StyledDiv1>
             <StyledInput
@@ -178,22 +179,23 @@ export default function Orders() {
                      : error}
                </Box>
             )}
-
-            <UniversalTable
-               variant="orders"
-               data={filteredOrders.map((order) => ({
-                  id: order.id,
-                  fio: order.fullName,
-                  number: order.number,
-                  createdAt: order.createdAt,
-                  count: order.count,
-                  total: order.totalPrice,
-                  delivery: order.pickup ? 'Самовывоз' : 'Доставка',
-                  status: order.status,
-                  onClick: () => handleOrderClick(order.id),
-               }))}
-            />
-
+            <StyledDiv5>
+               <UniversalTable
+                  variant="orders"
+                  data={filteredOrders.map((order) => ({
+                     id: order.id,
+                     fio: order.fullName,
+                     number: order.number,
+                     createdAt: order.createdAt,
+                     count: order.count,
+                     total: order.totalPrice,
+                     delivery: order.pickup ? 'Самовывоз' : 'Доставка',
+                     status: order.status,
+                     onClick: () => handleOrderClick(order.id),
+                  }))}
+               />
+               <Infographic />
+            </StyledDiv5>
             {openPicker && (
                <Box sx={{ position: 'absolute', top: '45%', right: '48%' }}>
                   <DatePicker
@@ -203,8 +205,9 @@ export default function Orders() {
                </Box>
             )}
          </Container>
+
          <br />
-      </Box>
+      </StyledDiv0>
    )
 }
 
@@ -226,3 +229,6 @@ const StyledBoxTab = styled(Box)({
    cursor: 'pointer',
 })
 const StyledTabs = styled(Box)({ display: 'flex', gap: '20px' })
+
+const StyledDiv5 = styled('div')({})
+const StyledDiv0 = styled('div')({})

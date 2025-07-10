@@ -1,47 +1,32 @@
-// import { combineReducers, configureStore } from '@reduxjs/toolkit'
-// import persistReducer from 'redux-persist/es/persistReducer'
-// import persistStore from 'redux-persist/es/persistStore'
-// import storage from 'redux-persist/lib/storage'
-
-// const rootReducer = combineReducers({})
-
-// const persistConfig = {
-//    key: 'GADJETARIUM',
-//    storage,
-// }
-
-// const persistedReducer = persistReducer(persistConfig, rootReducer)
-
-// const store = configureStore({
-//    reducer: persistedReducer,
-
-//    middleware: (getDefaultMiddleware) =>
-//       getDefaultMiddleware({
-//          serializableCheck: false,
-//       }),
-// })
-
-// const persistor = persistStore(store)
-
-// export { store, persistor }
-
-///////////////////////////////////////
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 import persistReducer from 'redux-persist/es/persistReducer'
 import persistStore from 'redux-persist/es/persistStore'
 import storage from 'redux-persist/lib/storage'
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { injectStore } from '../configs/axiosInstans'
 
-
-import ordersReducer from '../pages/orderSlice' 
+import productReducer from './products/productSlice'
+import bannerReducer from './banner/bannerSlice'
+import discountReducer from './discount/DiscountSlice'
+import mailReducer from './mailing/mailSlice'
+import infographicReducer from './../pages/features/infographicSlice'
+import ordersReducer from '../pages/orderSlice'
+import { authReducer } from './authSlice/authSlice'
 
 const rootReducer = combineReducers({
-   orders: ordersReducer, 
+   product: productReducer,
+   banner: bannerReducer,
+   discount: discountReducer,
+   mail: mailReducer,
+   orders: ordersReducer,
+   infographic: infographicReducer,
+   auth: authReducer,
 })
 
 const persistConfig = {
    key: 'GADJETARIUM',
    storage,
+   whitelist: ['auth'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -53,6 +38,8 @@ const store = configureStore({
          serializableCheck: false,
       }),
 })
+
+injectStore(store)
 
 const persistor = persistStore(store)
 
