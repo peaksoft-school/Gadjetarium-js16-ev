@@ -20,7 +20,7 @@ const SignIn = () => {
 
    const [error, setError] = useState(null)
 
-   const isLoading = useSelector((state) => state.auth)
+   const isLoading = useSelector((state) => state.auth.isLoading)
 
    const {
       register,
@@ -32,11 +32,16 @@ const SignIn = () => {
       dispatch(
          AUTH_THUNK.signIn({
             values,
-            navigate,
             setSubmitting: () => {},
             handleClose: () => {},
          })
-      )
+      ).then((action) => {
+         if (!action.error) {
+            navigate('/user')
+         } else {
+            setError(action.error.message || 'Ошибка входа')
+         }
+      })
    }
 
    const handleGoogleSignIn = async () => {

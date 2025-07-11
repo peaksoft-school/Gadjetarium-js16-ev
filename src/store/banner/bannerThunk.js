@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../configs/axiosInstans'
-import { fileUploadInstance } from '../../configs/fileAxiosInstance'
 
 export const postBanner = createAsyncThunk(
    'banner/postBanner',

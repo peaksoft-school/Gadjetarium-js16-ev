@@ -63,7 +63,7 @@ const Products = () => {
    return (
       <>
          <Wrapper>
-            <div>
+            <TableBlock>
                <Toolbar
                   onSearch={(val) => setSearch(val)}
                   onActionChange={(val) => setAction(val)}
@@ -107,7 +107,7 @@ const Products = () => {
                      setSelectedIds={setSelectedIds}
                   />
                )}
-            </div>
+            </TableBlock>
             <Infographics data={salesData} />
          </Wrapper>
 
@@ -146,11 +146,17 @@ export default Products
 
 const Wrapper = styled(Box)({
    display: 'flex',
-   gap: '24px',
+   gap: '16px', 
    marginBottom: '24px',
    width: '100%',
    position: 'relative',
    padding: '0 24px',
+})
+
+const TableBlock = styled('div')({
+   flex: '1 1 0',
+   minWidth: 0,
+   maxWidth: 1100, 
 })
 
 const FiltersBlock = styled(Box)({

@@ -81,7 +81,7 @@ const AppRouter = () => (
          }
       />
       <Route
-         path="/user"
+         path="/user/*"
          element={
             <PrivateRouter
                component={<UserRouter />}
