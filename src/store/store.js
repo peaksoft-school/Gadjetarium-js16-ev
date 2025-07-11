@@ -5,6 +5,7 @@ import favoritesReducer from './lk-favorite/favoriteSlice'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import ordersReducer from '../pages/orderSlice'
 import reviewsReducer from './reviews/ReviewsSlice'
+import orderHistoryReducer from './orders/orderHistorySlice'
 import { injectStore } from '../configs/axiosInstans'
 import productReducer from './products/productSlice'
 import bannerReducer from './banner/bannerSlice'
@@ -14,6 +15,8 @@ import infographicReducer from './../pages/features/infographicSlice'
 import { authReducer } from './authSlice/authSlice'
 
 const rootReducer = combineReducers({
+   orders: orderHistoryReducer,
+   auth: authReducer,
    product: productReducer,
    reviews: reviewsReducer,
    auth: authReducer,

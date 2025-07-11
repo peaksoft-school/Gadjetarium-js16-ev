@@ -22,40 +22,6 @@ const LKfavorites = () => {
 
    return (
       <MainContainer>
-         <StyledBreadCrumbs>
-            <Breadcrumbs
-               baseLabel="Личный кабинет"
-               pathLabels={{
-                  orders: 'История заказов',
-                  favorites: 'Избранное',
-                  profile: 'Профиль',
-               }}
-            />
-         </StyledBreadCrumbs>
-
-         <PageTitle variant="h4">Избранное</PageTitle>
-
-         <NavigationContainer>
-            <NavigationButton
-               className={activeTab === 'orders' ? 'active' : ''}
-               onClick={() => handleTabClick('orders')}
-            >
-               История заказов
-            </NavigationButton>
-            <NavigationButton
-               className={activeTab === 'favorites' ? 'active' : ''}
-               onClick={() => handleTabClick('favorites')}
-            >
-               Избранное
-            </NavigationButton>
-            <NavigationButton
-               className={activeTab === 'profile' ? 'active' : ''}
-               onClick={() => handleTabClick('profile')}
-            >
-               Профиль
-            </NavigationButton>
-         </NavigationContainer>
-
          {activeTab === 'favorites' &&
             (favorites?.length === 0 ? (
                <EmptyStateContainer>
@@ -101,62 +67,6 @@ const MainContainer = styled(Box)({
    maxWidth: '1200px',
    margin: '0 auto',
    cursor: 'pointer',
-})
-
-const StyledBreadCrumbs = styled(Box)(() => ({
-   marginTop: '2%',
-   position: 'relative',
-   top: '10px',
-   marginBottom: '4%',
-}))
-
-const PageTitle = styled(Typography)({
-   marginBottom: '30px',
-   color: '#333333',
-   fontWeight: 'bold',
-   fontSize: '28px',
-})
-
-const NavigationContainer = styled(Box)({
-   display: 'flex',
-   marginBottom: '30px',
-   gap: '0px',
-})
-
-const NavigationButton = styled(Button)({
-   textTransform: 'none',
-   color: '#666666',
-   backgroundColor: '#e8e8e8',
-   border: 'none',
-   borderRadius: '8px',
-   padding: '8px 20px',
-   fontSize: '14px',
-   fontWeight: 'normal',
-   marginRight: '8px',
-   minHeight: '36px',
-   cursor: 'pointer',
-   '&:hover': {
-      backgroundColor: '#d8d8d8',
-   },
-   '&:active': {
-      backgroundColor: '#c8c8c8',
-      transform: 'translateY(1px)',
-   },
-   '&.active': {
-      backgroundColor: '#4a5568',
-      color: '#ffffff',
-      fontWeight: 'normal',
-      '&:hover': {
-         backgroundColor: '#3a4558',
-      },
-      '&:active': {
-         backgroundColor: '#2a3548',
-         transform: 'translateY(1px)',
-      },
-   },
-   '&:last-of-type': {
-      marginRight: '0',
-   },
 })
 
 const ProductsGrid = styled(Box)({
