@@ -56,6 +56,7 @@ const AppRouter = () => (
             />
          }
       />
+
       <Route
          path="/forgot-password"
          element={

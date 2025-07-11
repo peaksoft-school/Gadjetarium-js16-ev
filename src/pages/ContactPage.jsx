@@ -3,14 +3,15 @@ import UserHeader from '../layout/user/UserHeader'
 import Footer from '../layout/Footer'
 import Input from '../components/UI/Input'
 import Button from '../components/UI/Button'
+import Breadcrumbs from '../components/UI/BreadCrums'
 
 const ContactPage = () => {
    return (
       <div>
-         <UserHeader />
          <StyledContentBox>
             <StyledContacts>
                <StyledContent>
+                  <Breadcrumbs />
                   <StyledText>Контакты</StyledText>
                </StyledContent>
 
@@ -35,7 +36,7 @@ const ContactPage = () => {
                         <Box>
                            <StyledBlackText>Телефон:</StyledBlackText>
                            <Typography variant="subtitle1">
-                              +996(400) 00-00-00
+                              +996(557) 20-16-73
                            </Typography>
                         </Box>
                         <Box>
@@ -60,21 +61,13 @@ const ContactPage = () => {
                      <StyledForm>
                         <Row>
                            <Box sx={{ flex: 1 }}>
-                              <Typography
-                                 fontSize="14px"
-                                 fontWeight={500}
-                                 mb={1}
-                              >
+                              <Typography fontSize="14px" fontWeight={500} mb={1}>
                                  Имя <span style={{ color: 'red' }}>*</span>
                               </Typography>
                               <Input placeholder="Напишите ваше имя" />
                            </Box>
                            <Box sx={{ flex: 1 }}>
-                              <Typography
-                                 fontSize="14px"
-                                 fontWeight={500}
-                                 mb={1}
-                              >
+                              <Typography fontSize="14px" fontWeight={500} mb={1}>
                                  Фамилия <span style={{ color: 'red' }}>*</span>
                               </Typography>
                               <Input placeholder="Напишите вашу фамилию" />
@@ -82,21 +75,13 @@ const ContactPage = () => {
                         </Row>
                         <Row>
                            <Box sx={{ flex: 1 }}>
-                              <Typography
-                                 fontSize="14px"
-                                 fontWeight={500}
-                                 mb={1}
-                              >
+                              <Typography fontSize="14px" fontWeight={500} mb={1}>
                                  E-mail <span style={{ color: 'red' }}>*</span>
                               </Typography>
                               <Input placeholder="Напишите ваш email" />
                            </Box>
                            <Box sx={{ flex: 1 }}>
-                              <Typography
-                                 fontSize="14px"
-                                 fontWeight={500}
-                                 mb={1}
-                              >
+                              <Typography fontSize="14px" fontWeight={500} mb={1}>
                                  Телефон <span style={{ color: 'red' }}>*</span>
                               </Typography>
                               <Input placeholder="+996 (_ _ _) _ _  _ _  _ _" />
@@ -129,14 +114,13 @@ const ContactPage = () => {
                referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
          </StyledContentBox>
-         <Footer />
       </div>
    )
 }
 
 export default ContactPage
 
-
+// Стили
 const StyledContacts = styled(Container)({
    padding: 30,
    width: '100%',

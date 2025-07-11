@@ -1,5 +1,8 @@
 import { Icons } from '../../assets/icons'
 import { Images } from '../../assets/images'
+import gatget from '../../assets/images/gatget.png'
+import PeopleTc from '../../assets/images/PeopleTc.png'
+import GatgetStore from '../../assets/images/GatgetStore.png'
 
 const POSSIBILITIES = [
    {
@@ -31,16 +34,43 @@ const POSSIBILITIES = [
 
 const QUESTIONS = [
    {
+      id: 'panel1',
+      question: 'Как оформить заказ на сайте?',
+      answer:
+         'Вы можете оформить заказ, выбрав нужные товары и перейдя в корзину. Далее следуйте инструкциям по оформлению доставки и оплаты.',
+   },
+   {
+      id: 'panel2',
+      question: 'Какие способы доставки доступны?',
+      answer: [
+         'Мы предлагаем курьерскую доставку, самовывоз и доставку через почтовые службы и еще доставка бесплатно.',
+      ],
+   },
+   {
+      id: 'panel4',
+      question: 'Как получить консультацию перед покупкой?',
+      answer:
+         'Вы можете связаться с нашим менеджером по телефону или через онлайн-чат на сайте. Мы с радостью ответим на все ваши вопросы.',
+   },
+   {
+      id: 'panel5',
+      question: 'Предоставляете ли вы гарантию на товары?',
+      answer:
+         'Да, на все товары предоставляется гарантия сроком от 6 до 24 месяцев, в зависимости от категории продукта.',
+   },
+]
+export const products = [
+   {
       id: 1,
-      // image: `${GatgetStore}`,
+      image: `${GatgetStore}`,
    },
    {
       id: 2,
-      // image: `${gatget}`,
+      image: `${gatget}`,
    },
    {
       id: 3,
-      // image: `${PeopleTc}`,
+      image: `${PeopleTc}`,
    },
 ]
 

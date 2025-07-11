@@ -8,10 +8,8 @@ import {
    CircularProgress,
    styled,
    Container,
-   Tabs,
-   Tab,
 } from '@mui/material'
-import { useNavigate, Routes, Route, useLocation } from 'react-router-dom'
+import { useNavigate, Routes, Route, useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    fetchProfile,
@@ -39,21 +37,7 @@ const ProfileMain = ({
       <>
          <Typography variant="h3">Профиль</Typography>
          <br />
-         <hr />
-         <br />
-         {/* Компактные табы под заголовком */}
-         <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            size="small"
-            sx={{ mb: 2 }}
-         >
-            <Tab label="Профиль" />
-            <Tab label="История заказов" />
-            <Tab label="Избранное" />
-         </Tabs>
+
          <br />
          <br />
          <StyledBox1>
@@ -116,7 +100,7 @@ const ProfileMain = ({
             >
                <Button
                   variant="outlined"
-                  onClick={() => navigate('/profile/password')}
+                  onClick={() => navigate('/user/account/profile/password')}
                >
                   сменить пароль
                </Button>
@@ -167,18 +151,6 @@ const ProfileForm = () => {
 
    return (
       <div>
-         <UserHeader />
-         <StyledBreadCrumbs>
-            <Breadcrumbs
-               baseLabel="Личный кабинет"
-               pathLabels={{
-                  orders: 'История заказов',
-                  favorites: 'Избранное',
-                  profile: 'Учетная запись',
-               }}
-            />
-         </StyledBreadCrumbs>
-
          <Container1
             sx={{
                maxWidth: 600,
@@ -214,7 +186,6 @@ const ProfileForm = () => {
                </Routes>
             </Box>
          </Container1>
-         <Footer />
       </div>
    )
 }

@@ -36,7 +36,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const handleLogout = () => {
       localStorage.clear()
       navigate('/sign-in')
-      window.location.reload() // или просто перезагрузить страницу
+      window.location.reload()
    }
 
    return (
@@ -46,11 +46,39 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                <Logo src={Icons.gadgetarium} alt="Gadgetarium Logo" />
 
                <NavContainer>
-                  {navArray.map((item) => (
-                     <NavButton sx={{ whiteSpace: 'nowrap' }} key={item}>
-                        {item}
-                     </NavButton>
-                  ))}
+                  {navArray.map((item) => {
+                     const handleNavClick = () => {
+                        switch (item) {
+                           case 'Главная':
+                              navigate('/')
+                              break
+                           case 'О магазине':
+                              navigate('/user/about')
+                              break
+                           case 'Доставка':
+                              navigate('/user/delivery')
+                              break
+                           case 'FAQ':
+                              navigate('/user/faq')
+                              break
+                           case 'Контакты':
+                              navigate('/user/contacts')
+                              break
+                           default:
+                              break
+                        }
+                     }
+
+                     return (
+                        <NavButton
+                           key={item}
+                           sx={{ whiteSpace: 'nowrap' }}
+                           onClick={handleNavClick}
+                        >
+                           {item}
+                        </NavButton>
+                     )
+                  })}
                </NavContainer>
             </TopInfo>
 
@@ -360,16 +388,16 @@ const ProfileIconBox = styled('div')({
 })
 
 const LogoutHint = styled('div')({
-   marginTop: "-5px", 
+   marginTop: '-5px',
    background: '#fff',
    color: '#CB11AB',
-   fontSize: 12, 
+   fontSize: 12,
    fontWeight: 600,
    borderRadius: 8,
    padding: '6px 18px',
    boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
    position: 'absolute',
-   top: '120%', 
+   top: '120%',
    left: '50%',
    transform: 'translateX(-50%)',
    whiteSpace: 'nowrap',

@@ -8,9 +8,8 @@ import {
    styled,
 } from '@mui/material'
 import { Icons } from '../assets/icons'
-import Footer from '../layout/Footer'
-import UserHeader from '../layout/user/UserHeader'
 import { QUESTIONS } from '../utils/constants'
+import Breadcrumbs from '../components/UI/BreadCrums'
 
 const FAQ = () => {
    const [expanded, setExpanded] = useState(null)
@@ -25,9 +24,9 @@ const FAQ = () => {
 
    return (
       <>
-         <UserHeader />
          <Wrapper>
             <MiniContainer>
+               <Breadcrumbs />
                <MainTitle>FAQ</MainTitle>
                <Divider />
             </MiniContainer>
@@ -65,7 +64,6 @@ const FAQ = () => {
                </Container>
             </Centered>
          </Wrapper>
-         <Footer />
       </>
    )
 }

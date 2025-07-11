@@ -7,7 +7,6 @@ import Breadcrumbs from '../components/UI/BreadCrums'
 const DeliveryPage = () => {
    return (
       <div>
-         <UserHeader />
          <StyledDelivery>
             <Breadcrumbs />
             <StyledContent>
@@ -97,7 +96,6 @@ const DeliveryPage = () => {
                </StyledPayInfo>
             </StyledContent>
          </StyledDelivery>
-         <Footer />
       </div>
    )
 }

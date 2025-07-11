@@ -9,10 +9,15 @@ import Spinner from '../../components/Spinner'
 import OrderDetails from '../../pages/OrdersOplata'
 import OrderHistoryPustoi from '../../pages/OrderHistoryPustoi'
 import AccountLayout from '../../layout/user/AccountLayout'
+import DeliveryPage from '../../pages/DeliveryPage'
+import AboutPage from '../../pages/AboutPage'
+import FAQ from '../../components/FAQ'
+import ContactPage from '../../pages/ContactPage'
+import ProfilePage from '../../pages/ProfilePage'
 
 const LKfavorites = lazy(() => import('../../pages/LKfavorites'))
 const OrderHistory = lazy(() => import('../../pages/OrderHistory'))
-const ProfilePage = lazy(() => import('../../pages/ProfilePage'))
+const ProfileForm = lazy(() => import('../../pages/ProfileForm'))
 
 const UserRouter = () => {
    return (
@@ -42,12 +47,17 @@ const UserRouter = () => {
                   path="profile"
                   element={
                      <Suspense fallback={<Spinner />}>
-                        <ProfilePage />
+                        <ProfileForm />
                      </Suspense>
                   }
                />
+               <Route path="profile/password" element={<ProfilePage />} />
             </Route>
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/delivery" element={<DeliveryPage />} />
 
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contacts" element={<ContactPage />} />
             <Route path="/orders/:id" element={<OrderDetails />} />
             <Route path="/orders/empty" element={<OrderHistoryPustoi />} />
          </Routes>
