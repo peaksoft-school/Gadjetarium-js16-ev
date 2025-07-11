@@ -18,6 +18,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
 
    const [isScrolled, setIsScrolled] = useState(false)
+   const [profileHover, setProfileHover] = useState(false)
    const navigate = useNavigate()
 
    useEffect(() => {
@@ -31,6 +32,12 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
 
       return () => window.removeEventListener('scroll', handleScroll)
    }, [])
+
+   const handleLogout = () => {
+      localStorage.clear()
+      navigate('/sign-in')
+      window.location.reload() // или просто перезагрузить страницу
+   }
 
    return (
       <StyledAppBar position={isScrolled ? 'fixed' : 'static'}>
@@ -49,13 +56,27 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
 
             <ContactBox>
                <PhoneText>+996 (999) 160 609</PhoneText>
-
-               <WhiteIcon
-                  aria-label="user profile"
-                  onClick={() => navigate('/user/account')}
+               <ProfileIconBox
+                  onMouseEnter={() => setProfileHover(true)}
+                  onMouseLeave={() => setProfileHover(false)}
                >
-                  <IconImage src={Icons.user} alt="User" />
-               </WhiteIcon>
+                  <WhiteIcon
+                     aria-label="user profile"
+                     onClick={() => navigate('/user/account/order-history')}
+                  >
+                     <IconImage src={Icons.user} alt="User" />
+                  </WhiteIcon>
+                  {profileHover && (
+                     <LogoutHint
+                        onMouseEnter={() => setProfileHover(true)}
+                        onMouseLeave={() => setProfileHover(false)}
+                        onClick={handleLogout}
+                        style={{ cursor: 'pointer' }}
+                     >
+                        Выйти
+                     </LogoutHint>
+                  )}
+               </ProfileIconBox>
             </ContactBox>
          </TopRow>
 
@@ -329,6 +350,31 @@ const IconsContainer = styled(Box)({
       width: '100%',
       gap: '12px',
    },
+})
+
+const ProfileIconBox = styled('div')({
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   position: 'relative',
+})
+
+const LogoutHint = styled('div')({
+   marginTop: "-5px", 
+   background: '#fff',
+   color: '#CB11AB',
+   fontSize: 12, 
+   fontWeight: 600,
+   borderRadius: 8,
+   padding: '6px 18px',
+   boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+   position: 'absolute',
+   top: '120%', 
+   left: '50%',
+   transform: 'translateX(-50%)',
+   whiteSpace: 'nowrap',
+   zIndex: 10,
+   transition: 'all 0.2s',
 })
 
 export default UserHeader

@@ -12,6 +12,7 @@ import AccountLayout from '../../layout/user/AccountLayout'
 
 const LKfavorites = lazy(() => import('../../pages/LKfavorites'))
 const OrderHistory = lazy(() => import('../../pages/OrderHistory'))
+const ProfilePage = lazy(() => import('../../pages/ProfilePage'))
 
 const UserRouter = () => {
    return (
@@ -37,7 +38,14 @@ const UserRouter = () => {
                      </Suspense>
                   }
                />
-               {/* <Route path="profile" element={<Profile />} /> */}
+               <Route
+                  path="profile"
+                  element={
+                     <Suspense fallback={<Spinner />}>
+                        <ProfilePage />
+                     </Suspense>
+                  }
+               />
             </Route>
 
             <Route path="/orders/:id" element={<OrderDetails />} />

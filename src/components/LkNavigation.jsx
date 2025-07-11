@@ -27,8 +27,8 @@ const LkNavigation = () => {
             <Breadcrumbs
                baseLabel="Личный кабинет"
                pathLabels={{
-                  orders: 'История заказов',
-                  favorites: 'Избранное',
+                  'order-history': 'История заказов',
+                  favorite: 'Избранное',
                   profile: 'Профиль',
                }}
             />
@@ -55,7 +55,7 @@ export default LkNavigation
 
 const Container = styled(Box)(() => ({
    maxWidth: '950px',
-   marginLeft:"165px",
+   marginLeft: '165px',
    padding: '0 16px',
    marginBottom: '30px',
 }))

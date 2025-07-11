@@ -11,22 +11,22 @@ import productReducer from './products/productSlice'
 import bannerReducer from './banner/bannerSlice'
 import discountReducer from './discount/DiscountSlice'
 import mailReducer from './mailing/mailSlice'
+import profileReducer from './profile/profileSlice'
 import infographicReducer from './../pages/features/infographicSlice'
 import { authReducer } from './authSlice/authSlice'
 
 const rootReducer = combineReducers({
    orders: orderHistoryReducer,
-   auth: authReducer,
    product: productReducer,
    reviews: reviewsReducer,
    auth: authReducer,
    banner: bannerReducer,
    discount: discountReducer,
+   profile: profileReducer,
    mail: mailReducer,
    favorite: favoritesReducer,
    orders: ordersReducer,
    infographic: infographicReducer,
-   orders: ordersReducer,
 })
 
 const persistConfig = {
