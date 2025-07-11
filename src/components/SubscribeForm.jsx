@@ -1,6 +1,5 @@
-import { Box, styled } from '@mui/material'
+import { styled, Button, Box } from '@mui/material'
 import Input from './UI/Input'
-import Button from './UI/Button'
 
 const SubscribeForm = () => {
    return (

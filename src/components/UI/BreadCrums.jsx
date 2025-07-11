@@ -1,6 +1,6 @@
-import { useLocation, useNavigate } from 'react-router'
-import { Box, Typography, styled } from '@mui/material'
-import { forwardRef } from 'react'
+import { useLocation, useNavigate } from "react-router";
+import { Box, Typography, styled } from "@mui/material";
+import { forwardRef } from "react";
 
 const Breadcrumbs = forwardRef(
    ({ baseLabel = 'Главная', pathLabels = {} }, ref) => {
@@ -42,7 +42,7 @@ const Breadcrumbs = forwardRef(
    }
 )
 
-export default Breadcrumbs
+export default Breadcrumbs;
 
 const BreadcrumbWrapper = styled(Box)({
    display: 'flex',
@@ -51,7 +51,7 @@ const BreadcrumbWrapper = styled(Box)({
 })
 
 const Crumb = styled(Typography, {
-   shouldForwardProp: (prop) => prop !== 'isLast' && prop !== 'clickable',
+  shouldForwardProp: (prop) => prop !== "isLast" && prop !== "clickable",
 })(({ isLast, clickable }) => ({
    fontSize: '16px',
    fontWeight: isLast ? 500 : 400,
@@ -61,7 +61,7 @@ const Crumb = styled(Typography, {
 }))
 
 const DividerSymbol = styled(Typography)({
-   fontSize: '24px',
-   color: '#8B8B8B',
-   margin: '0 8px',
-})
+  fontSize: "24px",
+  color: "#8B8B8B",
+  margin: "0 8px",
+});

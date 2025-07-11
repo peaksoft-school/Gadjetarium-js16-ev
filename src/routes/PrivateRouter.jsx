@@ -1,7 +1,8 @@
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router'
 
 const PrivateRouter = ({ roles, component, fallBackPath }) => {
-   const role = 'GUEST'
+   const role = useSelector((state) => state.auth.role)
 
    const allowedRole = roles.includes(role)
 
