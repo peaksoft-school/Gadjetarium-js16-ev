@@ -1,8 +1,6 @@
 import user from './svgs/user.svg'
 import arrowDown from './svgs/arrowDown.svg'
 import arrowLeft from './svgs/arrowLeft.svg'
-import arrowLeftWhite from './svgs/arrowLeftWhite.svg'
-import arrowRightWhite from './svgs/arrowRightWhite.svg'
 import arrowR from './svgs/arrowR.svg'
 import arrowRight from './svgs/arrowRight.svg'
 import arrowUp from './svgs/arrowUp.svg'
@@ -62,16 +60,16 @@ import arrowLFiolet from './svgs/arrowLFiolet.svg'
 import arrowRFiolet from './svgs/arrowRFiolet.svg'
 import gadgetarium from './svgs/gadgetarium.svg'
 import searchGrey from './svgs/searchGrey.svg'
-import search from './svgs/searchGrey.svg'
+import link from './svgs/link.svg'
+import search from './svgs/search.svg'
 
 export const Icons = {
+   search,
    user,
    arrowDown,
    arrowLeft,
    arrowR,
    arrowRight,
-   arrowLeftWhite,
-   arrowRightWhite,
    arrowUp,
    basket,
    blueLike,
@@ -127,9 +125,8 @@ export const Icons = {
    scalesPirple,
    arrowLFiolet,
    arrowRFiolet,
-   arrowRightWhite,
-   arrowLeftWhite,
    gadgetarium,
-   search,
    searchGrey,
+   link,
+   search,
 }

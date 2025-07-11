@@ -4,12 +4,14 @@ import { styled } from '@mui/system'
 import { Icons } from '../../assets/icons'
 import Modal from '../../components/UI/Modal'
 import Mailing from '../../components/Mailing'
+import { useNavigate } from 'react-router'
 
 const AdminHeader = () => {
    const [isModalOpen, setIsModalOpen] = useState(false)
 
    const handleOpenModal = () => setIsModalOpen(true)
    const handleCloseModal = () => setIsModalOpen(false)
+   const navigate = useNavigate()
 
    return (
       <>
@@ -18,9 +20,15 @@ const AdminHeader = () => {
                <StyledNavs>
                   <Logo src={Icons.gadgetarium} alt="Gadgetarium" />
                   <Box>
-                     <NavLink>Товары</NavLink>
-                     <NavLink>Заказы</NavLink>
-                     <NavLink>Отзывы и рейтинг</NavLink>
+                     <NavLink onClick={() => navigate('/admin/products')}>
+                        Товары
+                     </NavLink>
+                     <NavLink onClick={() => navigate('/admin/orders')}>
+                        Заказы
+                     </NavLink>
+                     <NavLink onClick={() => navigate('/admin/reviews')}>
+                        Отзывы и рейтинг
+                     </NavLink>
                   </Box>
                </StyledNavs>
 
@@ -57,10 +65,9 @@ const StyledNavs = styled(Box)({
 })
 
 const StyledAppBar = styled(AppBar)`
-   box-shadow: none;
-   border-bottom: 2px solid #6a1b9a;
-   padding: 0 20px;
    background-color: #1a1a25;
+   box-shadow: none;
+   padding: 0 20px;
 `
 
 const StyledToolbar = styled(Toolbar)`

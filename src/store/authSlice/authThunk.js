@@ -135,7 +135,9 @@ export const AUTH_THUNK = {
             return { token, email, role }
          } catch (error) {
             const err = getErrorMessage(error, 'Ошибка входа через Google')
+
             showToast({ message: err.message, type: 'error' })
+
             return rejectWithValue(err)
          }
       }

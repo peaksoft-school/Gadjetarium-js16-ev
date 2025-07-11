@@ -1,6 +1,5 @@
 import { styled } from '@mui/material/styles'
 import { Box, Typography, Link, Container } from '@mui/material'
-import SubscribeForm from '../components/SubscribeForm'
 import { Icons } from '../assets/icons'
 
 const Footer = () => (
@@ -35,7 +34,6 @@ const Footer = () => (
             <Column>
                <StyledTitle>Расскажем об акциях и скидках</StyledTitle>
 
-               <SubscribeForm />
 
                <Caption>
                   Нажимая на кнопку «подписаться» Вы соглашаетесь <br /> на

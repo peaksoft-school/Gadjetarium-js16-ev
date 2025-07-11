@@ -14,9 +14,7 @@ export default App
 //    return (
 //       <Routes>
 //          <Route path="/" element={<Navigate to="/orders" />} />
-//          <Route path="/orders" element={<OrderHistory />} />
-//          <Route path="/orders/:id" element={<OrderDetails />} />
-//          <Route path="/orders/empty" element={<OrderHistoryPustoi />} />
+//         
 //       </Routes>
 //    )
 // }

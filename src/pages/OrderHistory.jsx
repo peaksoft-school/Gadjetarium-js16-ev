@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrdersThunk } from '../store/orders/orderHistoryThink'
 import { Box, Container, Typography, styled } from '@mui/material'
 import Footer from '../layout/Footer'
-import { useNavigate } from 'react-router-dom'
-import UserHeader from '../layout/user/UserHeader'
+import { useNavigate } from 'react-router'
 import Breadcrumbs from '../components/UI/BreadCrums'
 
 const statusColors = {
@@ -42,34 +41,7 @@ const OrderHistory = () => {
 
    return (
       <StyledDiv1>
-         <UserHeader />
-         <StyledBreadCrumbs>
-            <Breadcrumbs
-               baseLabel="Личный кабинет"
-               pathLabels={{
-                  orders: 'История заказов',
-                  favorites: 'Избранное',
-                  profile: 'Профиль',
-               }}
-            />
-         </StyledBreadCrumbs>
-         <h2 style={{ position: 'relative', left: '12.2%', marginTop: '2%' }}>
-            История заказов
-         </h2>
-         <br />
-         <hr style={{ width: '75.5%', margin: 'auto' }} />
          <StyledKingBox sx={{ maxWidth: 950, mx: 'auto', mt: 4, px: 2 }}>
-            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-               {tabs.map((tab) => (
-                  <TabButton
-                     key={tab}
-                     active={activeTab === tab ? 1 : 0}
-                     onClick={() => setActiveTab(tab)}
-                  >
-                     {tab}
-                  </TabButton>
-               ))}
-            </Box>
             {activeTab === 'История заказов' && (
                <>
                   <Box

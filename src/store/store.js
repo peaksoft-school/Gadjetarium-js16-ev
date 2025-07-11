@@ -1,51 +1,32 @@
-// import { combineReducers, configureStore } from '@reduxjs/toolkit'
-// import persistReducer from 'redux-persist/es/persistReducer'
-// import persistStore from 'redux-persist/es/persistStore'
-// import storage from 'redux-persist/lib/storage'
-// import orderHistoryReducer from '../pages/features/orders/orderHistorySlice'
-
-// const rootReducer = combineReducers({
-//    orderHistory: orderHistoryReducer,
-// })
-
-// const persistConfig = {
-//    key: 'GADJETARIUM',
-//    storage,
-// }
-
-// const persistedReducer = persistReducer(persistConfig, rootReducer)
-
-// const store = configureStore({
-//    reducer: persistedReducer,
-//    middleware: (getDefaultMiddleware) =>
-//       getDefaultMiddleware({
-//          serializableCheck: false,
-//       }),
-// })
-
-// const persistor = persistStore(store)
-
-// export { store, persistor }
-
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import persistReducer from 'redux-persist/es/persistReducer'
 import persistStore from 'redux-persist/es/persistStore'
 import storage from 'redux-persist/lib/storage'
+import favoritesReducer from './lk-favorite/favoriteSlice'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import ordersReducer from '../pages/orderSlice'
+import reviewsReducer from './reviews/ReviewsSlice'
 import orderHistoryReducer from './orders/orderHistorySlice'
-import { authReducer } from './authSlice/authSlice'
 import { injectStore } from '../configs/axiosInstans'
 import productReducer from './products/productSlice'
 import bannerReducer from './banner/bannerSlice'
 import discountReducer from './discount/DiscountSlice'
 import mailReducer from './mailing/mailSlice'
+import infographicReducer from './../pages/features/infographicSlice'
+import { authReducer } from './authSlice/authSlice'
 
 const rootReducer = combineReducers({
    orders: orderHistoryReducer,
    auth: authReducer,
    product: productReducer,
+   reviews: reviewsReducer,
+   auth: authReducer,
    banner: bannerReducer,
    discount: discountReducer,
    mail: mailReducer,
+   favorite: favoritesReducer,
+   orders: ordersReducer,
+   infographic: infographicReducer,
+   orders: ordersReducer,
 })
 
 const persistConfig = {

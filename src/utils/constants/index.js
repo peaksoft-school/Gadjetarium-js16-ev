@@ -85,7 +85,6 @@ const PHONE_SLIDER = [
 ]
 
 export { SUBMENUS, QUESTIONS, POSSIBILITIES, PHONE_SLIDER }
-export { SUBMENUS, QUESTIONS, POSSIBILITIES }
 
 export const catalogProductData = [
    {

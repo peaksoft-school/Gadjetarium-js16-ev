@@ -1,12 +1,13 @@
 import { Outlet } from 'react-router'
-import ProductActionsHeader from '../../components/Products'
-
+import UserHeader from '../../layout/user/UserHeader'
+import Footer from '../../layout/Footer'
 
 const Home = () => {
    return (
       <div>
-         <ProductActionsHeader/>
+         <UserHeader />
          <Outlet />
+         <Footer />  
       </div>
    )
 }
