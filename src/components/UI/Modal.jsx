@@ -1,21 +1,23 @@
 import { Modal as MuiModal, Box, styled } from '@mui/material'
 
-const Modal = ({ open, onClose, children }) => (
+const Modal = ({ open, onClose, children, name = '12px' }) => (
    <MuiModal open={open} onClose={onClose}>
-      <StyledBox onClick={(e) => e.stopPropagation()}>{children}</StyledBox>
+      <StyledBox onClick={(e) => e.stopPropagation()} name={name}>
+         {children}
+      </StyledBox>
    </MuiModal>
 )
 
 export default Modal
 
-const StyledBox = styled(Box)(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme, name }) => ({
    position: 'absolute',
    top: '50%',
    left: '50%',
    transform: 'translate(-50%, -50%)',
-   backgroundColor: theme.palette.background.paper,
-   borderRadius: theme.shape.borderRadius * 2,
+   backgroundColor: 'none',
+   borderRadius: name,
    boxShadow: theme.shadows[5],
-   padding: theme.spacing(4),
+   border: 'none',
    minWidth: 300,
 }))

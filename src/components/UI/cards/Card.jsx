@@ -18,6 +18,7 @@ const Card = ({
    title,
    oldPrice,
    discountValue,
+   image2,
    rating = 4,
    reviews,
    inStock,
@@ -38,6 +39,12 @@ const Card = ({
                size="small"
             />
          )}
+         <img
+            src={image2}
+            alt=""
+            image2={image2}
+            style={{ width: '50px', height: '50px' }}
+         />
 
          <ActionIcons direction="row" spacing={1}>
             <GrayIconButton size="small">
@@ -96,8 +103,8 @@ const Card = ({
 export default Card
 
 const StyledCard = styled(MuiCard)`
-   width: 300px;
-   height: 520px;
+   width: 305px;
+   height: 480px;
    position: relative;
    display: flex;
    flex-direction: column;

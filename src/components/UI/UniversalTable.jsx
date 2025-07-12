@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
    Table,
    TableBody,
@@ -17,17 +17,14 @@ import {
    getCoreRowModel,
    flexRender,
 } from '@tanstack/react-table'
-import Checkbox from './Checkbox'
 import { Icons } from '../../assets/icons'
-
+import dayjs from 'dayjs'
+import { useDispatch } from 'react-redux'
+import { updateOrder, deleteOrder } from '../../pages/orderSlice'
+import { useNavigate } from 'react-router'
 const UniversalTable = ({ variant, data = [] }) => {
-   const [selected, setSelected] = useState([])
-
-   const toggleCheckbox = (id) => {
-      setSelected((prev) =>
-         prev.includes(id) ? prev.filter((el) => el !== id) : [...prev, id]
-      )
-   }
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
 
    const columns = useMemo(() => {
       if (variant === 'orders') {
@@ -37,16 +34,9 @@ const UniversalTable = ({ variant, data = [] }) => {
                   <StyledHeaderCell width="60px">ID</StyledHeaderCell>
                ),
                accessorKey: 'id',
-               cell: ({ row }) => (
+               cell: ({ getValue }) => (
                   <StyledCell width="60px">
-                     <CheckboxWrapper className="checkbox">
-                        <Checkbox
-                           checked={selected.includes(row.original.id)}
-                           onChange={() => toggleCheckbox(row.original.id)}
-                           size="small"
-                        />
-                     </CheckboxWrapper>
-                     <IdText className="idText">{row.original.id}</IdText>
+                     <IdText>{getValue()}</IdText>
                   </StyledCell>
                ),
             },
@@ -61,7 +51,9 @@ const UniversalTable = ({ variant, data = [] }) => {
                cell: ({ row }) => (
                   <StyledCell>
                      <NumberText>{row.original.number}</NumberText>
-                     <DateText>{row.original.date}</DateText>
+                     <DateText>
+                        {dayjs(row.original.createdAt).format('DD.MM.YYYY')}
+                     </DateText>
                   </StyledCell>
                ),
             },
@@ -87,21 +79,53 @@ const UniversalTable = ({ variant, data = [] }) => {
             {
                header: () => <StyledHeaderCell>Статус</StyledHeaderCell>,
                accessorKey: 'status',
-               cell: () => (
-                  <StyledCell>
-                     <StatusBox>
-                        <StatusText>В обработке</StatusText>
-                        <StatusIcon src={Icons.arrowDown} />
-                     </StatusBox>
-                  </StyledCell>
-               ),
+               cell: ({ row }) => {
+                  const order = row.original
+
+                  const handleChange = (e) => {
+                     e.stopPropagation()
+                     const newStatus = e.target.value
+                     if (newStatus !== order.status) {
+                        dispatch(
+                           updateOrder({ id: order.id, status: newStatus })
+                        )
+                     }
+                  }
+
+                  return (
+                     <StyledCell>
+                        <SelectWrapper onClick={(e) => e.stopPropagation()}>
+                           <SelectStyled
+                              value={order.status}
+                              onChange={handleChange}
+                           >
+                              <option value="WAITING">WAITING</option>
+                              <option value="READY_FOR_PICKUP">
+                                 READY_FOR_PICKUP
+                              </option>
+                              <option value="DELIVERED">DELIVERED</option>
+                              <option value="GET">GET</option>
+                              <option value="CANCELLED">CANCELLED</option>
+                              <option value="COURIER_ON_THE_WAY">
+                                 COURIER_ON_THE_WAY
+                              </option>
+                           </SelectStyled>
+                        </SelectWrapper>
+                     </StyledCell>
+                  )
+               },
             },
             {
                header: () => <StyledHeaderCell>Действия</StyledHeaderCell>,
                accessorKey: 'actions',
-               cell: () => (
-                  <StyledCell>
-                     <IconButton>
+               cell: ({ row }) => (
+                  <StyledCell onClick={(e) => e.stopPropagation()}>
+                     <IconButton
+                        onClick={() => {
+                           console.log('Удаляем заказ с ID:', row.original.id)
+                           dispatch(deleteOrder(row.original.id))
+                        }}
+                     >
                         <img src={Icons.deleteb} alt="delete" />
                      </IconButton>
                   </StyledCell>
@@ -111,7 +135,7 @@ const UniversalTable = ({ variant, data = [] }) => {
       }
 
       return []
-   }, [variant, selected])
+   }, [variant, dispatch])
 
    const table = useReactTable({
       data,
@@ -138,7 +162,10 @@ const UniversalTable = ({ variant, data = [] }) => {
             </TableHead>
             <TableBody>
                {table.getRowModel().rows.map((row) => (
-                  <HoverableRow key={row.id}>
+                  <HoverableRow
+                     key={row.id}
+                     onClick={() => navigate(`/admin/orders/${row.original.id}`)}
+                  >
                      {row.getVisibleCells().map((cell) => (
                         <React.Fragment key={cell.id}>
                            {flexRender(
@@ -163,6 +190,7 @@ const StyledTableContainer = styled(TableContainer)(() => ({
    backgroundColor: '#fff',
    padding: '16px',
    boxShadow: 'none',
+   width: '1240px',
 }))
 
 const StyledTable = styled(Table)(() => ({
@@ -179,15 +207,12 @@ const StyledHeaderCell = styled(TableCell)(() => ({
    border: 'none',
    whiteSpace: 'nowrap',
    padding: '12px 16px',
-   borderTopLeftRadius: 0,
-   borderTopRightRadius: 0,
 }))
 
 const StyledCell = styled(TableCell)(() => ({
    fontSize: 14,
    color: '#333',
    whiteSpace: 'nowrap',
-   position: 'relative',
    padding: '12px 16px',
    border: 'none',
 }))
@@ -202,24 +227,10 @@ const HoverableRow = styled(TableRow)(() => ({
    '& td': {
       border: 'none',
    },
-   '&:hover .checkbox': {
-      visibility: 'visible',
-   },
-   '&:hover .idText': {
-      visibility: 'hidden',
-   },
-}))
-
-const CheckboxWrapper = styled(Box)(() => ({
-   position: 'absolute',
-   top: '50%',
-   left: 10,
-   transform: 'translateY(-50%)',
-   visibility: 'hidden',
 }))
 
 const IdText = styled(Box)(() => ({
-   visibility: 'visible',
+   fontWeight: 500,
 }))
 
 const NumberText = styled(Typography)(() => ({
@@ -232,18 +243,22 @@ const DateText = styled(Typography)(() => ({
    color: '#A1A1A1',
 }))
 
-const StatusBox = styled(Box)(() => ({
+const SelectStyled = styled('select')(() => ({
+   borderRadius: '8px',
+   border: 'none',
+   backgroundColor: '#fff',
+   fontSize: '10px',
+   color: '#F99808',
+   outline: 'none',
+   width: '140px',
+   '&:hover': {
+      backgroundColor: '#F5F5F5',
+   },
+}))
+
+const SelectWrapper = styled(Box)(() => ({
+   position: 'relative',
    display: 'flex',
-   alignItems: 'center',
-   gap: '6px',
+   justifyContent: 'start',
 }))
 
-const StatusText = styled(Typography)(() => ({
-   color: '#FFA500',
-   fontWeight: 500,
-}))
-
-const StatusIcon = styled('img')(() => ({
-   width: 16,
-   height: 16,
-}))
