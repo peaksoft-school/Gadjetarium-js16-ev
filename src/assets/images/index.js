@@ -7,6 +7,7 @@ import thirdPhoneImage from './pngs/third-phone.png'
 import fourthPhoneImage from './pngs/forth-phone.png'
 import fifthPhoneImage from './pngs/fifth-phone.png'
 import sixthPhoneImage from './pngs/sixth-phone.png'
+import basketPhoto from '../images/pngs/basket-photo.png'
 
 export const Images = {
    KyrgyzJerim,
@@ -18,4 +19,5 @@ export const Images = {
    fourthPhoneImage,
    fifthPhoneImage,
    sixthPhoneImage,
+   basketPhoto,
 }

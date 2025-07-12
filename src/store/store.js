@@ -11,6 +11,7 @@ import bannerReducer from './banner/bannerSlice'
 import discountReducer from './discount/DiscountSlice'
 import mailReducer from './mailing/mailSlice'
 import infographicReducer from './../pages/features/infographicSlice'
+import basketReducer from './basket/basketSlice'
 
 const rootReducer = combineReducers({
    product: productReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
    infographic: infographicReducer,
    auth: authReducer,
    orders: ordersReducer,
+   basket: basketReducer,
 })
 
 const persistConfig = {
