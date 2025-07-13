@@ -21,30 +21,45 @@ const ProductDetails = () => {
    }, [id, dispatch])
 
    if (selectedLoading) return <Box p={4}>Загрузка...</Box>
-   if (selectedError) return <Box p={4} color="red">{selectedError}</Box>
-   if (!selectedProduct) return <Box p={4} color="red">Товар не найден</Box>
+   if (selectedError)
+      return (
+         <Box p={4} color="red">
+            {selectedError}
+         </Box>
+      )
+   if (!selectedProduct)
+      return (
+         <Box p={4} color="red">
+            Товар не найден
+         </Box>
+      )
 
    const {
       article,
       attributes = {},
       available = 0,
-      colors = {},
+      color,
       price,
       discount,
-      images = [],
       oldPrice,
-      pdfUrl,
+      images = [],
       productResponse = {},
+      pdfUrl,
       brand = {},
       count,
    } = selectedProduct
 
-   const colorList = Object.entries(colors)
+   const colorList = Object.entries(productResponse.colors || {})
 
    const specs = [
-      { label: 'Цвет', value: attributes.Color || 'Black' },
+      { label: 'Цвет', value: color || 'Black' },
       { label: 'Дата выпуска', value: productResponse.date || '-' },
-      { label: 'Гарантия', value: productResponse.warranty + ' мес' || '-' },
+      {
+         label: 'Гарантия',
+         value: productResponse.warranty
+            ? `${productResponse.warranty} мес`
+            : '-',
+      },
       { label: 'SIM-карты', value: productResponse.sim || 'нет' },
       { label: 'Процессор', value: productResponse.processor || '-' },
       { label: 'Вес', value: productResponse.weight || '-' },
@@ -54,39 +69,49 @@ const ProductDetails = () => {
    return (
       <Wrapper>
          <Breadcrumbs>Товары › {productResponse.name}</Breadcrumbs>
+
          <BrandRow>
-            {brand.imageUrl && <BrandLogo src={brand.imageUrl} alt={brand.name} />}
+            {brand.imageUrl && (
+               <BrandLogo src={brand.imageUrl} alt={brand.name} />
+            )}
          </BrandRow>
+
          <TopTabs>
             <Tab active>Товар</Tab>
-            <Tab>Детали</Tab>
+            <Tab>Детали товара</Tab>
          </TopTabs>
+
          <Content>
             <SliderBox>
                <PhonesSlider images={images} />
             </SliderBox>
+
             <InfoBox>
                <Title>{productResponse.name}</Title>
+
                <StockRow>
                   <InStock>В наличии ({available})</InStock>
                   <Article>Артикул: {article}</Article>
                </StockRow>
+
                <RatingBox>
                   <img src={Icons.starFul} alt="star" width={16} height={16} />
-                  <RatingText>4.8</RatingText>
+                  <RatingText>4.5</RatingText>
                   <ReviewCount>(56)</ReviewCount>
                </RatingBox>
+
                <Label>Цвет товара:</Label>
                <ColorRow>
-                  {colorList.map(([key, color]) => (
+                  {colorList.map(([key, val]) => (
                      <ColorDot
                         key={key}
                         active={selectedColor === key}
-                        sx={{ color: color.toLowerCase() }}
+                        sx={{ color: val.toLowerCase() }}
                         onClick={() => setSelectedColor(key)}
                      />
                   ))}
                </ColorRow>
+
                <SpecTitle>Коротко о товаре:</SpecTitle>
                <SpecTable>
                   {specs.map(({ label, value }, i) => (
@@ -96,20 +121,23 @@ const ProductDetails = () => {
                      </SpecRow>
                   ))}
                </SpecTable>
+
                <PriceBox>
                   <CurrentPrice>{price} с</CurrentPrice>
                   {oldPrice && <OldPrice>{oldPrice} с</OldPrice>}
                   {discount && <DiscountTag>-{discount}%</DiscountTag>}
                </PriceBox>
+
                <Actions>
                   <IconBtn>
                      <img src={Icons.deleteb} alt="basket" />
                   </IconBtn>
                   <PrimaryBtn variant="contained">Редактировать</PrimaryBtn>
                </Actions>
+
                <Box mt={2} display="flex" justifyContent="flex-end">
                   <a
-                     href={pdfUrl}
+                     href={productResponse.pdfUrl}
                      download
                      style={{
                         display: 'flex',
@@ -120,12 +148,18 @@ const ProductDetails = () => {
                         textDecoration: 'none',
                      }}
                   >
-                     <img src={Icons.download} alt="pdf" width={16} height={16} />
+                     <img
+                        src={Icons.download}
+                        alt="pdf"
+                        width={16}
+                        height={16}
+                     />
                      Скачать документ.pdf
                   </a>
                </Box>
             </InfoBox>
          </Content>
+
          <BottomTabs>
             <TabFooter active>Отзывы</TabFooter>
          </BottomTabs>
@@ -135,75 +169,79 @@ const ProductDetails = () => {
 
 export default ProductDetails
 
+// Стили ниже — без изменений
+
 const Wrapper = styled(Box)({
    width: '100%',
-   maxWidth: 1200,
+   maxWidth: 1240,
    margin: '0 auto',
-   padding: '32px 24px',
+   padding: '32px 0 80px',
 })
 
 const Breadcrumbs = styled(Box)({
    fontSize: 13,
-   color: '#888',
-   marginBottom: 12,
+   color: '#6C6C6C',
+   marginBottom: 16,
 })
 
 const BrandRow = styled(Box)({
    display: 'flex',
    alignItems: 'center',
-   marginBottom: 12,
+   marginBottom: 8,
 })
 
 const BrandLogo = styled('img')({
-   height: 28,
+   height: 26,
    objectFit: 'contain',
 })
 
 const TopTabs = styled(Box)({
    display: 'flex',
    gap: 8,
-   marginBottom: 24,
+   marginBottom: 32,
 })
 
 const Tab = styled(Button)(({ active }) => ({
    background: active ? '#363636' : '#F7F7F8',
    color: active ? '#fff' : '#363636',
-   borderRadius: 8,
+   borderRadius: 10,
    fontWeight: 600,
-   fontSize: 15,
-   padding: '6px 22px',
+   fontSize: 14,
+   padding: '7px 20px',
    textTransform: 'none',
    '&:hover': {
-      background: active ? '#232323' : '#ececec',
+      background: active ? '#232323' : '#EDEDED',
       color: active ? '#fff' : '#CB11AB',
    },
 }))
 
 const Content = styled(Box)({
    display: 'flex',
-   gap: 56,
+   gap: 64,
+   alignItems: 'flex-start',
 })
 
 const SliderBox = styled(Box)({
-   minWidth: 340,
-   maxWidth: 340,
+   minWidth: 360,
+   maxWidth: 360,
 })
 
 const InfoBox = styled(Box)({
    display: 'flex',
    flexDirection: 'column',
-   gap: 16,
-   maxWidth: 420,
+   gap: 20,
+   maxWidth: 460,
 })
 
 const Title = styled(Typography)({
    fontSize: 24,
    fontWeight: 600,
+   color: '#1A1A1A',
 })
 
 const StockRow = styled(Box)({
    display: 'flex',
-   gap: 16,
+   gap: 20,
    fontSize: 14,
 })
 
@@ -219,7 +257,7 @@ const Article = styled(Typography)({
 const RatingBox = styled(Box)({
    display: 'flex',
    alignItems: 'center',
-   gap: 4,
+   gap: 6,
 })
 
 const RatingText = styled(Typography)({
@@ -235,12 +273,12 @@ const ReviewCount = styled('span')({
 const Label = styled(Typography)({
    fontSize: 14,
    fontWeight: 500,
-   color: '#333',
+   color: '#1A1A1A',
 })
 
 const ColorRow = styled(Box)({
    display: 'flex',
-   gap: 8,
+   gap: 10,
 })
 
 const ColorDot = styled(Box, {
@@ -249,7 +287,7 @@ const ColorDot = styled(Box, {
    width: 22,
    height: 22,
    borderRadius: '50%',
-   border: `2px solid ${active ? '#CB11AB' : '#ccc'}`,
+   border: `2px solid ${active ? '#CB11AB' : '#D6D6D6'}`,
    cursor: 'pointer',
    position: 'relative',
    display: 'flex',
@@ -265,42 +303,44 @@ const ColorDot = styled(Box, {
    },
    '&:hover': {
       borderColor: '#CB11AB',
-      transform: 'scale(1.05)',
+      transform: 'scale(1.06)',
    },
 }))
 
 const SpecTitle = styled(Typography)({
-   fontSize: 15,
+   fontSize: 16,
    fontWeight: 600,
-   color: '#363636',
+   color: '#1A1A1A',
+   marginTop: 12,
 })
 
 const SpecTable = styled(Box)({
-   borderTop: '1px dotted #ccc',
-   marginTop: 8,
+   borderTop: '1px dashed #D6D6D6',
+   marginTop: 10,
 })
 
 const SpecRow = styled(Box)({
    display: 'flex',
    justifyContent: 'space-between',
+   alignItems: 'center',
    fontSize: 14,
-   padding: '6px 0',
-   borderBottom: '1px dotted #ccc',
+   padding: '10px 0',
+   borderBottom: '1px dashed #E0E0E0',
 })
 
 const SpecLabel = styled('span')({
-   color: '#888',
+   color: '#7A7A7A',
 })
 
 const SpecValue = styled('span')({
    fontWeight: 500,
-   color: '#000',
+   color: '#1A1A1A',
 })
 
 const PriceBox = styled(Box)({
    display: 'flex',
    alignItems: 'center',
-   gap: 12,
+   gap: 14,
 })
 
 const CurrentPrice = styled(Typography)({
@@ -320,22 +360,22 @@ const DiscountTag = styled(Box)({
    fontWeight: 600,
    color: '#CB11AB',
    background: '#FFE6F7',
-   padding: '2px 6px',
-   borderRadius: 4,
+   padding: '2px 8px',
+   borderRadius: 6,
 })
 
 const Actions = styled(Box)({
    display: 'flex',
    alignItems: 'center',
    justifyContent: 'flex-end',
-   gap: 12,
+   gap: 14,
 })
 
 const IconBtn = styled(Button)({
    minWidth: 36,
    height: 36,
    borderRadius: 8,
-   border: '1px solid #ccc',
+   border: '1px solid #D6D6D6',
    backgroundColor: '#fff',
    '& img': {
       width: 20,
@@ -348,7 +388,7 @@ const PrimaryBtn = styled(Button)({
    color: '#fff',
    fontWeight: 600,
    fontSize: 15,
-   borderRadius: 8,
+   borderRadius: 10,
    padding: '10px 28px',
    '&:hover': {
       backgroundColor: '#A4088E',
@@ -357,9 +397,9 @@ const PrimaryBtn = styled(Button)({
 
 const BottomTabs = styled(Box)({
    display: 'flex',
-   gap: 24,
-   marginTop: 32,
-   borderBottom: '1.5px solid #eee',
+   gap: 32,
+   marginTop: 48,
+   borderBottom: '1.5px solid #E0E0E0',
 })
 
 const TabFooter = styled('div')(({ active }) => ({
@@ -367,6 +407,6 @@ const TabFooter = styled('div')(({ active }) => ({
    fontWeight: 600,
    color: active ? '#CB11AB' : '#888',
    borderBottom: active ? '2px solid #CB11AB' : 'none',
-   padding: '8px 0',
+   padding: '10px 0',
    cursor: 'pointer',
 }))
