@@ -15,9 +15,9 @@ const Infographic = () => {
    const format = (value) => value?.toLocaleString('ru-RU') ?? '—'
 
    const periods = [
-      { key: 'day', label: 'ЗА ДЕНЬ' },
-      { key: 'month', label: 'ЗА МЕСЯЦ' },
-      { key: 'year', label: 'ЗА ГОД' },
+      { key: 'daily', label: 'ЗА ДЕНЬ' },
+      { key: 'monthly', label: 'ЗА МЕСЯЦ' },
+      { key: 'yearly', label: 'ЗА ГОД' },
    ]
 
    const handleTabsChange = (_, newValue) => dispatch(setPeriod(newValue))
@@ -66,7 +66,7 @@ const Infographic = () => {
             textColor="primary"
             indicatorColor="primary"
          >
-            {periods.map(({ key, label }, i) => (
+            {periods.map(({ key, label }) => (
                <Tab key={key} label={label} value={key} />
             ))}
          </Tabs>
@@ -99,6 +99,7 @@ const Infographic = () => {
                </Typography>
             </StyledBox2>
          </DeliveryBox>
+
          {status === 'loading' && (
             <Typography mt={2} variant="body2" color="text.secondary">
                Загрузка...

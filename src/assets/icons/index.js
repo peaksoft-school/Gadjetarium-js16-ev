@@ -64,6 +64,7 @@ import link from './svgs/link.svg'
 import search from './svgs/search.svg'
 
 export const Icons = {
+   search,
    user,
    arrowDown,
    arrowLeft,
