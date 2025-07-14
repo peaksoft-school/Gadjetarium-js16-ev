@@ -13,6 +13,7 @@ import discountReducer from './discount/DiscountSlice'
 import mailReducer from './mailing/mailSlice'
 import profileReducer from './profile/profileSlice'
 import infographicReducer from './../pages/features/infographicSlice'
+import basketReducer from './basket/basketSlice'
 import { authReducer } from './authSlice/authSlice'
 
 const rootReducer = combineReducers({
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
    mail: mailReducer,
    favorite: favoritesReducer,
    orders: ordersReducer,
+   basket: basketReducer,
    infographic: infographicReducer,
 })
 
