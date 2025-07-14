@@ -7,7 +7,8 @@ const CartCard = ({
   name,
   rating = 4,
   reviews,
-  inStock,
+  ratingCount,
+  count,
   code,
   quantity,
   price,
@@ -15,7 +16,6 @@ const CartCard = ({
   onDecrease,
   onRemove,
   onFavorite,
-  isLiked = false,
   selected,
   onSelect,
 }) => {
@@ -33,9 +33,9 @@ const CartCard = ({
         <RatingBox>
           <Typography color="textSecondary" fontSize={12}>Рейтинг</Typography>
           {renderStars()}
-          <Typography fontSize={13} color="textSecondary">({reviews})</Typography>
+          <Typography fontSize={13} color="textSecondary">({ratingCount})</Typography>
         </RatingBox>
-        <Availability>В наличии ({inStock})</Availability>
+        <Availability>В наличии ({count})</Availability>
         <ProductCode>Код товара: {code}</ProductCode>
       </InfoSection>
       <ActionSection>

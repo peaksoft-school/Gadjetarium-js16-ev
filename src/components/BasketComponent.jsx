@@ -162,9 +162,9 @@ const BasketComponent = () => {
                         image={item.imageUrl}
                         name={item.name}
                         rating={item.rating}
-                        reviews={item.reviews}
-                        inStock={item.inStock}
+                        ratingCount={item.ratingCount}
                         code={item.code}
+                        count={item.count}
                         quantity={item.quantity}
                         price={item.price}
                         onIncrease={() => handleIncrease(item.productTypeId)}
