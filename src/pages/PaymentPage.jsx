@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, Typography, Button, styled } from '@mui/material';
 import PaymentForm from './PaymentForm';
 import PaymentList from './PaymentList';
-import { orderData } from '../utils/constants/index';
 import Breadcrumbs from '../components/UI/BreadCrums';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBasket } from '../store/basket/basketThunk';

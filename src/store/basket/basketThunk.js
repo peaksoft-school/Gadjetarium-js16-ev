@@ -5,8 +5,9 @@ export const fetchBasket = createAsyncThunk(
    'basket/fetchBasket',
    async (_, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.get('/api/basket')
-         return Array.isArray(response.data) ? response.data : []
+         const { data } = await axiosInstance.get('/api/basket')
+
+         return data
       } catch (error) {
          return rejectWithValue(
             error.response?.data?.message || 'Failed to fetch basket'

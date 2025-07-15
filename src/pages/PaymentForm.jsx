@@ -10,7 +10,6 @@ import {
 } from '@mui/material'
 import { Icons } from '../assets/icons'
 
-// Styled components
 const StyledContainer = styled(Box)({
    padding: 0,
 })
