@@ -23,235 +23,23 @@ import { Icons } from '../assets/icons'
 import Popover from '@mui/material/Popover'
 import { useDispatch } from 'react-redux'
 import { saveProduct } from '../store/products/productThunk'
-
-const categories = [
-   { value: '', label: 'Выбрать' },
-   { value: 'Смартфоны', label: 'Смартфоны' },
-   { value: 'Ноутбуки и планшеты', label: 'Ноутбуки и планшеты' },
-   { value: 'Смарт-часы и браслеты', label: 'Смарт-часы и браслеты' },
-   { value: 'Аксессуары', label: 'Аксессуары' },
-]
-const subcategories = [
-   { value: 9007199254740991, label: 'Apple' },
-   { value: 9007199254740992, label: 'Samsung' },
-   { value: 9007199254740993, label: 'Xiaomi' },
-   { value: 9007199254740994, label: 'Huawei' },
-   // ... другие подкатегории с реальными id
-]
-const brands = [
-   { value: '', label: 'Выберите бренд товара' },
-   { value: 'Apple', label: 'Apple' },
-   { value: 'Samsung', label: 'Samsung' },
-   { value: 'Создать', label: '+ Создать новый бренд' },
-]
-const memoryOptions = [
-   { value: '', label: 'Выберите объем памяти' },
-   { value: '64 ГБ', label: '64 ГБ' },
-   { value: '128 ГБ', label: '128 ГБ' },
-   { value: '256 ГБ', label: '256 ГБ' },
-   { value: '512 ГБ', label: '512 ГБ' },
-]
-const ramOptions = [
-   { value: '', label: 'Выберите оперативную память' },
-   { value: '4 ГБ', label: '4 ГБ' },
-   { value: '6 ГБ', label: '6 ГБ' },
-   { value: '8 ГБ', label: '8 ГБ' },
-   { value: '12 ГБ', label: '12 ГБ' },
-]
-const simOptions = [
-   { value: '', label: 'Выберите SIM-карты' },
-   { value: '1', label: '1' },
-   { value: '2', label: '2' },
-]
-const colorPalette = [
-   '#FFEBEE',
-   '#FFCDD2',
-   '#EF9A9A',
-   '#E57373',
-   '#EF5350',
-   '#F44336',
-   '#E53935',
-   '#D32F2F',
-   '#C62828',
-   '#B71C1C',
-   '#FF8A80',
-   '#FF5252',
-   '#FCE4EC',
-   '#F8BBD0',
-   '#F48FB1',
-   '#F06292',
-   '#EC407A',
-   '#E91E63',
-   '#D81B60',
-   '#C2185B',
-   '#AD1457',
-   '#880E4F',
-   '#FF80AB',
-   '#FF4081',
-   '#F3E5F5',
-   '#E1BEE7',
-   '#CE93D8',
-   '#BA68C8',
-   '#AB47BC',
-   '#9C27B0',
-   '#8E24AA',
-   '#7B1FA2',
-   '#6A1B9A',
-   '#4A148C',
-   '#EA80FC',
-   '#E040FB',
-   '#EDE7F6',
-   '#D1C4E9',
-   '#B39DDB',
-   '#9575CD',
-   '#7E57C2',
-   '#673AB7',
-   '#5E35B1',
-   '#512DA8',
-   '#4527A0',
-   '#311B92',
-   '#B388FF',
-   '#7C4DFF',
-   '#E3F2FD',
-   '#BBDEFB',
-   '#90CAF9',
-   '#64B5F6',
-   '#42A5F5',
-   '#2196F3',
-   '#1E88E5',
-   '#1976D2',
-   '#1565C0',
-   '#0D47A1',
-   '#82B1FF',
-   '#448AFF',
-   '#E1F5FE',
-   '#B3E5FC',
-   '#81D4FA',
-   '#4FC3F7',
-   '#29B6F6',
-   '#03A9F4',
-   '#039BE5',
-   '#0288D1',
-   '#0277BD',
-   '#01579B',
-   '#80D8FF',
-   '#40C4FF',
-   '#E0F7FA',
-   '#B2EBF2',
-   '#80DEEA',
-   '#4DD0E1',
-   '#26C6DA',
-   '#00BCD4',
-   '#00ACC1',
-   '#0097A7',
-   '#00838F',
-   '#006064',
-   '#84FFFF',
-   '#18FFFF',
-   '#E0F2F1',
-   '#B2DFDB',
-   '#80CBC4',
-   '#4DB6AC',
-   '#26A69A',
-   '#009688',
-   '#00897B',
-   '#00796B',
-   '#00695C',
-   '#004D40',
-   '#A7FFEB',
-   '#64FFDA',
-   '#E8F5E9',
-   '#C8E6C9',
-   '#A5D6A7',
-   '#81C784',
-   '#66BB6A',
-   '#4CAF50',
-   '#43A047',
-   '#388E3C',
-   '#2E7D32',
-   '#1B5E20',
-   '#B9F6CA',
-   '#69F0AE',
-   '#F1F8E9',
-   '#DCEDC8',
-   '#C5E1A5',
-   '#AED581',
-   '#9CCC65',
-   '#8BC34A',
-   '#7CB342',
-   '#689F38',
-   '#558B2F',
-   '#33691E',
-   '#CCFF90',
-   '#B2FF59',
-   '#FFFDE7',
-   '#FFF9C4',
-   '#FFF59D',
-   '#FFF176',
-   '#FFEE58',
-   '#FFEB3B',
-   '#FDD835',
-   '#FBC02D',
-   '#F9A825',
-   '#F57F17',
-   '#FFFF8D',
-   '#FFFF00',
-   '#FFF8E1',
-   '#FFECB3',
-   '#FFE082',
-   '#FFD54F',
-   '#FFCA28',
-   '#FFC107',
-   '#FFB300',
-   '#FFA000',
-   '#FF8F00',
-   '#FF6F00',
-   '#FFE57F',
-   '#FFD740',
-   '#FFF3E0',
-   '#FFE0B2',
-   '#FFCC80',
-   '#FFB74D',
-   '#FFA726',
-   '#FF9800',
-   '#FB8C00',
-   '#F57C00',
-   '#EF6C00',
-   '#E65100',
-   '#FFD180',
-   '#FFAB40',
-   '#FBE9E7',
-   '#FFCCBC',
-   '#FFAB91',
-   '#FF8A65',
-   '#FF7043',
-   '#FF5722',
-   '#F4511E',
-   '#E64A19',
-   '#D84315',
-   '#BF360C',
-   '#FF9E80',
-   '#FF6E40',
-   '#FAFAFA',
-   '#F5F5F5',
-   '#EEEEEE',
-   '#E0E0E0',
-   '#BDBDBD',
-   '#9E9E9E',
-   '#757575',
-   '#616161',
-   '#424242',
-   '#212121',
-   '#FFFFFF',
-   '#000000',
-]
+import { fileUploadInstance } from '../configs/fileAxiosInstance'
+import {
+   categories,
+   subcategories,
+   brands,
+   memoryOptions,
+   ramOptions,
+   simOptions,
+   colorPalette,
+} from '../utils/productDictionaries'
 
 const AddProd = () => {
    const [step, setStep] = useState(1)
    // Step 1
-   const [category, setCategory] = useState('')
+   const [category, setCategory] = useState('') // id
    const [subcategory, setSubcategory] = useState('') // теперь это id (число)
-   const [brand, setBrand] = useState('')
+   const [brand, setBrand] = useState('') // id
    const [warranty, setWarranty] = useState('')
    const [name, setName] = useState('')
    const [date, setDate] = useState(null)
@@ -267,6 +55,7 @@ const AddProd = () => {
          sim: '',
          images: [],
          imagePreviews: [],
+         attributes: {}, // добавлено
       },
    ])
    // Для динамических характеристик (attributes) каждого продукта
@@ -281,6 +70,7 @@ const AddProd = () => {
    const [pdfFile, setPdfFile] = useState(null)
    const [description, setDescription] = useState('')
    const pdfInputRef = useRef()
+   const [mainImages, setMainImages] = useState([]) // массив файлов
 
    // Для popover цвета
    const [colorAnchorEls, setColorAnchorEls] = useState([null])
@@ -323,9 +113,31 @@ const AddProd = () => {
       }
    }
 
+   // Обновим handleProductChange, чтобы при изменении memory, ram, sim обновлять и attributes
    const handleProductChange = (idx, field, value) => {
       setProducts((prev) =>
-         prev.map((p, i) => (i === idx ? { ...p, [field]: value } : p))
+         prev.map((p, i) => {
+            if (i !== idx) return p
+            let updated = { ...p, [field]: value }
+            // Если изменяется один из атрибутов, обновляем attributes
+            if (field === 'memory') {
+               updated.attributes = {
+                  ...p.attributes,
+                  'Объем памяти': value,
+               }
+            } else if (field === 'ram') {
+               updated.attributes = {
+                  ...p.attributes,
+                  'Оперативная память': value,
+               }
+            } else if (field === 'sim') {
+               updated.attributes = {
+                  ...p.attributes,
+                  'Кол-во SIM-карт': value,
+               }
+            }
+            return updated
+         })
       )
    }
    const handleAddProduct = () => {
@@ -342,6 +154,7 @@ const AddProd = () => {
                price: '',
                count: '',
                description: '',
+               attributes: {}, // добавлено
             },
          ]
          syncColorAnchors(newProducts)
@@ -444,28 +257,83 @@ const AddProd = () => {
       return Math.floor(100000000 + Math.random() * 900000000).toString() // 9-значный
    }
 
+   // Функция для загрузки файла на сервер через fileUploadInstance
+   async function uploadFile(file) {
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await fileUploadInstance.post('/api/files/upload', formData)
+      return res.data // сервер возвращает ссылку
+   }
+
    // Функция для отправки данных через redux
    const handleSubmit = async () => {
-      // Собираем данные для productTypes
-      const productTypes = products.map((prod, idx) => ({
-         article: generateArticle(),
-         color: prod.color,
-         count: Number(prod.count) || 0,
-         images: (prod.images || []).map((f) => f.name || f),
-         price: Number(prod.price) || 0,
-         description: prod.description || '',
-         attributes: (attributesList[idx] || []).reduce((acc, cur) => {
-            if (cur.key) acc[cur.key] = cur.value
-            return acc
-         }, {}),
-      }))
-      // Собираем основной объект
+      let imageUrl = ''
+      if (mainImages[0]) {
+         try {
+            imageUrl = await uploadFile(mainImages[0])
+         } catch (e) {
+            alert('Ошибка загрузки фото: ' + e.message)
+            return
+         }
+      }
+      // Для каждого варианта загружаем все фото и собираем ссылки
+      const productTypes = await Promise.all(
+         products.map(async (prod, idx) => {
+            let imageLinks = []
+            if (prod.images && prod.images.length > 0) {
+               imageLinks = await Promise.all(
+                  prod.images.map(async (file) => {
+                     // Если это уже ссылка (string, начинается с http), не загружать повторно
+                     if (typeof file === 'string' && file.startsWith('http'))
+                        return file
+                     try {
+                        const link = await uploadFile(file)
+                        console.log(
+                           'Загружена ссылка для варианта',
+                           idx,
+                           ':',
+                           link
+                        )
+                        return link
+                     } catch (e) {
+                        return ''
+                     }
+                  })
+               )
+               // Удаляем пустые строки, если загрузка не удалась
+               imageLinks = imageLinks.filter(Boolean)
+            }
+            // Если массив пустой — подставить главное фото
+            if (imageLinks.length === 0 && imageUrl) {
+               imageLinks = [imageUrl]
+            }
+            return {
+               article: generateArticle(),
+               color: prod.color || '',
+               count: Number(prod.count) || 0,
+               images: imageLinks,
+               price: Number(prod.price) || 0,
+               description: prod.description || '',
+               attributes: {
+                  ...(prod.attributes || {}),
+                  ...(attributesList[idx] || []).reduce((acc, cur) => {
+                     if (cur.key) acc[cur.key] = cur.value
+                     return acc
+                  }, {}),
+               },
+            }
+         })
+      )
       const payload = {
-         sudCategoryId: Number(subcategory), // должен быть числом
+         categoryId: Number(category) || 0,
+         brandId: Number(brand) || 0,
+         sudCategoryId: Number(subcategory) || 0,
          name: name || '',
          warranty: parseFloat(warranty) || 0,
          videoUrl: videoUrl || '',
-         pdfUrl: pdfFile && pdfFile.name ? pdfFile.name : '', // если нужен url, подставь url
+         pdfUrl: pdfFile && pdfFile.name ? pdfFile.name : '',
+         imageUrl, // ссылка на главное фото
+         // images: mainImages.map((f) => f.name), // убрано из payload
          productTypes,
       }
       console.log('Отправляемый payload:', payload)
@@ -529,17 +397,48 @@ const AddProd = () => {
                            label="Бренд *"
                            onChange={handleBrandChange}
                            size="small"
-                           startAdornment={
-                              <img
-                                 src={Icons.brand}
-                                 alt="brand"
-                                 style={{ marginRight: 8 }}
-                              />
-                           }
+                           renderValue={(selected) => {
+                              const b = brands.find((b) => b.value === selected)
+                              return b ? (
+                                 <span
+                                    style={{
+                                       display: 'flex',
+                                       alignItems: 'center',
+                                       gap: 8,
+                                    }}
+                                 >
+                                    <img
+                                       src={b.imageUrl}
+                                       alt={b.label}
+                                       width={22}
+                                       height={22}
+                                       style={{ borderRadius: 4 }}
+                                    />
+                                    {b.label}
+                                 </span>
+                              ) : (
+                                 ''
+                              )
+                           }}
                         >
                            {brands.map((opt) => (
                               <MenuItem key={opt.value} value={opt.value}>
-                                 {opt.label}
+                                 <span
+                                    style={{
+                                       display: 'flex',
+                                       alignItems: 'center',
+                                       gap: 8,
+                                    }}
+                                 >
+                                    <img
+                                       src={opt.imageUrl}
+                                       alt={opt.label}
+                                       width={22}
+                                       height={22}
+                                       style={{ borderRadius: 4 }}
+                                    />
+                                    {opt.label}
+                                 </span>
                               </MenuItem>
                            ))}
                         </Select>
@@ -760,6 +659,61 @@ const AddProd = () => {
                            </Select>
                         </FormControl>
                      </Box>
+                     {/* Внутри ProductBlock на первой странице (step === 1) после select-ов памяти, RAM и SIM-карт: */}
+                     <FormControl
+                        fullWidth
+                        margin="dense"
+                        sx={{ maxWidth: 220, mb: 2 }}
+                     >
+                        <TextField
+                           label="Processor"
+                           value={prod.attributes?.Processor || ''}
+                           onChange={(e) => {
+                              const value = e.target.value
+                              setProducts((prev) =>
+                                 prev.map((p, i) =>
+                                    i === idx
+                                       ? {
+                                            ...p,
+                                            attributes: {
+                                               ...p.attributes,
+                                               Processor: value,
+                                            },
+                                         }
+                                       : p
+                                 )
+                              )
+                           }}
+                           size="small"
+                        />
+                     </FormControl>
+                     <FormControl
+                        fullWidth
+                        margin="dense"
+                        sx={{ maxWidth: 220, mb: 2 }}
+                     >
+                        <TextField
+                           label="Дисплей"
+                           value={prod.attributes?.['Дисплей'] || ''}
+                           onChange={(e) => {
+                              const value = e.target.value
+                              setProducts((prev) =>
+                                 prev.map((p, i) =>
+                                    i === idx
+                                       ? {
+                                            ...p,
+                                            attributes: {
+                                               ...p.attributes,
+                                               ['Дисплей']: value,
+                                            },
+                                         }
+                                       : p
+                                 )
+                              )
+                           }}
+                           size="small"
+                        />
+                     </FormControl>
                   </ProductBlock>
                ))}
                <Button
@@ -783,6 +737,147 @@ const AddProd = () => {
                      brandImageInputRef={brandImageInputRef}
                   />
                )}
+               {/* Блок загрузки фото товара (gallery, до 10 фото) */}
+               <Box mt={2} mb={2}>
+                  <Typography
+                     fontSize={18}
+                     fontWeight={500}
+                     mb={1}
+                     color="#384255"
+                  >
+                     Добавьте фото
+                  </Typography>
+                  <StyledPhotoDropZone
+                     onClick={() =>
+                        document.getElementById('main-photos-input').click()
+                     }
+                     onDragOver={(e) => e.preventDefault()}
+                     onDrop={(e) => {
+                        e.preventDefault()
+                        const files = Array.from(e.dataTransfer.files).slice(
+                           0,
+                           10 - mainImages.length
+                        )
+                        setMainImages((prev) =>
+                           [...prev, ...files].slice(0, 10)
+                        )
+                     }}
+                  >
+                     <input
+                        id="main-photos-input"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        hidden
+                        onChange={(e) => {
+                           const files = Array.from(e.target.files).slice(
+                              0,
+                              10 - mainImages.length
+                           )
+                           setMainImages((prev) =>
+                              [...prev, ...files].slice(0, 10)
+                           )
+                        }}
+                     />
+                     {mainImages.length === 0 ? (
+                        <Box
+                           display="flex"
+                           flexDirection="column"
+                           alignItems="center"
+                           justifyContent="center"
+                           width="100%"
+                        >
+                           <PhotoIconBox>
+                              <svg
+                                 width="48"
+                                 height="48"
+                                 fill="none"
+                                 xmlns="http://www.w3.org/2000/svg"
+                              >
+                                 <rect
+                                    width="48"
+                                    height="48"
+                                    rx="8"
+                                    fill="#BDBDBD"
+                                    fillOpacity="0.12"
+                                 />
+                                 <path
+                                    d="M16 32h16M24 16v16"
+                                    stroke="#BDBDBD"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                 />
+                              </svg>
+                           </PhotoIconBox>
+                           <Typography
+                              fontSize={16}
+                              color="#384255"
+                              mt={2}
+                              mb={1}
+                              align="center"
+                           >
+                              Нажмите или перетащите сюда файл
+                           </Typography>
+                           <Typography
+                              fontSize={15}
+                              color="#384255"
+                              align="center"
+                           >
+                              • Минимальное разрешение — 450×600
+                              <br />• Максимальное количество — 10 фото
+                           </Typography>
+                        </Box>
+                     ) : (
+                        <PhotoPreviewRow>
+                           {mainImages.map((file, idx) => (
+                              <PhotoPreviewBox key={idx}>
+                                 <img
+                                    src={URL.createObjectURL(file)}
+                                    alt="preview"
+                                    width={60}
+                                    height={60}
+                                    style={{
+                                       objectFit: 'cover',
+                                       borderRadius: 6,
+                                    }}
+                                 />
+                                 <RemoveImgBtn
+                                    onClick={(e) => {
+                                       e.stopPropagation()
+                                       setMainImages((prev) =>
+                                          prev.filter((_, i) => i !== idx)
+                                       )
+                                    }}
+                                 >
+                                    <img
+                                       src={Icons.deleteb}
+                                       alt="Удалить"
+                                       width={16}
+                                       height={16}
+                                    />
+                                 </RemoveImgBtn>
+                              </PhotoPreviewBox>
+                           ))}
+                           {mainImages.length < 10 && (
+                              <AddPhotoBtn
+                                 onClick={() =>
+                                    document
+                                       .getElementById('main-photos-input')
+                                       .click()
+                                 }
+                              >
+                                 <img
+                                    src={Icons.photo}
+                                    alt="add"
+                                    width={24}
+                                    height={24}
+                                 />
+                              </AddPhotoBtn>
+                           )}
+                        </PhotoPreviewRow>
+                     )}
+                  </StyledPhotoDropZone>
+               </Box>
             </>
          )}
          {step === 2 && (
@@ -956,6 +1051,7 @@ const AddProd = () => {
                      <Typography fontWeight={500} fontSize={15} mb={1}>
                         Продукт {idx + 1}
                      </Typography>
+                     {/* Динамические атрибуты */}
                      {attributesList[idx] &&
                         attributesList[idx].map((attr, attrIdx) => (
                            <Box
@@ -1184,22 +1280,26 @@ const ColorDot = styled('div')(
   transition: border 0.2s;
 `
 )
-const PhotoDropZone = styled(Box)`
-   min-height: 110px;
-   background: #f7f7f7;
-   border: 2px dashed #cb11ab;
-   border-radius: 10px;
+const StyledPhotoDropZone = styled(Box)`
+   min-height: 180px;
+   background: #f3f4f8;
+   border: 2px dashed #bdbdbd;
+   border-radius: 12px;
    display: flex;
    align-items: center;
-   justify-content: flex-start;
-   padding: 16px;
+   justify-content: center;
+   padding: 24px;
    cursor: pointer;
    margin-bottom: 8px;
+   transition: border 0.2s;
+   &:hover {
+      border-color: #cb11ab;
+   }
 `
-const DropText = styled('div')`
-   color: #888;
-   font-size: 14px;
-   text-align: center;
+const PhotoIconBox = styled(Box)`
+   display: flex;
+   align-items: center;
+   justify-content: center;
 `
 const PhotoPreviewRow = styled(Box)`
    display: flex;
@@ -1328,5 +1428,6 @@ const ColorArrow = styled('div')`
    margin-left: 8px;
    user-select: none;
 `
+const DropText = styled('div')``
 
 export default AddProd

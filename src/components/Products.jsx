@@ -37,6 +37,7 @@ const Products = () => {
          fetchProducts({
             name: search,
             action,
+            pageSize: 100,
             startDate: fromDate ? fromDate.format('YYYY-MM-DD') : undefined,
             endDate: toDate ? toDate.format('YYYY-MM-DD') : undefined,
          })
@@ -146,7 +147,7 @@ export default Products
 
 const Wrapper = styled(Box)({
    display: 'flex',
-   gap: '16px', 
+   gap: '16px',
    marginBottom: '24px',
    width: '100%',
    position: 'relative',
@@ -156,7 +157,7 @@ const Wrapper = styled(Box)({
 const TableBlock = styled('div')({
    flex: '1 1 0',
    minWidth: 0,
-   maxWidth: 1100, 
+   maxWidth: 1100,
 })
 
 const FiltersBlock = styled(Box)({

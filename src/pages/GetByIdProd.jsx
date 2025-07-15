@@ -72,7 +72,7 @@ const ProductDetails = () => {
       { label: 'Цвет', value: color || '-' },
       { label: 'Дата выпуска', value: productResponse.date || '-' },
       { label: 'Гарантия (месяцев)', value: productResponse.warranty || '-' },
-      { label: 'Память', value: attributes.Storage || '-' },
+      { label: 'Память', value: attributes.Memory || '-' },
       { label: 'Оперативная память', value: attributes.RAM || '-' },
       { label: 'Батарея', value: attributes.Battery || '-' },
       { label: 'Камера', value: attributes.Camera || '-' },
@@ -656,7 +656,7 @@ const CharacteristicsAccordion = ({
       shaftDiameter: 'Диаметр задних валов',
       trainingPrograms: 'Программы тренировки',
       RAM: 'Оперативная память',
-      Storage: 'Память',
+      Memory: 'Память',
       CPU: 'Процессор',
       Processor: 'Процессор',
       warranty: 'Гарантия',
@@ -680,7 +680,9 @@ const CharacteristicsAccordion = ({
       Display: 'Основные характеристики',
       // Память и процессор
       RAM: 'Память и процессор',
-      Storage: 'Память и процессор',
+      Memory: 'Память и процессор',
+      'Объем памяти': 'Память и процессор',
+      'Оперативная память': 'Память и процессор',
       CPU: 'Память и процессор',
       Processor: 'Память и процессор',
       warranty: 'Дополнительные характеристики',
@@ -941,17 +943,29 @@ const SpecTitle = styled('h3')`
 
 const SpecBlock = styled(Box)`
    border-top: 1px solid #f0f0f0;
-   width: 340px;
-   margin-left: auto;
+   width: 400px;
    margin-bottom: 24px;
 `
-
 const SpecRow = styled(Box)`
    display: flex;
    justify-content: space-between;
    padding: 12px 0;
    border-bottom: 1px solid #f0f0f0;
    font-size: 14px;
+   gap: 24px;
+   align-items: center;
+   & > span:first-of-type {
+      min-width: 180px;
+      max-width: 220px;
+      text-align: left;
+      color: #5a5a5a;
+      font-weight: 500;
+   }
+   & > span:last-of-type {
+      text-align: left;
+      color: #222;
+      font-weight: 500;
+   }
 `
 
 const ActionRow = styled(Box)`
@@ -1015,7 +1029,7 @@ const PdfLink = styled('a')`
    text-decoration: none;
    margin-left: auto;
    &:hover {
-      color: #CB11AB;
+      color: #cb11ab;
    }
 `
 const PdfIcon = () => (
@@ -1101,7 +1115,7 @@ const ReviewActions = styled('div')`
    margin-top: 4px;
 `
 const EditLink = styled('span')`
-   color: #CB11AB;
+   color: #cb11ab;
    cursor: pointer;
    &:hover {
       text-decoration: underline;
@@ -1196,7 +1210,7 @@ const AccordionTitle = styled('div')`
 `
 const AccordionArrow = styled('span')`
    font-size: 22px;
-   color: #CB11AB;
+   color: #cb11ab;
    transform: ${({ active }) => (active ? 'rotate(180deg)' : 'rotate(0)')};
    transition: transform 0.2s;
 `
@@ -1204,4 +1218,58 @@ const AccordionTable = styled('table')`
    width: 100%;
    border-collapse: collapse;
    background: #fff;
+   td:first-child {
+      width: 220px;
+      min-width: 180px;
+      max-width: 260px;
+      text-align: left;
+      font-weight: 500;
+      color: #5a5a5a;
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+   }
+   td:last-child {
+      text-align: left;
+      color: #222;
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+   }
+`
+
+// Вернуть стили StepperRow, StepCircle, StepLabel, StepDivider для вертикального степпера
+const StepperRow = styled(Box)`
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   gap: 18px;
+   margin-bottom: 32px;
+`
+const StepCircle = styled('div')(
+   ({ active }) => `
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: ${active ? '#CB11AB' : '#E0E0E0'};
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  `
+)
+const StepLabel = styled('div')(
+   ({ active }) => `
+    font-size: 16px;
+    font-weight: 500;
+    color: ${active ? '#CB11AB' : '#888'};
+    margin-bottom: 12px;
+  `
+)
+const StepDivider = styled('div')`
+   width: 2px;
+   height: 24px;
+   background: #e0e0e0;
+   margin-left: 17px;
 `

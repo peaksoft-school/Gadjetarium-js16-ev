@@ -218,6 +218,7 @@ const PaginationWrapper = styled(Box)(() => ({
 
 const ModalContent = styled(Box)(() => ({
    padding: 20,
+   backgroundColor: '#fff',
    textAlign: 'center',
 }))
 
