@@ -12,7 +12,6 @@ const statusColors = {
    DELIVERED: '#00BFFF',
 }
 
-
 const OrderHistory = () => {
    const dispatch = useDispatch()
    const navigate = useNavigate()
@@ -26,7 +25,7 @@ const OrderHistory = () => {
    }, [dispatch, activeTab])
 
    const handleOrderClick = (orderId) => {
-      navigate(`/orders/${orderId}`)
+      navigate(`/user/orders/${orderId}`)
    }
 
    if (loading) return <Typography>Загрузка...</Typography>
