@@ -1,11 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchProducts, deleteProduct } from './productThunk'
+import {
+   fetchProducts,
+   deleteProduct,
+   fetchProductById,
+   saveProduct,
+} from './productThunk'
 
 const initialState = {
    items: [],
    total: 0,
    loading: false,
    error: null,
+
+   selectedProduct: null,
+   selectedLoading: false,
+   selectedError: null,
+
+   saveLoading: false,
+   saveError: null,
+   saveSuccess: false,
 }
 
 const productSlice = createSlice({
@@ -40,6 +53,36 @@ const productSlice = createSlice({
          .addCase(deleteProduct.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
+         })
+         .addCase(fetchProductById.pending, (state) => {
+            state.selectedLoading = true
+            state.selectedError = null
+         })
+         .addCase(fetchProductById.fulfilled, (state, action) => {
+            state.selectedLoading = false
+            state.selectedProduct = action.payload
+            state.selectedError = null
+         })
+         .addCase(fetchProductById.rejected, (state, action) => {
+            state.selectedLoading = false
+            state.selectedError = action.payload
+         })
+         // saveProduct
+         .addCase(saveProduct.pending, (state) => {
+            state.saveLoading = true
+            state.saveError = null
+            state.saveSuccess = false
+         })
+         .addCase(saveProduct.fulfilled, (state, action) => {
+            state.saveLoading = false
+            state.saveSuccess = true
+            // Можно добавить в items, если нужно:
+            // state.items.push(action.payload)
+         })
+         .addCase(saveProduct.rejected, (state, action) => {
+            state.saveLoading = false
+            state.saveError = action.payload
+            state.saveSuccess = false
          })
    },
 })

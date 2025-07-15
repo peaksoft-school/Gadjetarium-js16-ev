@@ -8,7 +8,6 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, store } from './store/store.js'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { StrictMode } from 'react'
 import { BrowserRouter } from 'react-router'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 
@@ -16,7 +15,6 @@ injectStore(store)
 
 
 createRoot(document.getElementById('root')).render(
-   <StrictMode>
       <Provider store={store}>
          <PersistGate loading={null} persistor={persistor}>
             <Themes>
@@ -29,5 +27,4 @@ createRoot(document.getElementById('root')).render(
             </Themes>
          </PersistGate>
       </Provider>
-   </StrictMode>
 )

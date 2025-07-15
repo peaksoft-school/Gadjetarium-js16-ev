@@ -13,6 +13,7 @@ import {
    Pagination,
 } from '@mui/material'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
 import { Icons } from '../../assets/icons'
 import Checkbox from './Checkbox'
 import { deleteProduct } from '../../store/products/productThunk'
@@ -21,6 +22,7 @@ import Button from '../UI/Button'
 
 const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
    const dispatch = useDispatch()
+   const navigate = useNavigate()
    const [hoveredRow, setHoveredRow] = useState(null)
    const [page, setPage] = useState(1)
    const [isModalOpen, setIsModalOpen] = useState(false)
@@ -48,15 +50,18 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
       setDeleteId(null)
    }
 
+   const handleRowClick = (id) => {
+      navigate(`/admin/products/${id}`)
+      console.log('ss')
+   }
+
    const paginatedData = Array.isArray(data)
       ? data.slice((page - 1) * rowsPerPage, page * rowsPerPage)
       : []
 
    return (
       <Box>
-         <StyledInfoText>
-            Найдено {data.length} товаров
-         </StyledInfoText>
+         <StyledInfoText>Найдено {data.length} товаров</StyledInfoText>
 
          <TableWrapper component={Paper}>
             <StyledTable>
@@ -81,6 +86,7 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
                            key={item.id}
                            onMouseEnter={() => setHoveredRow(item.id)}
                            onMouseLeave={() => setHoveredRow(null)}
+                           className="clickable-row"
                         >
                            <StyledBodyCell>
                               <FixedWidthBox>
@@ -110,7 +116,11 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
                            <StyledBodyCell>
                               <Box>
                                  Кол-во товара {item.quantity}шт.
-                                 <ProductNameText>{item.name}</ProductNameText>
+                                 <ProductNameText
+                                    onClick={() => handleRowClick(item.id)}
+                                 >
+                                    {item.name}
+                                 </ProductNameText>
                               </Box>
                            </StyledBodyCell>
 
@@ -134,11 +144,20 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
 
                            <StyledBodyCell>
                               <ActionWrapper>
-                                 <ActionIcon src={Icons.edit} alt="edit" />
+                                 <ActionIcon
+                                    src={Icons.edit}
+                                    alt="edit"
+                                    onClick={(e) => {
+                                       e.stopPropagation()
+                                    }}
+                                 />
                                  <StyledDeleteIcon
                                     src={Icons.deleteb}
                                     alt="delete"
-                                    onClick={() => openDeleteModal(item.id)}
+                                    onClick={(e) => {
+                                       e.stopPropagation()
+                                       openDeleteModal(item.id)
+                                    }}
                                     selected={isSelected}
                                  />
                               </ActionWrapper>
@@ -163,9 +182,7 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
 
          <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <ModalContent>
-               <ModalText>
-                  Вы уверены, что хотите удалить этот товар?
-               </ModalText>
+               <ModalText>Вы уверены, что хотите удалить этот товар?</ModalText>
                <ModalActions>
                   <Button
                      variant="outlined"
@@ -185,9 +202,11 @@ const ProductTable = ({ data, selectedIds, setSelectedIds }) => {
 
 export default ProductTable
 
+// Styled components
 const StyledInfoText = styled(Typography)(() => ({
    color: '#384255',
    marginBottom: 16,
+   marginTop: 56,
    textAlign: 'left',
 }))
 
@@ -199,6 +218,7 @@ const PaginationWrapper = styled(Box)(() => ({
 
 const ModalContent = styled(Box)(() => ({
    padding: 20,
+   backgroundColor: '#fff',
    textAlign: 'center',
 }))
 
@@ -251,6 +271,7 @@ const StyledBodyRow = styled(TableRow)(() => ({
    borderRadius: 12,
    boxShadow: '0px 1px 4px rgba(0, 0, 0, 0.1)',
    transition: 'background-color 0.3s ease',
+   cursor: 'pointer',
    '&:hover': {
       backgroundColor: '#F4F6F9',
    },

@@ -1,55 +1,46 @@
 import { useState } from 'react'
 import { styled } from '@mui/material'
 import { Icons } from '../assets/icons'
-import { PHONE_SLIDER } from '../utils/constants'
 
-const PhonesSlider = () => {
+const PhonesSlider = ({ images = [] }) => {
    const [currentIndex, setCurrentIndex] = useState(0)
    const [isModalOpen, setIsModalOpen] = useState(false)
 
    const handlePrev = (e) => {
       e?.stopPropagation()
-
-      setCurrentIndex((prev) =>
-         prev === 0 ? PHONE_SLIDER.length - 1 : prev - 1
-      )
+      setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
    }
 
    const handleNext = (e) => {
       e?.stopPropagation()
-
-      setCurrentIndex((prev) =>
-         prev === PHONE_SLIDER.length - 1 ? 0 : prev + 1
-      )
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
    }
 
    const handleThumbnailClick = (i) => setCurrentIndex(i)
-
    const handleImageClick = () => setIsModalOpen(true)
-
    const handleCloseModal = () => setIsModalOpen(false)
+
+   if (!images.length) return null
 
    return (
       <SliderWrapper>
          <MainImage
-            src={PHONE_SLIDER[currentIndex].image}
+            src={images[currentIndex]}
             alt="Main"
             onClick={handleImageClick}
          />
 
          <Thumbnails>
             <NavIcon src={Icons.arrowLeft} alt="prev" onClick={handlePrev} />
-
-            {PHONE_SLIDER.map(({ id, image }, idx) => (
+            {images.map((image, idx) => (
                <Thumbnail
-                  key={id}
+                  key={idx}
                   src={image}
                   alt={`Thumbnail ${idx}`}
                   className={currentIndex === idx ? 'selected' : ''}
                   onClick={() => handleThumbnailClick(idx)}
                />
             ))}
-
             <NavIcon src={Icons.arrowRight} alt="next" onClick={handleNext} />
          </Thumbnails>
 
@@ -69,10 +60,7 @@ const PhonesSlider = () => {
                      onClick={handlePrev}
                   />
 
-                  <ZoomedImage
-                     src={PHONE_SLIDER[currentIndex].image}
-                     alt="Zoomed"
-                  />
+                  <ZoomedImage src={images[currentIndex]} alt="Zoomed" />
 
                   <ArrowIcon
                      src={Icons.arrowRightWhite}
@@ -97,6 +85,7 @@ const SliderWrapper = styled('div')({
 
 const MainImage = styled('img')({
    height: '364px',
+   width: '365px',
    marginBottom: '100px',
    cursor: 'pointer',
 })
@@ -149,8 +138,8 @@ const ModalImageContainer = styled('div')({
 })
 
 const ZoomedImage = styled('img')({
-   maxWidth: '100%',
-   maxHeight: '100%',
+   width: '400px',
+   height: '400px',
 })
 
 const ArrowIcon = styled('img')(({ position }) => ({

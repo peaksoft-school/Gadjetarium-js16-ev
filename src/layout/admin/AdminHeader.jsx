@@ -146,7 +146,7 @@ const ModalBox = styled(Box)`
 `
 
 const LogoutHint = styled('div')`
-   margin-top: 8px;
+   margin-top: 1px;
    background: #fff;
    color: #cb11ab;
    font-size: 18px;
