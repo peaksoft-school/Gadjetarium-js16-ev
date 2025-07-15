@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import Button from './UI/Button'
 import { Icons } from '../assets/icons'
+import { useNavigate } from 'react-router'
 
 const Toolbar = ({
    onSearch,
@@ -24,6 +25,7 @@ const Toolbar = ({
       setSearchValue(value)
       onSearch(value)
    }
+   const navigate = useNavigate()
 
    const filterOptions = [
       { label: 'Все товары', value: 'all' },
@@ -62,7 +64,12 @@ const Toolbar = ({
 
          <RightColumn>
             <ActionButtons>
-               <Button variant="outlined">Добавить товар</Button>
+               <Button
+                  variant="outlined"
+                  onClick={() => navigate('/admin/add-product')}
+               >
+                  Добавить товар
+               </Button>
                <Button variant="outlined" onClick={onOpenDiscount}>
                   Создать скидку
                </Button>
@@ -79,7 +86,7 @@ const Toolbar = ({
 export default Toolbar
 
 const Wrapper = styled(Box)({
-   width: '80vw',
+   width: '100%',
    margin: '32px auto 0 auto',
    display: 'flex',
    justifyContent: 'space-between',

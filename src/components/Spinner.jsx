@@ -1,86 +1,62 @@
 import { styled, keyframes } from '@mui/material/styles'
+import { Box } from '@mui/material'
+import { Icons } from '../assets/icons' // замени на путь к своей SVG или PNG
 
-const yinYang = keyframes`
+const spin = keyframes`
   100% {
-    transform: rotate(-360deg);
+    transform: rotate(360deg);
   }
-
 `
 
 const Spinner = () => {
    return (
-      <div
-         style={{
-            display: 'flex',
-            width: '100vw',
-            height: '100vh',
-            justifyContent: 'center',
-            alignItems: 'center',
-         }}
-      >
-         <StyledSpinner>
-            <div className="dot-top" />
-            <div className="dot-bottom" />
-         </StyledSpinner>
-      </div>
+      <Wrapper>
+         <PhoneContainer>
+            <RotatingCircle>
+               <PhoneImage src={Icons.phone} alt="spinning phone" />
+            </RotatingCircle>
+         </PhoneContainer>
+      </Wrapper>
    )
 }
 
 export default Spinner
 
-const StyledSpinner = styled('div')({
-   width: '96px',
-   height: '96px',
+const Wrapper = styled(Box)({
+   width: '100vw',
+   height: '100vh',
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
+   background: 'linear-gradient(145deg, #e6e6e6, #ffffff)',
+})
+
+const PhoneContainer = styled(Box)({
+   width: 140,
+   height: 140,
    borderRadius: '50%',
-   background: 'conic-gradient(#080808 0deg 180deg, #f2e707 180deg 360deg)',
-   position: 'relative',
-   animation: `${yinYang} 3s linear infinite`,
+   background: '#fefefe',
+   boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
+})
 
-   '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '48px',
-      height: '48px',
-      backgroundColor: '#080808',
-      borderRadius: '50%',
-   },
+const RotatingCircle = styled(Box)(({ theme }) => ({
+   width: 100,
+   height: 100,
+   borderRadius: '50%',
+   border: '3px solid #222',
+   background: 'radial-gradient(circle at center, #ffffff 40%, #dcdcdc 100%)',
+   animation: `${spin} 2.5s linear infinite`,
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
+}))
 
-   '&::after': {
-      content: '""',
-      position: 'absolute',
-      bottom: 0,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '48px',
-      height: '48px',
-      backgroundColor: '#f2e707',
-      borderRadius: '50%',
-   },
-
-   '& .dot-top': {
-      position: 'absolute',
-      top: '12px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '12px',
-      height: '12px',
-      backgroundColor: '#f2e707',
-      borderRadius: '50%',
-      zIndex: 1,
-   },
-
-   '& .dot-bottom': {
-      position: 'absolute',
-      bottom: '12px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '12px',
-      height: '12px',
-      backgroundColor: '#080808',
-      borderRadius: '50%',
-      zIndex: 1,
-   },
+const PhoneImage = styled('img')({
+   width: 48,
+   height: 48,
+   objectFit: 'contain',
+   filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.2))',
 })

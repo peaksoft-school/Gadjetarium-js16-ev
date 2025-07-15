@@ -141,10 +141,9 @@ const LabelText = styled(Typography)({
 })
 
 const Icon = styled('img')({
-   width: 50,
-   height: 50,
+   width: '25px',
+   height: '25px',
    opacity: 0.6,
-   marginBottom: 10,
 })
 
 const StyledImage = styled('img')({
@@ -170,6 +169,9 @@ const RemoveButton = styled(IconButton)({
    position: 'absolute',
    top: 8,
    right: 8,
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'center',
    background: '#F1F1F1',
    width: 32,
    height: 32,
