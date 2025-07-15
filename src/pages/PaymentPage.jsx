@@ -1,11 +1,190 @@
 import React, { useState } from 'react';
-import { Box, Typography , Button} from '@mui/material';
+import { Box, Typography, Button, styled } from '@mui/material';
 import PaymentForm from './PaymentForm';
 import PaymentList from './PaymentList';
 import { orderData } from '../utils/constants/index';
 import Breadcrumbs from '../components/UI/BreadCrums';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBasket } from '../store/basket/basketThunk';
+
+// Styled Components
+const MainContainer = styled(Box)(({ theme }) => ({
+  fontFamily: 'Arial, sans-serif',
+  backgroundColor: '#f5f5f5',
+  minHeight: '100vh',
+  padding: '20px'
+}));
+
+const ContentWrapper = styled(Box)(({ theme }) => ({
+  maxWidth: '1200px',
+  margin: '0 auto'
+}));
+
+const BreadcrumbsContainer = styled(Box)(({ theme }) => ({
+  marginBottom: '20px',
+  fontSize: '14px',
+  color: '#666'
+}));
+
+const PageTitle = styled(Typography)(({ theme }) => ({
+  fontSize: '30px',
+  fontWeight: 700,
+  marginBottom: '31px',
+  textAlign: 'left',
+  color: '#333'
+}));
+
+const StepsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: theme.spacing(4),
+  marginTop: theme.spacing(1)
+}));
+
+const StepWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center'
+}));
+
+const StepNumber = styled(Box)(({ theme, active }) => ({
+  width: 22,
+  height: 22,
+  borderRadius: '50%',
+  background: active ? '#CB11AB' : '#ccc',
+  color: '#fff',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontWeight: 700,
+  fontSize: 13,
+  marginBottom: theme.spacing(0.2),
+  transition: 'background 0.2s'
+}));
+
+const StepLabel = styled(Typography)(({ theme, active }) => ({
+  fontSize: 11,
+  fontWeight: active ? 700 : 400,
+  color: active ? '#CB11AB' : '#888',
+  marginTop: theme.spacing(0.2),
+  textAlign: 'center'
+}));
+
+const StepConnector = styled(Box)(({ theme, completed }) => ({
+  flex: 1,
+  height: 2,
+  background: completed ? '#CB11AB' : '#ddd',
+  marginLeft: theme.spacing(0.2),
+  marginRight: theme.spacing(0.2),
+  minWidth: 8,
+  borderRadius: 2,
+  transition: 'background 0.2s'
+}));
+
+const MainContent = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  gap: '100px'
+}));
+
+const FormContainer = styled(Box)(({ theme }) => ({
+  flex: '0 0 66.66%',
+  backgroundColor: '#f5f5f5',
+  borderRadius: '8px',
+  padding: '10px'
+}));
+
+const ListContainer = styled(Box)(({ theme }) => ({
+  flex: '0 0 33.33%'
+}));
+
+const ModalOverlay = styled(Box)(({ theme }) => ({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0,0,0,0.18)',
+  backdropFilter: 'blur(5px)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 1000
+}));
+
+const ModalContent = styled(Box)(({ theme }) => ({
+  backgroundColor: '#fff',
+  borderRadius: '12px',
+  padding: '32px 32px 28px 32px',
+  maxWidth: '520px',
+  width: '100%',
+  textAlign: 'center',
+  boxShadow: '0 8px 32px rgba(203,17,171,0.12)'
+}));
+
+const ModalTitle = styled(Typography)(({ theme }) => ({
+  fontSize: '28px',
+  fontWeight: 700,
+  color: '#CB11AB',
+  marginBottom: '10px'
+}));
+
+const ModalSubtitle = styled(Typography)(({ theme }) => ({
+  fontSize: '20px',
+  fontWeight: 600,
+  color: '#33fd06',
+  marginBottom: '18px'
+}));
+
+const OrderNumber = styled(Typography)(({ theme }) => ({
+  fontSize: '16px',
+  fontWeight: 500,
+  color: '#333',
+  marginBottom: '18px'
+}));
+
+const OrderInfo = styled(Box)(({ theme }) => ({
+  backgroundColor: '#fafbfc',
+  border: '1px solid #eee',
+  borderRadius: '8px',
+  padding: '16px',
+  marginBottom: '22px',
+  textAlign: 'left'
+}));
+
+const OrderDescription = styled(Typography)(({ theme }) => ({
+  color: '#333',
+  fontSize: '14px',
+  marginBottom: '8px'
+}));
+
+const OrderEmail = styled(Typography)(({ theme }) => ({
+  color: '#333',
+  fontSize: '14px'
+}));
+
+const OrderEmailValue = styled(Typography)(({ theme }) => ({
+  marginTop: '6px',
+  fontWeight: 600,
+  color: '#333',
+  fontSize: '14px'
+}));
+
+const ContinueButton = styled(Button)(({ theme }) => ({
+  backgroundColor: '#CB11AB',
+  color: 'white',
+  padding: '12px 0',
+  border: 'none',
+  fontSize: '18px',
+  fontWeight: 700,
+  borderRadius: '8px',
+  width: '100%',
+  boxShadow: 'none',
+  textTransform: 'none',
+  '&:hover': {
+    backgroundColor: '#CB11AB'
+  }
+}));
 
 const PaymentPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -84,7 +263,7 @@ const PaymentPage = () => {
 
   const handleFinalSubmit = () => {
     const orderNum = generateOrderNumber();
-    setShowSuccessModal(true); // Модалдык терезени ачуу
+    setShowSuccessModal(true);
     console.log('Submitted Data:', {
       formData,
       deliveryType,
@@ -105,175 +284,94 @@ const PaymentPage = () => {
   ];
 
   return (
-    <Box sx={{
-      fontFamily: 'Arial, sans-serif',
-      backgroundColor: '#f5f5f5',
-      minHeight: '100vh',
-      padding: '20px'
-    }}>
-      <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <Box sx={{ marginBottom: '20px', fontSize: '14px', color: '#666' }}>
-          <Breadcrumbs/>
-        </Box>
-        <Typography sx={{ fontSize: '30px', fontWeight: 700, marginBottom: '31px', textAlign: 'left', color: '#333' }}>
-          Оформление заказа
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4, mt: 1 }}>
-          {steps.map((step, idx) => (
-            <React.Fragment key={step.number}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Box
-                  sx={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: '50%',
-                    background: currentStep === step.number ? '#CB11AB' : '#ccc',
-                    color: '#fff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 700,
-                    fontSize: 13,
-                    mb: 0.2,
-                    transition: 'background 0.2s',
-                  }}
-                >
-                  {step.number}
-                </Box>
-                <Typography
-                  sx={{
-                    fontSize: 11,
-                    fontWeight: currentStep === step.number ? 700 : 400,
-                    color: currentStep === step.number ? '#CB11AB' : '#888',
-                    mt: 0.2,
-                    textAlign: 'center',
-                  }}
-                >
-                  {step.label}
-                </Typography>
-              </Box>
-              {idx < steps.length - 1 && (
-                <Box
-                  sx={{
-                    flex: 1,
-                    height: 2,
-                    background: idx < currentStep - 1 ? '#CB11AB' : '#ddd',
-                    mx: 0.2,
-                    minWidth: 8,
-                    borderRadius: 2,
-                    transition: 'background 0.2s',
-                  }}
-                />
-              )}
-            </React.Fragment>
-          ))}
-        </Box>
-        <Box sx={{ display: 'flex', gap: '100px' }}>
-          <Box sx={{
-            flex: '0 0 66.66%',
-            backgroundColor: '#f5f5f5',
-            borderRadius: '8px',
-            padding: '10px',
-          }}>
-            <PaymentForm
-              currentStep={currentStep}
-              deliveryType={deliveryType}
-              paymentMethod={paymentMethod}
-              formData={formData}
-              onFormSubmit={handleFormSubmit}
-              onDeliveryChange={handleDeliveryChange}
-              onPaymentMethodChange={handlePaymentMethodChange}
-              onBack={handleBack}
-              onFinalSubmit={handleFinalSubmit}
-            />
-          </Box>
-          {currentStep !== 2 && (
-            <Box sx={{ flex: '0 0 33.33%' }}>
-              <PaymentList orderData={basket} />
-            </Box>
-          )}
-        </Box>
-      </Box>
+    <>
+      <MainContainer>
+        <ContentWrapper>
+          <BreadcrumbsContainer>
+            <Breadcrumbs />
+          </BreadcrumbsContainer>
+          
+          <PageTitle>
+            Оформление заказа
+          </PageTitle>
+          
+          <StepsContainer>
+            {steps.map((step, idx) => (
+              <React.Fragment key={step.number}>
+                <StepWrapper>
+                  <StepNumber active={currentStep === step.number}>
+                    {step.number}
+                  </StepNumber>
+                  <StepLabel active={currentStep === step.number}>
+                    {step.label}
+                  </StepLabel>
+                </StepWrapper>
+                {idx < steps.length - 1 && (
+                  <StepConnector completed={idx < currentStep - 1} />
+                )}
+              </React.Fragment>
+            ))}
+          </StepsContainer>
+          
+          <MainContent>
+            <FormContainer>
+              <PaymentForm
+                currentStep={currentStep}
+                deliveryType={deliveryType}
+                paymentMethod={paymentMethod}
+                formData={formData}
+                onFormSubmit={handleFormSubmit}
+                onDeliveryChange={handleDeliveryChange}
+                onPaymentMethodChange={handlePaymentMethodChange}
+                onBack={handleBack}
+                onFinalSubmit={handleFinalSubmit}
+              />
+            </FormContainer>
+            {currentStep !== 2 && (
+              <ListContainer>
+                <PaymentList orderData={basket} />
+              </ListContainer>
+            )}
+          </MainContent>
+        </ContentWrapper>
 
-      {showSuccessModal && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.18)',
-            backdropFilter: 'blur(5px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-          }}
-        >
-          <Box
-            sx={{
-              backgroundColor: '#fff',
-              borderRadius: '12px',
-              padding: '32px 32px 28px 32px',
-              maxWidth: '520px',
-              width: '100%',
-              textAlign: 'center',
-              boxShadow: '0 8px 32px rgba(203,17,171,0.12)',
-            }}
-          >
-            <Typography sx={{ fontSize: '28px', fontWeight: 700, color: '#CB11AB', mb: '10px' }}>
-              Спасибо!
-            </Typography>
-            <Typography sx={{ fontSize: '20px', fontWeight: 600, color: '#222', mb: '18px' }}>
-              Заявка успешно оформлена!
-            </Typography>
-            <Typography sx={{ fontSize: '16px', fontWeight: 500, color: '#333', mb: '18px' }}>
-              Номер заявки: {orderNumber}
-            </Typography>
-            <Box
-              sx={{
-                backgroundColor: '#fafbfc',
-                border: '1px solid #eee',
-                borderRadius: '8px',
-                padding: '16px',
-                mb: '22px',
-                textAlign: 'left',
-              }}
-            >
-              <Typography sx={{ color: '#333', fontSize: '14px', mb: '8px' }}>
-                Ваш заказ №{orderNumber} от {orderDate} оформлен
-              </Typography>
-              <Typography sx={{ color: '#333', fontSize: '14px' }}>
-                Вся актуальная информация о статусе исполнения заказа придет на указанный email:
-              </Typography>
-              <Typography sx={{ mt: '6px', fontWeight: 600, color: '#333', fontSize: '14px' }}>
-                {formData.email || 'aza@gmail.com'}
-              </Typography>
-            </Box>
-            <Button
-              variant="contained"
-              onClick={handleCloseModal}
-              sx={{
-                backgroundColor: '#CB11AB',
-                color: 'white',
-                padding: '12px 0',
-                border: 'none',
-                fontSize: '18px',
-                fontWeight: 700,
-                borderRadius: '8px',
-                width: '100%',
-                boxShadow: 'none',
-                textTransform: 'none',
-                '&:hover': { backgroundColor: '#CB11AB' },
-              }}
-            >
-              Продолжить покупки
-            </Button>
-          </Box>
-        </Box>
-      )}
-    </Box>
+        {showSuccessModal && (
+          <ModalOverlay>
+            <ModalContent>
+              <ModalTitle>
+                Спасибо!
+              </ModalTitle>
+              <ModalSubtitle>
+                Заявка успешно оформлена!
+              </ModalSubtitle>
+              
+              <OrderNumber>
+                Номер заявки: {orderNumber}
+              </OrderNumber>
+              
+              <OrderInfo>
+                <OrderDescription>
+                  Ваш заказ №{orderNumber} от {orderDate} оформлен
+                </OrderDescription>
+                <OrderEmail>
+                  Вся актуальная информация о статусе исполнения заказа придет на указанный email:
+                </OrderEmail>
+                <OrderEmailValue>
+                  {formData.email}
+                </OrderEmailValue>
+              </OrderInfo>
+              
+              <ContinueButton
+                variant="contained"
+                onClick={handleCloseModal}
+              >
+                Продолжить покупки
+              </ContinueButton>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+      </MainContainer>
+    </>
   );
 };
 

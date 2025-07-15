@@ -116,7 +116,6 @@ const PaymentList = ({ products }) => {
         </Box>
       </Box>
 
-      {/* Карточки товаров под блоком суммы заказа */}
       <Box>
         {items.map((item, idx) => (
           <Box

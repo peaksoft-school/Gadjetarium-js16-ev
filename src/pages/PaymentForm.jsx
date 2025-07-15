@@ -6,8 +6,359 @@ import {
    TextField,
    Checkbox,
    FormControlLabel,
+   styled,
 } from '@mui/material'
 import { Icons } from '../assets/icons'
+
+// Styled components
+const StyledContainer = styled(Box)({
+   padding: 0,
+})
+
+const StyledTitle = styled(Typography)({
+   fontWeight: 700,
+   fontSize: 22,
+   marginBottom: 24,
+})
+
+const StyledSubTitle = styled(Typography)({
+   fontWeight: 700,
+   fontSize: 20,
+   marginBottom: 16,
+})
+
+const DeliveryOptionsContainer = styled(Box)({
+   display: 'flex',
+   gap: 24,
+   marginBottom: 32,
+})
+
+const DeliveryOption = styled(Box, {
+   shouldForwardProp: (prop) => prop !== 'selected',
+})(({ selected }) => ({
+   flex: 1,
+   border: selected ? '3px solid #2ecc40' : '1px solid #e0e0e0',
+   borderRadius: 6,
+   background: '#fff',
+   padding: 20,
+   cursor: 'pointer',
+   minHeight: 90,
+   boxShadow: selected ? '0 2px 8px rgba(46,204,64,0.08)' : 'none',
+   transition: 'border 0.2s',
+}))
+
+const RadioButton = styled(Box, {
+   shouldForwardProp: (prop) => prop !== 'selected',
+})(({ selected }) => ({
+   width: 20,
+   height: 20,
+   borderRadius: '50%',
+   border: selected ? '7px solid #2ecc40' : '2px solid #bdbdbd',
+   background: '#fff',
+   marginRight: 12,
+   transition: 'border 0.2s',
+}))
+
+const PaymentRadioButton = styled(Box, {
+   shouldForwardProp: (prop) => prop !== 'selected',
+})(({ selected }) => ({
+   width: 22,
+   height: 20,
+   borderRadius: '50%',
+   border: selected ? '6px solid #2ecc40' : '2px solid #bdbdbd',
+   background: '#fff',
+   marginRight: 8,
+   transition: 'border 0.2s',
+}))
+
+const OptionHeader = styled(Box)({
+   display: 'flex',
+   alignItems: 'center',
+   marginBottom: 8,
+})
+
+const OptionTitle = styled(Typography)({
+   fontWeight: 700,
+   fontSize: 16,
+})
+
+const OptionDescription = styled(Typography)({
+   fontSize: 13,
+   color: '#888',
+   marginBottom: 8,
+})
+
+const Divider = styled(Box)({
+   borderTop: '1px solid #e0e0e0',
+   marginTop: 32,
+   marginBottom: 24,
+})
+
+const FormContainer = styled('form')({
+   width: '100%',
+})
+
+const FormRow = styled(Box)({
+   display: 'flex',
+   gap: 16,
+   marginBottom: 16,
+})
+
+const StyledTextField = styled(TextField)({
+   background: '#fff',
+   borderRadius: '8px',
+   marginBottom: 16,
+   '& .MuiOutlinedInput-root': {
+      borderRadius: '8px',
+      fontSize: 16,
+      borderColor: '#e0e0e0',
+      '& fieldset': {
+         borderColor: '#e0e0e0',
+      },
+      '&:hover fieldset': {
+         borderColor: '#CB11AB',
+      },
+      '&.Mui-focused fieldset': {
+         borderColor: '#CB11AB',
+         borderWidth: 2,
+      },
+   },
+   '& .MuiInputBase-input': {
+      fontSize: 16,
+      background: '#fff',
+      borderRadius: 8,
+   },
+})
+
+const PrimaryButton = styled(Button)({
+   background: '#CB11AB',
+   color: '#fff',
+   fontWeight: 700,
+   fontSize: 18,
+   marginTop: 24,
+   padding: '12px 0',
+   borderRadius: 16,
+   boxShadow: 'none',
+   '&:hover': {
+      background: '#CB11AB',
+   },
+})
+
+const SecondaryButton = styled(Button)({
+   background: '#CB11AB',
+   color: '#fff',
+   fontWeight: 700,
+   fontSize: 18,
+   marginTop: 32,
+   padding: '12px 0',
+   borderRadius: 16,
+   boxShadow: 'none',
+   '&:hover': {
+      background: '#CB11AB',
+   },
+})
+
+const BackButton = styled(Button)({
+   backgroundColor: '#fff',
+   color: '#e91e63',
+   padding: '10px 20px',
+   border: '1px solid #e91e63',
+   borderRadius: '6px',
+   fontSize: '14px',
+   fontWeight: 500,
+   cursor: 'pointer',
+   width: '100%',
+   marginTop: '10px',
+   boxShadow: '0 2px 5px rgba(233,30,99,0.1)',
+})
+
+const PaymentOptionsContainer = styled(Box)({
+   display: 'flex',
+   gap: 24,
+   marginBottom: 32,
+})
+
+const PaymentOption = styled(Box, {
+   shouldForwardProp: (prop) => prop !== 'selected',
+})(({ selected }) => ({
+   flex: 1,
+   border: selected ? '2px solid #2ecc40' : '1px solid #e0e0e0',
+   borderRadius: 16,
+   background: '#fff',
+   padding: 20,
+   cursor: 'pointer',
+   minHeight: 90,
+   display: 'flex',
+   flexDirection: 'column',
+   justifyContent: 'center',
+   boxShadow: selected ? '0 2px 8px rgba(46,204,64,0.08)' : 'none',
+   transition: 'border 0.2s',
+}))
+
+const PaymentIconsContainer = styled(Box)({
+   display: 'flex',
+   gap: 8,
+   marginTop: 8,
+})
+
+const CardFormContainer = styled(Box)({
+   display: 'flex',
+   gap: 24,
+   alignItems: 'flex-start',
+})
+
+const CardForm = styled(Box)({
+   background: '#fff',
+   borderRadius: 16,
+   boxShadow: '0 2px 10px rgba(0,0,0,0.07)',
+   padding: 24,
+   minWidth: 380,
+   flex: '0 0 380px',
+})
+
+const CardIconsContainer = styled(Box)({
+   display: 'flex',
+   justifyContent: 'flex-end',
+   gap: 8,
+   marginBottom: 16,
+})
+
+const CardTextField = styled(TextField)({
+   marginBottom: 16,
+   '& .MuiInput-underline:before': {
+      borderBottomColor: '#e0e0e0',
+   },
+   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      borderBottomColor: '#CB11AB',
+   },
+   '& .MuiInput-underline:after': {
+      borderBottomColor: '#CB11AB',
+   },
+   '& .MuiInputBase-input': {
+      fontSize: 18,
+   },
+})
+
+const ExpiryContainer = styled(Box)({
+   display: 'flex',
+   gap: 16,
+   marginBottom: 16,
+   alignItems: 'center',
+})
+
+const ExpiryField = styled(TextField)({
+   width: 60,
+   '& .MuiInput-underline:before': {
+      borderBottomColor: '#e0e0e0',
+   },
+   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      borderBottomColor: '#CB11AB',
+   },
+   '& .MuiInput-underline:after': {
+      borderBottomColor: '#CB11AB',
+   },
+   '& .MuiInputBase-input': {
+      fontSize: 18,
+   },
+})
+
+const CVCField = styled(TextField)({
+   width: 80,
+   marginLeft: 16,
+   '& .MuiInput-underline:before': {
+      borderBottomColor: '#e0e0e0',
+   },
+   '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+      borderBottomColor: '#CB11AB',
+   },
+   '& .MuiInput-underline:after': {
+      borderBottomColor: '#CB11AB',
+   },
+   '& .MuiInputBase-input': {
+      fontSize: 18,
+   },
+})
+
+const SecurityText = styled(Typography)({
+   color: '#444',
+   fontSize: 14,
+   maxWidth: 300,
+   marginTop: 12,
+})
+
+const OrderReviewContainer = styled(Box)({
+   padding: 0,
+})
+
+const OrderReviewTitle = styled(Typography)({
+   fontSize: '20px',
+   fontWeight: 700,
+   color: '#333',
+   marginBottom: '20px',
+   textAlign: 'left',
+})
+
+const ReviewSection = styled(Box)({
+   backgroundColor: '#fff',
+   borderRadius: '8px',
+   padding: '20px',
+   boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+   marginBottom: '20px',
+})
+
+const ReviewHeader = styled(Box)({
+   display: 'flex',
+   justifyContent: 'space-between',
+   marginBottom: '10px',
+})
+
+const ReviewLabel = styled(Typography)({
+   fontWeight: 600,
+   color: '#333',
+})
+
+const ChangeLink = styled(Typography)({
+   color: '#2196f3',
+   textDecoration: 'none',
+   fontSize: '14px',
+   cursor: 'pointer',
+})
+
+const ReviewValue = styled(Typography)({
+   fontSize: '14px',
+   color: '#666',
+})
+
+const FinalButton = styled(Button)({
+   backgroundColor: '#4caf50',
+   color: 'white',
+   padding: '12px 30px',
+   border: 'none',
+   borderRadius: '6px',
+   fontSize: '16px',
+   fontWeight: 600,
+   cursor: 'pointer',
+   width: '100%',
+   boxShadow: '0 2px 5px rgba(76,175,80,0.3)',
+   textTransform: 'uppercase',
+   '&:hover': {
+      backgroundColor: '#43a047',
+   },
+})
+
+const FinalBackButton = styled(Button)({
+   backgroundColor: '#fff',
+   color: '#CB11AB',
+   padding: '10px 20px',
+   border: '1px solid #CB11AB',
+   borderRadius: '6px',
+   fontSize: '14px',
+   fontWeight: 500,
+   cursor: 'pointer',
+   width: '100%',
+   marginTop: '10px',
+   boxShadow: '0 2px 5px rgba(233,30,99,0.1)',
+})
 
 const PaymentForm = ({
    currentStep,
@@ -71,6 +422,10 @@ const PaymentForm = ({
 
    const handleInputChange = (e) => {
       const { name, value } = e.target
+      // Карта номерине 16 сандан ашык жазылбашы үчүн
+      if (name === 'cardNumber' && value.length > 16) {
+         return
+      }
       setLocalFormData((prev) => ({
          ...prev,
          [name]: value,
@@ -97,94 +452,36 @@ const PaymentForm = ({
 
    if (currentStep === 1) {
       return (
-         <Box>
-            <Typography sx={{ fontWeight: 700, fontSize: 22, mb: 3 }}>
+         <StyledContainer>
+            <StyledTitle>
                Варианты доставки
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
-               <Box
+            </StyledTitle>
+            <DeliveryOptionsContainer>
+               <DeliveryOption
+                  selected={deliveryType === 'pickup'}
                   onClick={() => onDeliveryChange('pickup')}
-                  sx={{
-                     flex: 1,
-                     border:
-                        deliveryType === 'pickup'
-                           ? '2px solid #2ecc40'
-                           : '1px solid #e0e0e0',
-                     borderRadius: 2,
-                     background: '#fff',
-                     p: 2.5,
-                     cursor: 'pointer',
-                     minHeight: 90,
-                     boxShadow:
-                        deliveryType === 'pickup'
-                           ? '0 2px 8px rgba(46,204,64,0.08)'
-                           : 'none',
-                     transition: 'border 0.2s',
-                  }}
                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                     <Box
-                        sx={{
-                           width: 20,
-                           height: 20,
-                           borderRadius: '50%',
-                           border:
-                              deliveryType === 'pickup'
-                                 ? '7px solid #2ecc40'
-                                 : '2px solid #bdbdbd',
-                           background: '#fff',
-                           mr: 1.5,
-                           transition: 'border 0.2s',
-                        }}
-                     />
-                     <Typography sx={{ fontWeight: 700, fontSize: 16 }}>
+                  <OptionHeader>
+                     <RadioButton selected={deliveryType === 'pickup'} />
+                     <OptionTitle>
                         Самовывоз из магазина
-                     </Typography>
-                  </Box>
-                  <Typography sx={{ fontSize: 13, color: '#888', mb: 1 }}>
+                     </OptionTitle>
+                  </OptionHeader>
+                  <OptionDescription>
                      Забрать 20 июля, Бесплатно
-                  </Typography>
-               </Box>
-               <Box
+                  </OptionDescription>
+               </DeliveryOption>
+               <DeliveryOption
+                  selected={deliveryType === 'courier'}
                   onClick={() => onDeliveryChange('courier')}
-                  sx={{
-                     flex: 1,
-                     border:
-                        deliveryType === 'courier'
-                           ? '2px solid #2ecc40'
-                           : '1px solid #e0e0e0',
-                     borderRadius: 2,
-                     background: '#fff',
-                     p: 2.5,
-                     cursor: 'pointer',
-                     minHeight: 90,
-                     boxShadow:
-                        deliveryType === 'courier'
-                           ? '0 2px 8px rgba(46,204,64,0.08)'
-                           : 'none',
-                     transition: 'border 0.2s',
-                  }}
                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                     <Box
-                        sx={{
-                           width: 20,
-                           height: 20,
-                           borderRadius: '50%',
-                           border:
-                              deliveryType === 'courier'
-                                 ? '7px solid #2ecc40'
-                                 : '2px solid #bdbdbd',
-                           background: '#fff',
-                           mr: 1.5,
-                           transition: 'border 0.2s',
-                        }}
-                     />
-                     <Typography sx={{ fontWeight: 700, fontSize: 16 }}>
+                  <OptionHeader>
+                     <RadioButton selected={deliveryType === 'courier'} />
+                     <OptionTitle>
                         Доставка курьером
-                     </Typography>
-                  </Box>
-                  <Typography sx={{ fontSize: 13, color: '#888', mb: 1 }}>
+                     </OptionTitle>
+                  </OptionHeader>
+                  <OptionDescription>
                      Забрать 20 июля,
                      <br />
                      <span style={{ fontWeight: 700, color: '#222' }}>
@@ -192,19 +489,19 @@ const PaymentForm = ({
                      </span>
                      <br />
                      до 10 000 с — от 200 с
-                  </Typography>
-               </Box>
-            </Box>
+                  </OptionDescription>
+               </DeliveryOption>
+            </DeliveryOptionsContainer>
 
-            <Box sx={{ borderTop: '1px solid #e0e0e0', mt: 4, mb: 3 }} />
+            <Divider />
 
-            <Typography sx={{ fontWeight: 700, fontSize: 20, mb: 2 }}>
+            <StyledSubTitle>
                Личные данные
-            </Typography>
-            <form onSubmit={handleSubmit}>
-               <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                  <TextField
-                     label=" Напишите ваше имя "
+            </StyledSubTitle>
+            <FormContainer onSubmit={handleSubmit}>
+               <FormRow>
+                  <StyledTextField
+                     label="Напишите ваше имя"
                      name="firstName"
                      value={localFormData.firstName}
                      onChange={handleInputChange}
@@ -214,36 +511,9 @@ const PaymentForm = ({
                      error={!!errors.firstName}
                      helperText={errors.firstName}
                      variant="outlined"
-                     sx={{
-                        background: '#ffff',
-                        borderRadius: '8px',
-                        '& .MuiOutlinedInput-root': {
-                           borderRadius: '8px',
-                           fontSize: 16,
-                           borderColor: '#e0e0e0',
-                           '& fieldset': {
-                              borderColor: '#e0e0e0',
-                           },
-                           '&:hover fieldset': {
-                              borderColor: '#CB11AB',
-                           },
-                           '&.Mui-focused fieldset': {
-                              borderColor: '#CB11AB',
-                              borderWidth: 2,
-                           },
-                        },
-                        mb: 2,
-                     }}
-                     InputProps={{
-                        style: {
-                           fontSize: 16,
-                           background: '#fff',
-                           borderRadius: 8,
-                        },
-                     }}
                   />
-                  <TextField
-                     label="Напишите вашу Фамилия "
+                  <StyledTextField
+                     label="Напишите вашу Фамилия"
                      name="lastName"
                      value={localFormData.lastName}
                      onChange={handleInputChange}
@@ -253,38 +523,11 @@ const PaymentForm = ({
                      error={!!errors.lastName}
                      helperText={errors.lastName}
                      variant="outlined"
-                     sx={{
-                        background: '#fff',
-                        borderRadius: '8px',
-                        '& .MuiOutlinedInput-root': {
-                           borderRadius: '8px',
-                           fontSize: 16,
-                           borderColor: '#e0e0e0',
-                           '& fieldset': {
-                              borderColor: '#e0e0e0',
-                           },
-                           '&:hover fieldset': {
-                              borderColor: '#CB11AB',
-                           },
-                           '&.Mui-focused fieldset': {
-                              borderColor: '#CB11AB',
-                              borderWidth: 2,
-                           },
-                        },
-                        mb: 2,
-                     }}
-                     InputProps={{
-                        style: {
-                           fontSize: 16,
-                           background: '#fff',
-                           borderRadius: 8,
-                        },
-                     }}
                   />
-               </Box>
-               <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                  <TextField
-                     label=" Напишите ваш E-mail "
+               </FormRow>
+               <FormRow>
+                  <StyledTextField
+                     label="Напишите ваш E-mail"
                      type="email"
                      name="email"
                      value={localFormData.email}
@@ -295,36 +538,9 @@ const PaymentForm = ({
                      error={!!errors.email}
                      helperText={errors.email}
                      variant="outlined"
-                     sx={{
-                        background: '#fff',
-                        borderRadius: '8px',
-                        '& .MuiOutlinedInput-root': {
-                           borderRadius: '8px',
-                           fontSize: 16,
-                           borderColor: '#e0e0e0',
-                           '& fieldset': {
-                              borderColor: '#e0e0e0',
-                           },
-                           '&:hover fieldset': {
-                              borderColor: '#CB11AB',
-                           },
-                           '&.Mui-focused fieldset': {
-                              borderColor: '#CB11AB',
-                              borderWidth: 2,
-                           },
-                        },
-                        mb: 2,
-                     }}
-                     InputProps={{
-                        style: {
-                           fontSize: 16,
-                           background: '#fff',
-                           borderRadius: 8,
-                        },
-                     }}
                   />
-                  <TextField
-                     label=" мобильнный телефон "
+                  <StyledTextField
+                     label="мобильнный телефон"
                      name="phone"
                      value={localFormData.phone}
                      onChange={handleInputChange}
@@ -334,37 +550,10 @@ const PaymentForm = ({
                      error={!!errors.phone}
                      helperText={errors.phone}
                      variant="outlined"
-                     sx={{
-                        background: '#fff',
-                        borderRadius: '8px',
-                        '& .MuiOutlinedInput-root': {
-                           borderRadius: '8px',
-                           fontSize: 16,
-                           borderColor: '#e0e0e0',
-                           '& fieldset': {
-                              borderColor: '#e0e0e0',
-                           },
-                           '&:hover fieldset': {
-                              borderColor: '#CB11AB',
-                           },
-                           '&.Mui-focused fieldset': {
-                              borderColor: '#CB11AB',
-                              borderWidth: 2,
-                           },
-                        },
-                        mb: 2,
-                     }}
-                     InputProps={{
-                        style: {
-                           fontSize: 16,
-                           background: '#fff',
-                           borderRadius: 8,
-                        },
-                     }}
                   />
-               </Box>
+               </FormRow>
                {deliveryType === 'courier' && (
-                  <TextField
+                  <StyledTextField
                      label="Адрес доставки"
                      name="address"
                      value={localFormData.address}
@@ -375,76 +564,25 @@ const PaymentForm = ({
                      error={!!errors.address}
                      helperText={errors.address}
                      variant="outlined"
-                     sx={{
-                        background: '#fff',
-                        borderRadius: '8px',
-                        '& .MuiOutlinedInput-root': {
-                           borderRadius: '8px',
-                           fontSize: 16,
-                           borderColor: '#e0e0e0',
-                           '& fieldset': {
-                              borderColor: '#e0e0e0',
-                           },
-                           '&:hover fieldset': {
-                              borderColor: '#CB11AB',
-                           },
-                           '&.Mui-focused fieldset': {
-                              borderColor: '#CB11AB',
-                              borderWidth: 2,
-                           },
-                        },
-                        mb: 2,
-                     }}
-                     InputProps={{
-                        style: {
-                           fontSize: 16,
-                           background: '#fff',
-                           borderRadius: 8,
-                        },
-                     }}
                   />
                )}
-               <Button
+               <PrimaryButton
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{
-                     background: '#CB11AB',
-                     color: '#fff',
-                     fontWeight: 700,
-                     fontSize: 18,
-                     mt: 3,
-                     py: 1.5,
-                     borderRadius: 2,
-                     boxShadow: 'none',
-                     '&:hover': { background: '#CB11AB' },
-                  }}
                >
                   Продолжить
-               </Button>
+               </PrimaryButton>
                {currentStep > 1 && (
-                  <Button
+                  <BackButton
                      variant="outlined"
                      onClick={onBack}
-                     sx={{
-                        backgroundColor: '#fff',
-                        color: '#e91e63',
-                        padding: '10px 20px',
-                        border: '1px solid #e91e63',
-                        borderRadius: '6px',
-                        fontSize: '14px',
-                        fontWeight: 500,
-                        cursor: 'pointer',
-                        width: '100%',
-                        marginTop: '10px',
-                        boxShadow: '0 2px 5px rgba(233,30,99,0.1)',
-                     }}
                   >
                      Назад
-                  </Button>
+                  </BackButton>
                )}
-            </form>
-         </Box>
+            </FormContainer>
+         </StyledContainer>
       )
    }
 
@@ -454,111 +592,62 @@ const PaymentForm = ({
         { value: 'pickup', label: 'Картой при получении', icons: [Icons.mastercard, Icons.visa, Icons.elcard], description: 'Предоплата не требуется.' },
         { value: 'cash', label: 'Наличными при получении', icons: [], description: 'Предоплата не требуется.' }
       ];
+
       return (
-         <Box>
-            <Typography sx={{ fontWeight: 700, fontSize: 22, mb: 3 }}>
+         <StyledContainer>
+            <StyledTitle>
                Способ оплаты
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
+            </StyledTitle>
+            <PaymentOptionsContainer>
                {paymentOptions.map((opt) => (
-                  <Box
+                  <PaymentOption
                      key={opt.value}
+                     selected={paymentMethod === opt.value}
                      onClick={() => onPaymentMethodChange(opt.value)}
-                     sx={{
-                        flex: 1,
-                        border:
-                           paymentMethod === opt.value
-                              ? '2px solid #2ecc40'
-                              : '1px solid #e0e0e0',
-                        borderRadius: 2,
-                        background: '#fff',
-                        p: 2.5,
-                        cursor: 'pointer',
-                        minHeight: 90,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        boxShadow:
-                           paymentMethod === opt.value
-                              ? '0 2px 8px rgba(46,204,64,0.08)'
-                              : 'none',
-                        transition: 'border 0.2s',
-                     }}
                   >
-                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <Box
-                           sx={{
-                              width: 22,
-                              height: 20,
-                              borderRadius: '50%',
-                              border:
-                                 paymentMethod === opt.value
-                                    ? '6px solid #2ecc40'
-                                    : '2px solid #bdbdbd',
-                              background: '#fff',
-                              mr: 1,
-                              transition: 'border 0.2s',
-                           }}
-                        />
-                        <Typography sx={{ fontWeight: 700, fontSize: 16 }}>
+                     <OptionHeader>
+                        <PaymentRadioButton selected={paymentMethod === opt.value} />
+                        <OptionTitle>
                            {opt.label}
-                        </Typography>
-                     </Box>
+                        </OptionTitle>
+                     </OptionHeader>
                      {opt.description && (
-                        <Typography sx={{ fontSize: 13, color: '#888', mb: 1 }}>
+                        <OptionDescription>
                            {opt.description}
-                        </Typography>
+                        </OptionDescription>
                      )}
-                     <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+                     <PaymentIconsContainer>
                         {opt.icons.map((src) => (
                            <img src={src} alt="" width={32} key={src} />
                         ))}
-                     </Box>
-                  </Box>
+                     </PaymentIconsContainer>
+                  </PaymentOption>
                ))}
-            </Box>
+            </PaymentOptionsContainer>
 
             {paymentMethod === 'online' && (
-               <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
-                  <Box
-                     sx={{
-                        background: '#fff',
-                        borderRadius: 2,
-                        boxShadow: '0 2px 10px rgba(0,0,0,0.07)',
-                        p: 3,
-                        minWidth: 380,
-                        flex: '0 0 380px',
-                     }}
-                  >
-                     <Box
-                        sx={{
-                           display: 'flex',
-                           justifyContent: 'flex-end',
-                           gap: 1,
-                           mb: 2,
-                        }}
-                     >
+               <CardFormContainer>
+                  <CardForm>
+                     <CardIconsContainer>
                         <img src={Icons.visa} alt="Visa" width={36} />
                         <img src={Icons.mastercard} alt="MC" width={36} />
                         <img src={Icons.elcard} alt="Elcart" width={36} />
-                     </Box>
-                     <TextField
+                     </CardIconsContainer>
+                     <CardTextField
                         placeholder="Номер карты"
                         variant="standard"
                         fullWidth
                         name="cardNumber"
                         value={localFormData.cardNumber}
                         onChange={handleInputChange}
-                        sx={{ mb: 2 }}
                         InputProps={{
                            disableUnderline: false,
-                           style: { fontSize: 18 },
                         }}
                         error={!!errors.cardNumber}
                         helperText={errors.cardNumber}
                      />
-                     <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                        <TextField
+                     <ExpiryContainer>
+                        <ExpiryField
                            placeholder="MM"
                            variant="standard"
                            name="expiryMonth"
@@ -578,12 +667,10 @@ const PaymentForm = ({
                            }}
                            InputProps={{
                               disableUnderline: false,
-                              style: { fontSize: 18 },
                            }}
-                           sx={{ width: 60 }}
                         />
-                        <Typography sx={{ mt: 2 }}> / </Typography>
-                        <TextField
+                        <Typography>/ </Typography>
+                        <ExpiryField
                            placeholder="YY"
                            variant="standard"
                            name="expiryYear"
@@ -602,11 +689,9 @@ const PaymentForm = ({
                            }}
                            InputProps={{
                               disableUnderline: false,
-                              style: { fontSize: 18 },
                            }}
-                           sx={{ width: 60 }}
                         />
-                        <TextField
+                        <CVCField
                            placeholder="CVC"
                            variant="standard"
                            name="cvv"
@@ -614,14 +699,12 @@ const PaymentForm = ({
                            onChange={handleInputChange}
                            InputProps={{
                               disableUnderline: false,
-                              style: { fontSize: 18 },
                            }}
-                           sx={{ width: 80, ml: 2 }}
                            error={!!errors.cvv}
                            helperText={errors.cvv}
                         />
-                     </Box>
-                     <TextField
+                     </ExpiryContainer>
+                     <CardTextField
                         placeholder="Имя владельца"
                         variant="standard"
                         fullWidth
@@ -630,214 +713,94 @@ const PaymentForm = ({
                         onChange={handleInputChange}
                         InputProps={{
                            disableUnderline: false,
-                           style: { fontSize: 18 },
                         }}
                         error={!!errors.cardHolder}
                         helperText={errors.cardHolder}
                      />
-                  </Box>
-                  <Typography
-                     sx={{
-                        color: '#444',
-                        fontSize: 14,
-                        maxWidth: 300,
-                        mt: 1.5,
-                     }}
-                  >
+                  </CardForm>
+                  <SecurityText>
                      Платеж защищен. Данные карты передаются только в
                      зашифрованном виде по протоколу SSL, защищаются и
                      обрабатываются по стандарту безопасности PCI DSS.
-                  </Typography>
-               </Box>
+                  </SecurityText>
+               </CardFormContainer>
             )}
 
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{
-              background: '#e91e63',
-              color: '#fff',
-              fontWeight: 700,
-              fontSize: 18,
-              mt: 4,
-              py: 1.5,
-              borderRadius: 2,
-              boxShadow: 'none',
-              '&:hover': { background: '#d81b60' }
-            }}
-            onClick={handleSubmit}
-          >
-            Продолжить
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={onBack}
-            sx={{
-              backgroundColor: '#fff',
-              color: '#e91e63',
-              padding: '10px 20px',
-              border: '1px solid #e91e63',
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: 500,
-              cursor: 'pointer',
-              width: '100%',
-              marginTop: '10px',
-              boxShadow: '0 2px 5px rgba(233,30,99,0.1)',
-            }}
-          >
-            Назад
-          </Button>
-        </Box>
+            <SecondaryButton
+               fullWidth
+               variant="contained"
+               onClick={handleSubmit}
+            >
+               Продолжить
+            </SecondaryButton>
+            <BackButton
+               variant="outlined"
+               onClick={onBack}
+            >
+               Назад
+            </BackButton>
+         </StyledContainer>
       );
    }
 
    if (currentStep === 3) {
       return (
-         <Box>
-            <Typography
-               sx={{
-                  fontSize: '20px',
-                  fontWeight: 700,
-                  color: '#333',
-                  marginBottom: '20px',
-                  textAlign: 'left',
-               }}
-            >
+         <OrderReviewContainer>
+            <OrderReviewTitle>
                Обзор заказа
-            </Typography>
-            <Typography
-               sx={{
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  color: '#e91e63',
-                  marginBottom: '30px',
-                  textAlign: 'center',
-               }}
-            >
-               Итого: 250 000 с
-            </Typography>
+            </OrderReviewTitle>
 
-            <Box
-               sx={{
-                  backgroundColor: '#fff',
-                  borderRadius: '8px',
-                  padding: '20px',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                  marginBottom: '20px',
-               }}
-            >
-               <Box
-                  sx={{
-                     display: 'flex',
-                     justifyContent: 'space-between',
-                     marginBottom: '10px',
-                  }}
-               >
-                  <Typography sx={{ fontWeight: 600, color: '#333' }}>
+            <ReviewSection>
+               <ReviewHeader>
+                  <ReviewLabel>
                      Доставка
-                  </Typography>
-                  <Typography
-                     component="a"
-                     href="#"
-                     sx={{
-                        color: '#2196f3',
-                        textDecoration: 'none',
-                        fontSize: '14px',
-                     }}
+                  </ReviewLabel>
+                  <ChangeLink
                      onClick={() => onFormSubmit(localFormData, false, 1)}
                   >
                      Изменить
-                  </Typography>
-               </Box>
-               <Typography sx={{ fontSize: '14px', color: '#666' }}>
+                  </ChangeLink>
+               </ReviewHeader>
+               <ReviewValue>
                   {deliveryType === 'pickup'
                      ? 'Самовывоз из магазина'
                      : `г.Бишкек, ${localFormData.address || 'ул. Ахунбаева, д. 14, кв. 15'}`}
-               </Typography>
-            </Box>
+               </ReviewValue>
+            </ReviewSection>
 
-            <Box
-               sx={{
-                  backgroundColor: '#fff',
-                  borderRadius: '8px',
-                  padding: '20px',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                  marginBottom: '20px',
-               }}
-            >
-               <Box
-                  sx={{
-                     display: 'flex',
-                     justifyContent: 'space-between',
-                     marginBottom: '10px',
-                  }}
-               >
-                  <Typography sx={{ fontWeight: 600, color: '#333' }}>
+            <ReviewSection>
+               <ReviewHeader>
+                  <ReviewLabel>
                      Оплата
-                  </Typography>
-                  <Typography
-                     component="a"
-                     href="#"
-                     sx={{
-                        color: '#2196f3',
-                        textDecoration: 'none',
-                        fontSize: '14px',
-                     }}
+                  </ReviewLabel>
+                  <ChangeLink
                      onClick={() => onFormSubmit(localFormData, false, 2)}
                   >
                      Изменить
-                  </Typography>
-               </Box>
-               <Typography sx={{ fontSize: '14px', color: '#666' }}>
+                  </ChangeLink>
+               </ReviewHeader>
+               <ReviewValue>
                   {paymentMethod === 'online'
                      ? 'Картой онлайн'
                      : paymentMethod === 'pickup'
                        ? 'Картой при получении'
                        : 'Наличными при получении'}
-               </Typography>
-            </Box>
+               </ReviewValue>
+            </ReviewSection>
 
-            <Button
+            <FinalButton
                variant="contained"
                onClick={onFinalSubmit}
-               sx={{
-                  backgroundColor: '#4caf50',
-                  color: 'white',
-                  padding: '12px 30px',
-                  border: 'none',
-                  borderRadius: '6px',
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  width: '100%',
-                  boxShadow: '0 2px 5px rgba(76,175,80,0.3)',
-                  textTransform: 'uppercase',
-                  '&:hover': { backgroundColor: '#43a047' },
-               }}
             >
                ОФОРМИТЬ ЗАКАЗ
-            </Button>
-            <Button
+            </FinalButton>
+            <FinalBackButton
                variant="outlined"
                onClick={onBack}
-               sx={{
-                  backgroundColor: '#fff',
-                  color: '#CB11AB',
-                  padding: '10px 20px',
-                  border: '1px solid #CB11AB',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  width: '100%',
-                  marginTop: '10px',
-                  boxShadow: '0 2px 5px rgba(233,30,99,0.1)',
-               }}
             >
                Назад
-            </Button>
-         </Box>
+            </FinalBackButton>
+         </OrderReviewContainer>
       )
    }
 
