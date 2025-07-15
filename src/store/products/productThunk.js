@@ -27,6 +27,21 @@ export const deleteProduct = createAsyncThunk(
    }
 )
 
+export const saveProduct = createAsyncThunk(
+   'product/saveProduct',
+   async (productData, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.post(
+            '/api/product/save',
+            productData
+         )
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.response?.data || error.message)
+      }
+   }
+)
+
 export const fetchProductById = createAsyncThunk(
    'product/fetchProductById',
    async (id, { rejectWithValue }) => {

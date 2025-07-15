@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchProducts, deleteProduct, fetchProductById } from './productThunk'
+import {
+   fetchProducts,
+   deleteProduct,
+   fetchProductById,
+   saveProduct,
+} from './productThunk'
 
 const initialState = {
    items: [],
@@ -10,6 +15,10 @@ const initialState = {
    selectedProduct: null,
    selectedLoading: false,
    selectedError: null,
+
+   saveLoading: false,
+   saveError: null,
+   saveSuccess: false,
 }
 
 const productSlice = createSlice({
@@ -57,6 +66,23 @@ const productSlice = createSlice({
          .addCase(fetchProductById.rejected, (state, action) => {
             state.selectedLoading = false
             state.selectedError = action.payload
+         })
+         // saveProduct
+         .addCase(saveProduct.pending, (state) => {
+            state.saveLoading = true
+            state.saveError = null
+            state.saveSuccess = false
+         })
+         .addCase(saveProduct.fulfilled, (state, action) => {
+            state.saveLoading = false
+            state.saveSuccess = true
+            // Можно добавить в items, если нужно:
+            // state.items.push(action.payload)
+         })
+         .addCase(saveProduct.rejected, (state, action) => {
+            state.saveLoading = false
+            state.saveError = action.payload
+            state.saveSuccess = false
          })
    },
 })
