@@ -13,9 +13,19 @@ import {
 } from '@mui/material'
 import { Icons } from '../../assets/icons'
 import { useNavigate } from 'react-router'
+import CartHoverTrigger from '../../components/UI/CartHoverTrigger'
+import { fetchFavorites } from '../../store/lk-favorite/favoritesThunk'
+import { useDispatch, useSelector } from 'react-redux'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
+   const { favorites } = useSelector((state) => state.favorite)
+
+   const dispatch = useDispatch()
+
+   useEffect(() => {
+      dispatch(fetchFavorites())
+   }, [])
 
    const [isScrolled, setIsScrolled] = useState(false)
    const [profileHover, setProfileHover] = useState(false)
@@ -38,6 +48,8 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
       navigate('/sign-in')
       window.location.reload() // или просто перезагрузить страницу
    }
+
+   const handleFavoritesNavigate = () => navigate('/user/favorites')
 
    return (
       <StyledAppBar position={isScrolled ? 'fixed' : 'static'}>
@@ -128,9 +140,18 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                   </Badge>
 
                   <Badge badgeContent={0} color="error">
-                     <WhiteIcon aria-label="favorites">
-                        <IconImage src={Icons.likeW} alt="Favorites" />
-                     </WhiteIcon>
+                     <CartHoverTrigger
+                        icon={Icons.likeW}
+                        onClick={handleFavoritesNavigate}
+                     >
+                        <FavoritesDropdown>
+                           {favorites.length === 0 ? (
+                              <p>Избранных пока нету!</p>
+                           ) : (
+                              favorites?.map((favorite) => <Box></Box>)
+                           )}
+                        </FavoritesDropdown>
+                     </CartHoverTrigger>
                   </Badge>
 
                   <Badge badgeContent={basketCount} color="error">
@@ -360,21 +381,30 @@ const ProfileIconBox = styled('div')({
 })
 
 const LogoutHint = styled('div')({
-   marginTop: "-5px", 
+   marginTop: '-5px',
    background: '#fff',
    color: '#CB11AB',
-   fontSize: 12, 
+   fontSize: 12,
    fontWeight: 600,
    borderRadius: 8,
    padding: '6px 18px',
    boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
    position: 'absolute',
-   top: '120%', 
+   top: '120%',
    left: '50%',
    transform: 'translateX(-50%)',
    whiteSpace: 'nowrap',
    zIndex: 10,
    transition: 'all 0.2s',
 })
+
+const FavoritesDropdown = styled(Box)`
+   background-color: white;
+   border-radius: 8px;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+   padding: 12px;
+   min-width: 180px;
+   color: #1a1a25;
+`
 
 export default UserHeader

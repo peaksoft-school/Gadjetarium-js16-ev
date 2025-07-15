@@ -1,4 +1,3 @@
-// UserRouter.jsx
 import { Route, Routes, Outlet } from 'react-router'
 import UserLayout from '../../layout/user/UserLayout'
 import UserHeader from '../../layout/user/UserHeader'
@@ -9,6 +8,7 @@ import Spinner from '../../components/Spinner'
 import OrderDetails from '../../pages/OrdersOplata'
 import OrderHistoryPustoi from '../../pages/OrderHistoryPustoi'
 import AccountLayout from '../../layout/user/AccountLayout'
+import Favorites from '../../pages/user/favorites/Favorites'
 
 const LKfavorites = lazy(() => import('../../pages/LKfavorites'))
 const OrderHistory = lazy(() => import('../../pages/OrderHistory'))
@@ -18,8 +18,9 @@ const UserRouter = () => {
    return (
       <>
          <UserHeader />
+
          <Routes>
-            <Route path="/" element={<UserLayout />} />
+            <Route path="/favorites" element={<Favorites />} />
 
             <Route path="/account/*" element={<AccountLayout />}>
                <Route

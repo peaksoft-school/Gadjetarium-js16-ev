@@ -23,8 +23,10 @@ const Card = ({
    inStock,
    onAddToCart,
    isLiked,
+   onLikeToggle,
 }) => {
    const hasDiscount = discountValue && oldPrice
+
    const price = hasDiscount
       ? Math.round(oldPrice * (1 - discountValue / 100))
       : oldPrice
@@ -40,10 +42,11 @@ const Card = ({
          )}
 
          <ActionIcons direction="row" spacing={1}>
-            <GrayIconButton size="small">
-               <img src={Icons.scales} alt="scales" />
-            </GrayIconButton>
-            <LikeIconButton size="small" isliked={isLiked ? 1 : 0}>
+            <LikeIconButton
+               size="small"
+               isliked={isLiked ? 1 : 0}
+               onClick={onLikeToggle}
+            >
                <img src={isLiked ? Icons.likeR : Icons.likeW} alt="like" />
             </LikeIconButton>
          </ActionIcons>
@@ -77,7 +80,9 @@ const Card = ({
             <PriceBox>
                <Box>
                   <PriceText variant="h6">{price} с</PriceText>
-                  {hasDiscount && <OldPriceText>{oldPrice} с</OldPriceText>}
+                  {hasDiscount && (
+                     <OldPriceText>{Math.round(oldPrice)} с</OldPriceText>
+                  )}
                </Box>
                <AddToCartButton
                   variant="contained"
