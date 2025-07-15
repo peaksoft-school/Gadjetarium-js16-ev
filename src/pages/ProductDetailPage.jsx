@@ -54,6 +54,16 @@ const ProductDetailPage = () => {
    const [openReviewModal, setOpenReviewModal] = useState(false)
    const [visibleCount, setVisibleCount] = useState(3)
    const [showSuccessModal, setShowSuccessModal] = useState(false)
+   const productResponse = selectedProduct?.productResponse
+   const colorList =
+      productResponse &&
+      productResponse.colors &&
+      typeof productResponse.colors === 'object'
+         ? Object.entries(productResponse.colors)
+         : []
+   const [selectedColor, setSelectedColor] = useState(() =>
+      colorList.length > 0 ? colorList[0][0] : null
+   )
 
    useEffect(() => {
       console.log('Dispatching fetchProductDetail with productId:', productId)
@@ -126,13 +136,6 @@ const ProductDetailPage = () => {
       count = 0,
       article = '—',
       attributes = {},
-      productResponse = {
-         name: '',
-         date: '',
-         warranty: 0,
-         videoUrl: '',
-         pdfUrl: '',
-      },
       brand = { name: '', imageUrl: '' },
       basketed = false,
    } = selectedProduct
@@ -165,7 +168,12 @@ const ProductDetailPage = () => {
 
    const handleAddToBasket = async () => {
       try {
-         await dispatch(addToBasket({ productId: selectedProduct.productTypeId, quantity: 1 })).unwrap()
+         await dispatch(
+            addToBasket({
+               productId: selectedProduct.productTypeId,
+               quantity: 1,
+            })
+         ).unwrap()
          showToast({ message: 'Товар успешно добавлен в корзину!' })
       } catch (e) {
          showToast({ message: 'Ошибка добавления в корзину', type: 'error' })
@@ -184,11 +192,30 @@ const ProductDetailPage = () => {
       (star) => ratings.filter((r) => Math.round(r) === star).length
    )
 
+   const productSpecs = [
+      {
+         label: 'Экран',
+         value: attributes.screen || attributes.screenSize || '-',
+      },
+      { label: 'Цвет', value: color || '-' },
+      { label: 'Дата выпуска', value: productResponse?.date || '-' },
+      {
+         label: 'Операционная система',
+         value: attributes.os || attributes.OS || '-',
+      },
+      { label: 'Память', value: attributes.memory || attributes.Memory || '-' },
+      { label: 'SIM-карты', value: attributes.sim || attributes.SIM || '-' },
+      { label: 'Гарантия (месяцев)', value: productResponse?.warranty || '-' },
+      { label: 'Процессор', value: attributes.cpu || attributes.CPU || '-' },
+      { label: 'Вес', value: attributes.weight || attributes.Weight || '-' },
+      { label: 'Скорость', value: attributes.Speed || '-' },
+      { label: 'Порты', value: attributes.Ports || '-' },
+      { label: 'WiFi Standard', value: attributes['WiFi Standard'] || '-' },
+      { label: 'Диапазоны', value: attributes.Bands || '-' },
+   ]
+
    return (
       <div>
-         <UserHeader />
-         <br />
-         <br />
          <DetailWrapper>
             <MainContent>
                <SliderSection>
@@ -196,98 +223,102 @@ const ProductDetailPage = () => {
                </SliderSection>
 
                <ProductInfo>
-                  <ProductTitle variant="h4" fontWeight={700}>
-                     {name || 'Samsung Galaxy S21 5G'}
-                  </ProductTitle>
-
-                  <ReviewsSection>
-                     <Chip
-                        label={`${totalReviews} отзывов (${averageRating.toFixed(1)}★)`}
-                        size="small"
-                        color="success"
-                        sx={{ mr: 1 }}
-                     />
-                     <Typography variant="body2" color="text.secondary">
-                        Артикул: {article}
-                     </Typography>
-                     <Rating
-                        value={averageRating}
-                        readOnly
-                        size="small"
-                        sx={{ ml: 1 }}
-                     />
-                  </ReviewsSection>
-
-                  <ColorSection>
-                     <Typography variant="body2" sx={{ mb: 1 }}>
-                        Цвет: {color}
-                     </Typography>
-                     <ColorOptions>
-                        <ColorCircle color="#000" />
-                        <ColorCircle color="#8B4513" selected />
-                        <ColorCircle color="#4169E1" />
-                        <ColorCircle color="#FF6347" />
-                        <ColorCircle color="#32CD32" />
-                     </ColorOptions>
-                  </ColorSection>
-
-                  <PriceSection>
-                     <PriceRow>
-                        <CurrentPrice variant="h4" fontWeight={700}>
-                           {totalPrice ?? price} c
-                        </CurrentPrice>
-                        {discount && (
-                           <DiscountBadge>-{discount}%</DiscountBadge>
-                        )}
-                     </PriceRow>
+                  <TopInfoRow>
+                     <ReviewsBadge>
+                        {totalReviews} отзывов ({averageRating.toFixed(1)}★)
+                     </ReviewsBadge>
+                     <ArticleText>Артикул: {article}</ArticleText>
+                     <StarsRow>
+                        {/* Здесь можно отрисовать звёзды через map или компонент Rating */}
+                        <Rating value={averageRating} readOnly size="medium" />
+                     </StarsRow>
+                  </TopInfoRow>
+                  <Typography variant="h3" fontWeight={700} mb={2}>
+                     {name}
+                  </Typography>
+                  {pdfUrl && pdfUrl !== 'string' && (
+                     <Button
+                        variant="outlined"
+                        color="primary"
+                        sx={{ marginLeft: 'auto', marginRight: '20px' }}
+                        onClick={() =>
+                           window.open(pdfUrl, '_blank', 'noopener,noreferrer')
+                        }
+                     >
+                        Скачать PDF
+                     </Button>
+                  )}
+                  <Typography fontSize={16} mb={1}>
+                     Цвет: {color}
+                  </Typography>
+                  <ColorDotsRow>
+                     {colorList.map(([key, value]) => (
+                        <ColorDotStyled
+                           key={key}
+                           onClick={() => setSelectedColor(key)}
+                           active={selectedColor === key}
+                           sx={{ backgroundColor: value }}
+                        />
+                     ))}
+                  </ColorDotsRow>
+                  <PriceRow>
+                     <MainPrice>{discount ? `-${price}` : price} c</MainPrice>
+                     {discount && <DiscountLabel>-{discount}%</DiscountLabel>}
                      {totalPrice && (
-                        <Typography
-                           variant="body2"
-                           sx={{
-                              textDecoration: 'line-through',
-                              color: '#888',
-                           }}
-                        >
-                           {price} c
-                        </Typography>
+                        <OldPriceStyled>{totalPrice} c</OldPriceStyled>
                      )}
-                  </PriceSection>
+                  </PriceRow>
 
-                  <SpecsGrid>
-                     <SpecItem>
-                        <Typography variant="body2" color="text.secondary">
-                           Экран
-                        </Typography>
-                        <Typography variant="body2" fontWeight={600}>
-                           {attributes.screenSize || '6.3"'}
-                        </Typography>
-                        <Typography variant="body2" sx={{ mb: 1 }}>
-                           Цвет:
-                        </Typography>
-                        <Typography variant="body2" fontWeight={600}>
-                           {color}
-                        </Typography>
+                  <ProductShortInfoBlock>
+                     <ShortInfoTitle>Коротко о товаре:</ShortInfoTitle>
+                     <ShortInfoList>
+                        {productSpecs.map((spec, idx) => {
+                           if (spec.value !== '-') {
+                              return (
+                                 <ShortInfoRow key={idx}>
+                                    <ShortInfoLabel>
+                                       {spec.label}
+                                    </ShortInfoLabel>
+                                    <ShortInfoDots />
+                                    <ShortInfoValue>
+                                       {spec.value}
+                                    </ShortInfoValue>
+                                 </ShortInfoRow>
+                              )
+                           }
+                        })}
+                     </ShortInfoList>
+                  </ProductShortInfoBlock>
 
-                        <Typography variant="body2" color="text.secondary">
-                           Дата выпуска
-                        </Typography>
-                        <Typography variant="body2" fontWeight={600}>
-                           {date}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                           Память
-                        </Typography>
-                        <Typography variant="body2" fontWeight={600}>
-                           {attributes.memory || '128 GB'}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                           Гарантия
-                        </Typography>
-                        <Typography variant="body2" fontWeight={600}>
-                           {warranty} мес.
-                        </Typography>
-                     </SpecItem>
-                  </SpecsGrid>
+                  {/* <Box display="flex" alignItems="center" mt={2} mb={2}>
+                     <img
+                        src={productResponse?.brand?.imageUrl}
+                        alt={productResponse?.brand?.name}
+                        style={{ width: 32, height: 32, marginRight: 8 }}
+                     />
+                     <Typography variant="body2">
+                        {productResponse?.brand?.name}
+                     </Typography>
+                  </Box> */}
+
+                  {/* {productResponse?.videoUrl && (
+                     <a
+                        href={productResponse.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                     >
+                        Видеообзор
+                     </a>
+                  )} */}
+                  {/* {productResponse?.pdfUrl && (
+                     <a
+                        href={productResponse.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                     >
+                        Инструкция (PDF)
+                     </a>
+                  )} */}
 
                   <Actions>
                      <AddToCartButton
@@ -344,18 +375,18 @@ const ProductDetailPage = () => {
                         borderRadius: '8px 8px 0 0',
                         transition: 'color 0.2s',
                         '&:hover': {
-                           color: '#e91e63',
+                           color: '#CB11AB',
                            background: '#f9f6fb',
                         },
                      },
                      '& .Mui-selected': {
-                        color: '#e91e63 !important',
+                        color: '#CB11AB !important',
                         background: '#fff',
                         fontWeight: 700,
-                        borderBottom: '2.5px solid #e91e63',
+                        borderBottom: '2.5px solid #CB11AB',
                      },
                      '& .MuiTabs-indicator': {
-                        backgroundColor: '#e91e63',
+                        backgroundColor: '#CB11AB',
                         height: 3,
                         borderRadius: 2,
                      },
@@ -371,6 +402,9 @@ const ProductDetailPage = () => {
                         variant="outlined"
                         color="primary"
                         sx={{ marginLeft: 'auto', marginRight: '20px' }}
+                        onClick={() =>
+                           window.open(pdfUrl, '_blank', 'noopener,noreferrer')
+                        }
                      >
                         Скачать PDF
                      </Button>
@@ -638,15 +672,15 @@ const ProductDetailPage = () => {
                                              color="secondary"
                                              sx={{
                                                 borderRadius: 8,
-                                                borderColor: '#e91e63',
-                                                color: '#e91e63',
+                                                borderColor: '#CB11AB',
+                                                color: '#CB11AB',
                                                 fontWeight: 600,
                                                 px: 4,
                                                 py: 1.5,
                                                 mt: 2,
                                                 '&:hover': {
                                                    background: '#f9f6fb',
-                                                   borderColor: '#e91e63',
+                                                   borderColor: '#CB11AB',
                                                 },
                                              }}
                                              onClick={() =>
@@ -707,15 +741,13 @@ const ProductDetailPage = () => {
                            fullWidth
                            sx={{
                               mt: 2,
-                              background:
-                                 'linear-gradient(90deg,#e91e63 0%,#fbc2eb 100%)',
+                              background: '#CB11AB',
                               color: '#fff',
                               fontWeight: 700,
                               borderRadius: 8,
                               boxShadow: '0 2px 8px rgba(251,194,235,0.12)',
                               '&:hover': {
-                                 background:
-                                    'linear-gradient(90deg,#e91e63 0%,#f9c5d1 100%)',
+                                 background: '#CB11AB',
                               },
                            }}
                            onClick={() => setOpenReviewModal(true)}
@@ -830,16 +862,16 @@ const ProductDetailPage = () => {
                   variant="contained"
                   sx={{
                      background:
-                        'linear-gradient(90deg,#e91e63 0%,#fbc2eb 100%)',
+                        'linear-gradient(90deg,#CB11AB 0%,#fbc2eb 100%)',
                      color: '#fff',
                      fontWeight: 700,
                      borderRadius: 2,
                      px: 4,
                      py: 1,
-                     boxShadow: '0 2px 8px #e91e6320',
+                     boxShadow: '0 2px 8px #CB11AB20',
                      '&:hover': {
                         background:
-                           'linear-gradient(90deg,#e91e63 0%,#f9c5d1 100%)',
+                           'linear-gradient(90deg,#CB11AB 0%,#f9c5d1 100%)',
                      },
                   }}
                   onClick={() => setShowSuccessModal(false)}
@@ -934,7 +966,7 @@ const ColorCircle = styled(Box)(({ theme, color, selected }) => ({
    height: '32px',
    borderRadius: '50%',
    backgroundColor: color,
-   border: selected ? '3px solid #e91e63' : '2px solid #eee',
+   border: selected ? '3px solid #CB11AB' : '2px solid #eee',
    cursor: 'pointer',
    transition: 'all 0.2s ease',
    boxShadow: selected ? '0 0 0 2px #fbc2eb' : 'none',
@@ -951,21 +983,21 @@ const PriceSection = styled(Box)(({ theme }) => ({
    gap: '24px',
 }))
 
-const PriceRow = styled(Box)(({ theme }) => ({
-   display: 'flex',
-   alignItems: 'center',
-   gap: '18px',
-   marginBottom: '5px',
-}))
+const PriceRow = styled(Box)`
+   display: flex;
+   align-items: center;
+   gap: 16px;
+   margin: 24px 0 12px 0;
+`
 
 const CurrentPrice = styled(Typography)(({ theme }) => ({
    fontSize: '38px',
    fontWeight: 800,
-   color: '#e91e63',
+   color: '#CB11AB',
 }))
 
 const DiscountBadge = styled(Box)(({ theme }) => ({
-   backgroundColor: '#e91e63',
+   backgroundColor: '#CB11AB',
    color: 'white',
    padding: '6px 12px',
    borderRadius: '8px',
@@ -1004,7 +1036,7 @@ const Actions = styled(Box)(({ theme }) => ({
 }))
 
 const AddToCartButton = styled(Button)(({ theme }) => ({
-   background: 'linear-gradient(90deg,#e91e63 0%,#fbc2eb 100%)',
+   background: '#CB11AB ',
    color: 'white',
    padding: '14px 36px',
    fontSize: '18px',
@@ -1016,7 +1048,7 @@ const AddToCartButton = styled(Button)(({ theme }) => ({
    alignItems: 'center',
    gap: '10px',
    '&:hover': {
-      background: 'linear-gradient(90deg,#e91e63 0%,#f9c5d1 100%)',
+      background: 'linear-gradient(90deg,#CB11AB 0%,#f9c5d1 100%)',
    },
    '&:disabled': {
       backgroundColor: '#eee',
@@ -1029,11 +1061,11 @@ const FavoriteButton = styled(Button)(({ theme }) => ({
    padding: '14px',
    border: '2px solid #eee',
    borderRadius: '12px',
-   color: '#e91e63',
+   color: '#CB11AB',
    background: '#faf7fa',
    '&:hover': {
       background: '#f9f6fb',
-      borderColor: '#e91e63',
+      borderColor: '#CB11AB',
    },
 }))
 
@@ -1152,18 +1184,18 @@ const BannerImage = styled('img')({
    display: 'block',
 })
 const VideoButton = styled(Button)(({ theme }) => ({
-   background: 'linear-gradient(90deg,#e91e63 0%,#fbc2eb 100%)',
+   background: 'linear-gradient(90deg,#CB11AB 0%,#fbc2eb 100%)',
    color: '#fff',
    fontWeight: 700,
    borderRadius: 8,
    px: 3,
    py: 1.2,
    mt: 2,
-   boxShadow: '0 2px 8px #e91e6320',
+   boxShadow: '0 2px 8px #CB11AB20',
    textTransform: 'none',
    fontSize: 16,
    '&:hover': {
-      background: 'linear-gradient(90deg,#e91e63 0%,#f9c5d1 100%)',
+      background: 'linear-gradient(90deg,#CB11AB 0%,#f9c5d1 100%)',
    },
    display: 'flex',
    alignItems: 'center',
@@ -1232,8 +1264,7 @@ const ReviewCard = ({ review }) => {
                      width: 44,
                      height: 44,
                      borderRadius: '50%',
-                     background:
-                        'linear-gradient(135deg,#f9c5d1 0%,#fbc2eb 100%)',
+                     background: '#CB11AB',
                      display: 'flex',
                      alignItems: 'center',
                      justifyContent: 'center',
@@ -1345,3 +1376,125 @@ const CharCellTitle = styled(CharCell)({
    color: '#222',
    width: '40%',
 })
+
+const TopInfoRow = styled(Box)`
+   display: flex;
+   align-items: center;
+   gap: 24px;
+   margin-bottom: 16px;
+`
+const ReviewsBadge = styled(Box)`
+   background: #27ae60;
+   color: #fff;
+   border-radius: 16px;
+   padding: 4px 14px;
+   font-size: 16px;
+   font-weight: 600;
+   display: flex;
+   align-items: center;
+   gap: 6px;
+`
+const ArticleText = styled(Typography)`
+   color: #888;
+   font-size: 16px;
+`
+const StarsRow = styled(Box)`
+   display: flex;
+   align-items: center;
+   gap: 2px;
+`
+const ColorDotsRow = styled(Box)`
+   display: flex;
+   gap: 12px;
+   margin: 12px 0 24px 0;
+`
+const ColorDotStyled = styled(Box, {
+   shouldForwardProp: (prop) => prop !== 'active',
+})(({ active }) => ({
+   width: 28,
+   height: 28,
+   borderRadius: '50%',
+   border: active ? '3px solid #CB11AB' : '2px solid #ddd',
+   boxShadow: active ? '0 0 0 2px #F3E6F9' : 'none',
+   cursor: 'pointer',
+   transition: 'border 0.2s, box-shadow 0.2s',
+}))
+
+const MainPrice = styled('span')`
+   font-size: 40px;
+   font-weight: 700;
+   color: #e100af;
+`
+const DiscountLabel = styled('span')`
+   background: #e100af;
+   color: #fff;
+   font-size: 18px;
+   font-weight: 700;
+   border-radius: 10px;
+   padding: 6px 18px;
+   margin-left: 8px;
+`
+const OldPriceStyled = styled('span')`
+   font-size: 20px;
+   color: #999;
+   text-decoration: line-through;
+   margin-left: 8px;
+`
+
+const ProductShortInfoBlock = styled(Box)`
+   margin-top: 24px;
+   background: #fafafa;
+   border-radius: 12px;
+   padding: 24px;
+   max-width: 350px;
+`
+
+const ShortInfoTitle = styled(Typography)`
+   font-weight: 700;
+   font-size: 18px;
+   margin-bottom: 18px;
+`
+
+const ShortInfoList = styled(Box)`
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+`
+
+const ShortInfoRow = styled(Box)`
+   display: flex;
+   align-items: center;
+   font-size: 15px;
+`
+
+const ShortInfoLabel = styled('span')`
+   color: #888;
+   min-width: 140px;
+`
+
+const ShortInfoDots = styled('span')`
+   flex: 1;
+   border-bottom: 1px dashed #d0d0d0;
+   margin: 0 8px;
+   height: 1px;
+`
+
+const ShortInfoValue = styled('span')`
+   font-weight: 500;
+   color: #222;
+   min-width: 60px;
+   text-align: right;
+`
+
+const DownloadPdfButton = styled(Button)`
+   background: linear-gradient(90deg, #cb11ab 0%, #fbc2eb 100%);
+   color: #fff;
+   font-weight: 700;
+   border-radius: 8px;
+   box-shadow: 0 2px 8px #cb11ab20;
+   text-transform: none;
+   font-size: 16px;
+   &:hover {
+      background: linear-gradient(90deg, #cb11ab 0%, #f9c5d1 100%);
+   }
+`

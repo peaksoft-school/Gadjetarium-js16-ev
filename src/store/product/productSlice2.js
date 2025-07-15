@@ -65,6 +65,18 @@ const productSlice2 = createSlice({
       clearSelectedProduct: (state) => {
          state.selectedProduct = null
       },
+      toggleProductLikeLocally: (state, action) => {
+         const { productTypeId } = action.payload
+         ;['sale', 'new', 'recommend'].forEach((key) => {
+            if (Array.isArray(state[key])) {
+               state[key] = state[key].map((product) =>
+                  product.productTypeId === productTypeId
+                     ? { ...product, isLiked: !product.isLiked }
+                     : product
+               )
+            }
+         })
+      },
    },
    extraReducers: (builder) => {
       builder
@@ -102,5 +114,6 @@ const productSlice2 = createSlice({
    },
 })
 
-export const { clearSelectedProduct } = productSlice2.actions
+export const { clearSelectedProduct, toggleProductLikeLocally } =
+   productSlice2.actions
 export default productSlice2.reducer

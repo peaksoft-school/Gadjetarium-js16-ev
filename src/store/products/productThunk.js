@@ -26,3 +26,44 @@ export const deleteProduct = createAsyncThunk(
       }
    }
 )
+
+export const saveProduct = createAsyncThunk(
+   'product/saveProduct',
+   async (productData, { rejectWithValue }) => {
+      try {
+         const response = await axiosInstance.post(
+            '/api/product/save',
+            productData
+         )
+         return response.data
+      } catch (error) {
+         return rejectWithValue(error.response?.data || error.message)
+      }
+   }
+)
+
+export const fetchProductById = createAsyncThunk(
+   'product/fetchProductById',
+   async (id, { rejectWithValue }) => {
+      try {
+         if (!id) throw new Error('ID is required for fetching product')
+
+         const token = localStorage.getItem('token')
+
+         const response = await axiosInstance.get(`/api/product/get/${id}`, {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         })
+
+         if (response.data?.product) {
+            return response.data.product
+         }
+
+         return response.data
+      } catch (error) {
+         console.error('fetchProductById error:', error)
+         return rejectWithValue(error.response?.data || error.message)
+      }
+   }
+)

@@ -251,9 +251,9 @@ const Card = ({
    inStock,
    onAddToCart,
    isLiked,
-   onClick, 
-   productId, 
-   onToggleFavorite, 
+   onClick,
+   productId,
+   onToggleFavorite,
 }) => {
    const hasDiscount = discountValue && oldPrice
    const price = hasDiscount
@@ -262,13 +262,8 @@ const Card = ({
 
    return (
       <StyledCard onClick={onClick}>
-         {' '}
          {hasDiscount && (
-            <DiscountChip
-               label={`-${discountValue}%`}
-               color="error"
-               size="small"
-            />
+            <DiscountChip label={`-${discountValue}%`} color="error" />
          )}
          <img
             src={image2}
@@ -277,7 +272,6 @@ const Card = ({
             style={{ width: '50px', height: '50px' }}
          />
          <ActionIcons direction="row" spacing={1}>
-          
             <LikeIconButton
                size="small"
                isliked={isLiked ? 1 : 0}
@@ -347,7 +341,7 @@ const StyledCard = styled(MuiCard)`
    justify-content: space-between;
    padding: 12px;
    border-radius: 12px;
-   cursor: pointer; // Ensure cursor indicates clickability
+   cursor: pointer; 
 `
 
 const DiscountChip = styled(Chip)`
@@ -355,9 +349,9 @@ const DiscountChip = styled(Chip)`
    top: 8px;
    left: 8px;
    border-radius: 100%;
-   font-weight: 900;
-   height: 48px;
-   width: 48px;
+   font-weight: 700;
+   height: 58px;
+   width: 58px;
    font-size: 12px;
 `
 

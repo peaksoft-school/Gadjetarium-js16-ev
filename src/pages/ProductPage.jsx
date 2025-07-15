@@ -7,8 +7,6 @@ import { fetchProductDetail } from '../store/product/productThunk2'
 import { useNavigate } from 'react-router-dom'
 import Card from '../components/UI/cards/Card'
 import { Icons } from '../assets/icons'
-import UserHeader from '../layout/user/UserHeader'
-import Footer from '../layout/Footer'
 import BannerSlider from '../components/BannerSlider'
 import {
    toggleFavoriteOnServer,
@@ -17,9 +15,9 @@ import {
 import { addToBasket } from '../store/basket/basketThunk'
 import { useState } from 'react'
 import { showToast } from '../utils/helpers/showToast'
+import { toggleProductLikeLocally } from '../store/product/productSlice2'
 
 const ProductPage = () => {
-   // useState только на верхнем уровне компонента:
    const [visibleSale, setVisibleSale] = useState(4)
    const [visibleNew, setVisibleNew] = useState(4)
    const [visibleRecommend, setVisibleRecommend] = useState(4)
@@ -39,7 +37,7 @@ const ProductPage = () => {
    const favoriteIds = useSelector((state) => state.favorites.ids)
    const navigate = useNavigate()
 
-   const userId = useSelector((state) => state.auth?.user?.id || 1) 
+   const userId = useSelector((state) => state.auth?.user?.id || 1)
 
    useEffect(() => {
       dispatch(fetchBanner2())
@@ -67,8 +65,8 @@ const ProductPage = () => {
          productTypeId
       )
       dispatch(fetchProductDetail(productTypeId))
-      navigate(`/product/${productTypeId}`)
-      console.log('Navigating to:', `/product/${productTypeId}`)
+      navigate(`/user/product/${productTypeId}`)
+      console.log('Navigating to:', `/user/product/${productTypeId}`)
    }
 
    const handleAddToBasket = async (product) => {
@@ -93,13 +91,18 @@ const ProductPage = () => {
          rating={product.rating}
          reviews={100}
          inStock={product.count}
-         isLiked={favoriteIds
-            .map(String)
-            .includes(String(product.productTypeId))}
+         isLiked={product.isFavorite}
          productId={product.productTypeId}
-         onToggleFavorite={(id) =>
-            dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
-         }
+         onToggleFavorite={(id) => {
+            dispatch(toggleProductLikeLocally({ productTypeId: id }))
+            dispatch(
+               toggleFavoriteOnServer({ productTypeId: id, userId })
+            ).then((res) => {
+               if (res.error) {
+                  dispatch(toggleProductLikeLocally({ productTypeId: id }))
+               }
+            })
+         }}
          onAddToCart={() => handleAddToBasket(product)}
          onClick={() => {
             console.log('Card clicked, product:', product)
@@ -133,9 +136,7 @@ const ProductPage = () => {
          rating={product.rating}
          reviews={100}
          inStock={product.count}
-         isLiked={favoriteIds
-            .map(String)
-            .includes(String(product.productTypeId))}
+         isLiked={product.isFavorite}
          productId={product.productTypeId}
          onToggleFavorite={(id) =>
             dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
@@ -173,9 +174,7 @@ const ProductPage = () => {
          rating={product.rating}
          reviews={100}
          inStock={product.count}
-         isLiked={favoriteIds
-            .map(String)
-            .includes(String(product.productTypeId))}
+         isLiked={product.isFavorite}
          productId={product.productTypeId}
          onToggleFavorite={(id) =>
             dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
@@ -230,7 +229,6 @@ const ProductPage = () => {
 
    return (
       <>
-         <UserHeader />
          <br />
          {banner?.images?.length > 0 && <BannerSlider images={banner.images} />}
          <br />
@@ -257,7 +255,6 @@ const ProductPage = () => {
                setVisibleRecommend
             )}
          </PageWrapper>
-         <Footer />
       </>
    )
 }

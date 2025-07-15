@@ -5,7 +5,6 @@ import { Box, Typography, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import CompactCard from '../components/UI/cards/CompactCard'
 import { Images } from '../assets/images'
-import Breadcrumbs from '../components/UI/BreadCrums'
 
 const LKfavorites = () => {
    const dispatch = useDispatch()

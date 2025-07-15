@@ -1,6 +1,4 @@
-// UserRouter.jsx
 import { Route, Routes, Outlet } from 'react-router'
-import UserLayout from '../../layout/user/UserLayout'
 import UserHeader from '../../layout/user/UserHeader'
 import Footer from '../../layout/Footer'
 import { lazy, Suspense } from 'react'
@@ -13,13 +11,30 @@ import AccountLayout from '../../layout/user/AccountLayout'
 const LKfavorites = lazy(() => import('../../pages/LKfavorites'))
 const OrderHistory = lazy(() => import('../../pages/OrderHistory'))
 const ProfilePage = lazy(() => import('../../pages/ProfilePage'))
+const ProductPage = lazy(() => import('../../pages/ProductPage'))
+const ProductDetailPage = lazy(() => import('../../pages/ProductDetailPage'))
 
 const UserRouter = () => {
    return (
       <>
          <UserHeader />
          <Routes>
-            <Route path="/" element={<UserLayout />} />
+            <Route
+               path="/"
+               element={
+                  <Suspense fallback={<Spinner />}>
+                     <ProductPage />
+                  </Suspense>
+               }
+            />
+            <Route
+               path="/product/:productId"
+               element={
+                  <Suspense fallback={<Spinner />}>
+                     <ProductDetailPage />
+                  </Suspense>
+               }
+            />
 
             <Route path="/account/*" element={<AccountLayout />}>
                <Route
@@ -49,6 +64,7 @@ const UserRouter = () => {
             </Route>
 
             <Route path="/orders/:id" element={<OrderDetails />} />
+
             <Route path="/orders/empty" element={<OrderHistoryPustoi />} />
          </Routes>
          <Outlet />
