@@ -67,7 +67,7 @@ export default CompactCard
 const StyledCard = styled(MuiCard)({
    width: 210,
    height: 354,
-   borderRadius: 16,
+   borderRadius: 4,
    padding: 12,
    display: 'flex',
    flexDirection: 'column',
@@ -102,4 +102,17 @@ const PriceTypography = styled(Typography)({
    marginTop: 8,
    paddingRight: 12.8,
    textAlign: 'start',
+   position: 'relative',
+   display: 'inline-block',
+   fontSize: '1.25rem',
+
+   '&::after': {
+      content: '""',
+      position: 'absolute',
+      right: 12,
+      bottom: -2,
+      width: '15%',
+      height: '1.5px',
+      backgroundColor: 'currentColor',
+   },
 })

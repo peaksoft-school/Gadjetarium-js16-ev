@@ -12,11 +12,14 @@ import {
    Box,
 } from '@mui/material'
 import { Icons } from '../../assets/icons'
+import { useNavigate } from 'react-router'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
 
    const [isScrolled, setIsScrolled] = useState(false)
+   const [profileHover, setProfileHover] = useState(false)
+   const navigate = useNavigate()
 
    useEffect(() => {
       const handleScroll = () => {
@@ -29,6 +32,12 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
 
       return () => window.removeEventListener('scroll', handleScroll)
    }, [])
+
+   const handleLogout = () => {
+      localStorage.clear()
+      navigate('/sign-in')
+      window.location.reload() // или просто перезагрузить страницу
+   }
 
    return (
       <StyledAppBar position={isScrolled ? 'fixed' : 'static'}>
@@ -46,11 +55,28 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
             </TopInfo>
 
             <ContactBox>
-               <PhoneText>+996 (400) 00-00-00</PhoneText>
-
-               <WhiteIcon aria-label="user profile">
-                  <IconImage src={Icons.user} alt="User" />
-               </WhiteIcon>
+               <PhoneText>+996 (999) 160 609</PhoneText>
+               <ProfileIconBox
+                  onMouseEnter={() => setProfileHover(true)}
+                  onMouseLeave={() => setProfileHover(false)}
+               >
+                  <WhiteIcon
+                     aria-label="user profile"
+                     onClick={() => navigate('/user/account/order-history')}
+                  >
+                     <IconImage src={Icons.user} alt="User" />
+                  </WhiteIcon>
+                  {profileHover && (
+                     <LogoutHint
+                        onMouseEnter={() => setProfileHover(true)}
+                        onMouseLeave={() => setProfileHover(false)}
+                        onClick={handleLogout}
+                        style={{ cursor: 'pointer' }}
+                     >
+                        Выйти
+                     </LogoutHint>
+                  )}
+               </ProfileIconBox>
             </ContactBox>
          </TopRow>
 
@@ -216,7 +242,6 @@ const IconImage = styled('img')({
    transition: 'all 0.3s ease',
 })
 
-
 const Logo = styled('img')({
    width: '160px',
    height: 'auto',
@@ -270,8 +295,8 @@ const SearchContainer = styled(Box)({
       '& .MuiInputBase-input::placeholder': {
          color: 'grey',
       },
-      
-      '& img': {     // делаем иконку серой
+
+      '& img': {
          filter: 'brightness(0) saturate(100%) invert(50%)',
       },
    },
@@ -284,12 +309,11 @@ const SearchContainer = styled(Box)({
          color: 'black',
       },
 
-      '& img': {    // делаем иконку черной
+      '& img': {
          filter: 'brightness(0) saturate(100%)',
       },
    },
 })
-
 
 const StyledInputBase = styled(InputBase)({
    color: '#ffffff',
@@ -309,8 +333,8 @@ const StyledInputBase = styled(InputBase)({
       },
    },
    '& .MuiInputBase-input:focus': {
-      backgroundColor: 'white', 
-      color: 'black', 
+      backgroundColor: 'white',
+      color: 'black',
    },
 })
 
@@ -326,6 +350,31 @@ const IconsContainer = styled(Box)({
       width: '100%',
       gap: '12px',
    },
+})
+
+const ProfileIconBox = styled('div')({
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   position: 'relative',
+})
+
+const LogoutHint = styled('div')({
+   marginTop: "-5px", 
+   background: '#fff',
+   color: '#CB11AB',
+   fontSize: 12, 
+   fontWeight: 600,
+   borderRadius: 8,
+   padding: '6px 18px',
+   boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+   position: 'absolute',
+   top: '120%', 
+   left: '50%',
+   transform: 'translateX(-50%)',
+   whiteSpace: 'nowrap',
+   zIndex: 10,
+   transition: 'all 0.2s',
 })
 
 export default UserHeader

@@ -1,3 +1,4 @@
+import human from './pngs/human.png'
 import KyrgyzJerim from './pngs/KyrgyzJerim.png'
 import GatgetStore from './pngs/GatgetStore.png'
 import PeopleTc from './pngs/PeopleTc.png'

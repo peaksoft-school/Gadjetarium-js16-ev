@@ -14,8 +14,16 @@ import {
    toggleFavoriteOnServer,
    getFavoritesFromServer,
 } from '../store/favorites/favoritesSlice'
+import { addToBasket } from '../store/basket/basketThunk'
+import { useState } from 'react'
+import { showToast } from '../utils/helpers/showToast'
 
 const ProductPage = () => {
+   // useState только на верхнем уровне компонента:
+   const [visibleSale, setVisibleSale] = useState(4)
+   const [visibleNew, setVisibleNew] = useState(4)
+   const [visibleRecommend, setVisibleRecommend] = useState(4)
+
    const dispatch = useDispatch()
    const {
       sale = [],
@@ -31,17 +39,14 @@ const ProductPage = () => {
    const favoriteIds = useSelector((state) => state.favorites.ids)
    const navigate = useNavigate()
 
-   const userId = useSelector((state) => state.auth?.user?.id || 1) // Получаем userId из auth, если нет — 1
+   const userId = useSelector((state) => state.auth?.user?.id || 1) 
 
    useEffect(() => {
       dispatch(fetchBanner2())
+      dispatch(fetchProducts2({ status: 'акции', page: 1, size: 10, userId }))
+      dispatch(fetchProducts2({ status: 'новинки', page: 1, size: 10, userId }))
       dispatch(
-         fetchProducts2({
-            status: 'мы рекомендуем',
-            page: 1,
-            size: 10,
-            userId,
-         })
+         fetchProducts2({ status: 'мы рекомендуем', page: 1, size: 10, userId })
       )
       dispatch(getFavoritesFromServer(userId))
       console.log(
@@ -66,6 +71,18 @@ const ProductPage = () => {
       console.log('Navigating to:', `/product/${productTypeId}`)
    }
 
+   const handleAddToBasket = async (product) => {
+      try {
+         await dispatch(
+            addToBasket({ productId: product.productTypeId, quantity: 1 })
+         ).unwrap()
+         showToast({ message: 'Товар успешно добавлен в корзину!' })
+      } catch (e) {
+         showToast({ message: 'Ошибка добавления в корзину', type: 'error' })
+         console.error('Ошибка добавления в корзину:', e)
+      }
+   }
+
    const renderSaleCard = (product, index) => (
       <StyledCard
          key={index}
@@ -83,7 +100,7 @@ const ProductPage = () => {
          onToggleFavorite={(id) =>
             dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
          }
-         onAddToCart={() => console.log('Добавлено в корзину:', product.name)}
+         onAddToCart={() => handleAddToBasket(product)}
          onClick={() => {
             console.log('Card clicked, product:', product)
             handleCardClick(product.productTypeId)
@@ -123,7 +140,7 @@ const ProductPage = () => {
          onToggleFavorite={(id) =>
             dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
          }
-         onAddToCart={() => console.log('Добавлено в корзину:', product.name)}
+         onAddToCart={() => handleAddToBasket(product)}
          onClick={() => {
             console.log('Card clicked, product:', product)
             handleCardClick(product.productTypeId)
@@ -163,7 +180,7 @@ const ProductPage = () => {
          onToggleFavorite={(id) =>
             dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
          }
-         onAddToCart={() => console.log('Добавлено в корзину:', product.name)}
+         onAddToCart={() => handleAddToBasket(product)}
          onClick={() => {
             console.log('Card clicked, product:', product)
             handleCardClick(product.productTypeId)
@@ -172,18 +189,41 @@ const ProductPage = () => {
       />
    )
 
-   const renderSection = (title, items, renderCardFunc) => {
-      if (!Array.isArray(items) || items.length === 0) return null
-
+   const renderSection = (
+      title,
+      items,
+      renderCardFunc,
+      visibleCount,
+      setVisibleCount
+   ) => {
+      if (!Array.isArray(items) || items.length === 0) {
+         return (
+            <Box width="100%">
+               <SectionTitle>{title}</SectionTitle>
+               <Typography sx={{ textAlign: 'center', color: '#888', mb: 4 }}>
+                  Пусто
+               </Typography>
+            </Box>
+         )
+      }
       return (
          <Box width="100%">
             <SectionTitle>{title}</SectionTitle>
             <CardsContainer $isFullRow={items.length >= 5}>
-               {items.map((product, index) => renderCardFunc(product, index))}
+               {items
+                  .slice(0, visibleCount)
+                  .map((product, index) => renderCardFunc(product, index))}
             </CardsContainer>
-            <ButtonWrapper>
-               <MoreButton variant="outlined">Показать ещё</MoreButton>
-            </ButtonWrapper>
+            {visibleCount < items.length && (
+               <ButtonWrapper>
+                  <MoreButton
+                     variant="outlined"
+                     onClick={() => setVisibleCount(visibleCount + 4)}
+                  >
+                     Показать ещё
+                  </MoreButton>
+               </ButtonWrapper>
+            )}
          </Box>
       )
    }
@@ -195,9 +235,27 @@ const ProductPage = () => {
          {banner?.images?.length > 0 && <BannerSlider images={banner.images} />}
          <br />
          <PageWrapper>
-            {renderSection('Акции', sale, renderSaleCard)}
-            {renderSection('Новинки', newItems, renderNewCard)}
-            {renderSection('Мы рекомендуем', recommend, renderRecommendCard)}
+            {renderSection(
+               'Акции',
+               sale,
+               renderSaleCard,
+               visibleSale,
+               setVisibleSale
+            )}
+            {renderSection(
+               'Новинки',
+               newItems,
+               renderNewCard,
+               visibleNew,
+               setVisibleNew
+            )}
+            {renderSection(
+               'Мы рекомендуем',
+               recommend,
+               renderRecommendCard,
+               visibleRecommend,
+               setVisibleRecommend
+            )}
          </PageWrapper>
          <Footer />
       </>

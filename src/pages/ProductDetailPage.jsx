@@ -28,6 +28,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
 import { Images } from '../assets/images'
 import { toggleFavoriteOnServer } from '../store/favorites/favoritesSlice'
+import { addToBasket } from '../store/basket/basketThunk'
+import { showToast } from '../utils/helpers/showToast'
 
 const ProductDetailPage = () => {
    const dispatch = useDispatch()
@@ -69,6 +71,29 @@ const ProductDetailPage = () => {
    useEffect(() => {
       setVisibleCount(3)
    }, [selectedStatus, productId])
+
+   useEffect(() => {
+      if (selectedProduct) {
+         const viewed = JSON.parse(
+            localStorage.getItem('viewedProducts') || '[]'
+         )
+         if (
+            !viewed.some(
+               (p) => p.productTypeId === selectedProduct.productTypeId
+            )
+         ) {
+            viewed.unshift(selectedProduct)
+            localStorage.setItem(
+               'viewedProducts',
+               JSON.stringify(viewed.slice(0, 10))
+            )
+         }
+      }
+   }, [selectedProduct])
+
+   const viewedProducts = JSON.parse(
+      localStorage.getItem('viewedProducts') || '[]'
+   )
 
    if (loading || (reviewsStatus === 'loading' && activeTab === 2))
       return (
@@ -138,9 +163,18 @@ const ProductDetailPage = () => {
       setTimeout(() => setShowSuccessModal(false), 2000)
    }
 
+   const handleAddToBasket = async () => {
+      try {
+         await dispatch(addToBasket({ productId: selectedProduct.productTypeId, quantity: 1 })).unwrap()
+         showToast({ message: 'Товар успешно добавлен в корзину!' })
+      } catch (e) {
+         showToast({ message: 'Ошибка добавления в корзину', type: 'error' })
+         console.error('Ошибка добавления в корзину:', e)
+      }
+   }
+
    console.log('selectedProduct:', selectedProduct)
 
-   // Подсчёт отзывов и рейтинга
    const totalReviews = reviews.length
    const ratings = reviews.map((r) => r.review?.rating || r.rating || 0)
    const averageRating = ratings.length
@@ -260,6 +294,7 @@ const ProductDetailPage = () => {
                         variant="contained"
                         disabled={count === 0}
                         fullWidth
+                        onClick={handleAddToBasket}
                      >
                         {basketed ? 'В корзине' : 'В корзину'}
                      </AddToCartButton>
@@ -437,17 +472,26 @@ const ProductDetailPage = () => {
                         Просмотренные товары
                      </SectionTitle>
                      <ProductGrid>
-                        {[...Array(4)].map((_, index) => (
-                           <ProductCard key={index}>
-                              <CompactCard
-                                 image={sliderImages[0].image}
-                                 title={`Похожий товар ${index + 1}`}
-                                 price={`${parseInt(totalPrice ?? price) + index * 100} c`}
-                                 rating={4.5}
-                                 reviews={100}
-                                 productId={selectedProduct?.id}
-                              />
-                           </ProductCard>
+                        {viewedProducts.map((product) => (
+                           <CompactCard
+                              key={product.productTypeId}
+                              image={product.images?.[0] || product.imageUrl}
+                              title={
+                                 product.productResponse?.name || product.name
+                              }
+                              price={product.totalPrice ?? product.price}
+                              rating={
+                                 product.productResponse?.rating ||
+                                 product.rating ||
+                                 0
+                              }
+                              reviews={
+                                 product.productResponse?.reviews ||
+                                 product.reviews ||
+                                 0
+                              }
+                              productId={product.productTypeId}
+                           />
                         ))}
                      </ProductGrid>
                   </TabContent>
@@ -519,17 +563,26 @@ const ProductDetailPage = () => {
                         Просмотренные товары
                      </SectionTitle>
                      <ProductGrid>
-                        {[...Array(4)].map((_, index) => (
-                           <ProductCard key={index}>
-                              <CompactCard
-                                 image={sliderImages[0].image}
-                                 title={`Похожий товар ${index + 1}`}
-                                 price={`${parseInt(totalPrice ?? price) + index * 100} c`}
-                                 rating={4.5}
-                                 reviews={100}
-                                 productId={selectedProduct?.id}
-                              />
-                           </ProductCard>
+                        {viewedProducts.map((product) => (
+                           <CompactCard
+                              key={product.productTypeId}
+                              image={product.images?.[0] || product.imageUrl}
+                              title={
+                                 product.productResponse?.name || product.name
+                              }
+                              price={product.totalPrice ?? product.price}
+                              rating={
+                                 product.productResponse?.rating ||
+                                 product.rating ||
+                                 0
+                              }
+                              reviews={
+                                 product.productResponse?.reviews ||
+                                 product.reviews ||
+                                 0
+                              }
+                              productId={product.productTypeId}
+                           />
                         ))}
                      </ProductGrid>
                   </TabContent>
@@ -689,15 +742,25 @@ const ProductDetailPage = () => {
                      </Typography>
                      <br />
                      <ProductGrid>
-                        {[...Array(4)].map((_, index) => (
+                        {viewedProducts.map((product) => (
                            <CompactCard
-                              key={index}
-                              image={sliderImages[0].image}
-                              title={`Похожий товар ${index + 1}`}
-                              price={`${parseInt(totalPrice ?? price) + index * 100} $`}
-                              rating={4.5}
-                              reviews={100}
-                              productId={selectedProduct?.id}
+                              key={product.productTypeId}
+                              image={product.images?.[0] || product.imageUrl}
+                              title={
+                                 product.productResponse?.name || product.name
+                              }
+                              price={product.totalPrice ?? product.price}
+                              rating={
+                                 product.productResponse?.rating ||
+                                 product.rating ||
+                                 0
+                              }
+                              reviews={
+                                 product.productResponse?.reviews ||
+                                 product.reviews ||
+                                 0
+                              }
+                              productId={product.productTypeId}
                            />
                         ))}
                      </ProductGrid>
@@ -802,7 +865,7 @@ const CenterBox = styled(Box)(() => ({
 }))
 
 const DetailWrapper = styled(Box)(({ theme }) => ({
-   maxWidth: '1340px',
+   maxWidth: '1500px',
    margin: '0 auto',
    padding: '20px',
    backgroundColor: '#f9f9f9',
@@ -1129,7 +1192,6 @@ const ProductCard = styled(Box)(({ theme }) => ({
    gap: 1,
 }))
 
-// Внутренний компонент карточки отзыва
 const ReviewCard = ({ review }) => {
    const userName = review.user?.fullName || 'Аноним'
    const userAvatar = review.user?.profile

@@ -78,13 +78,10 @@ const productSlice2 = createSlice({
             const products = (action.payload || [])
                .slice()
                .sort((a, b) => a.id - b.id)
-            const total = products.length
-            state.sale = products.slice(0, Math.floor(total / 3))
-            state.new = products.slice(
-               Math.floor(total / 3),
-               Math.floor((2 * total) / 3)
-            )
-            state.recommend = products.slice(Math.floor((2 * total) / 3))
+            const status = action.meta.arg.status
+            if (status === 'акции') state.sale = products
+            else if (status === 'новинки') state.new = products
+            else if (status === 'мы рекомендуем') state.recommend = products
          })
          .addCase(fetchProducts2.rejected, (state, action) => {
             state.loading = false

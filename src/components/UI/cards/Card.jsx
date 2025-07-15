@@ -251,9 +251,9 @@ const Card = ({
    inStock,
    onAddToCart,
    isLiked,
-   onClick, // Ensure onClick is a prop
-   productId, // Новый проп
-   onToggleFavorite, // Новый проп
+   onClick, 
+   productId, 
+   onToggleFavorite, 
 }) => {
    const hasDiscount = discountValue && oldPrice
    const price = hasDiscount
@@ -263,7 +263,6 @@ const Card = ({
    return (
       <StyledCard onClick={onClick}>
          {' '}
-         {/* Apply onClick to the card wrapper */}
          {hasDiscount && (
             <DiscountChip
                label={`-${discountValue}%`}
@@ -278,9 +277,7 @@ const Card = ({
             style={{ width: '50px', height: '50px' }}
          />
          <ActionIcons direction="row" spacing={1}>
-            <GrayIconButton size="small">
-               <img src={Icons.scales} alt="scales" />
-            </GrayIconButton>
+          
             <LikeIconButton
                size="small"
                isliked={isLiked ? 1 : 0}

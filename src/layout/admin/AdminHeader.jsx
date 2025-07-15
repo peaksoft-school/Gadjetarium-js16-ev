@@ -8,10 +8,17 @@ import { useNavigate } from 'react-router'
 
 const AdminHeader = () => {
    const [isModalOpen, setIsModalOpen] = useState(false)
+   const [profileHover, setProfileHover] = useState(false)
+   const navigate = useNavigate()
 
    const handleOpenModal = () => setIsModalOpen(true)
    const handleCloseModal = () => setIsModalOpen(false)
-   const navigate = useNavigate()
+
+   const handleLogout = () => {
+      localStorage.clear()
+      navigate('/sign-in')
+      window.location.reload()
+   }
 
    return (
       <>
@@ -36,9 +43,22 @@ const AdminHeader = () => {
                   Создать рассылку
                </StyledButton>
 
-               <AdminBox>
+               <AdminBox
+                  onMouseEnter={() => setProfileHover(true)}
+                  onMouseLeave={() => setProfileHover(false)}
+               >
                   <UserIcon src={Icons.user} alt="Администратор" />
                   <Typography color="#fff">Администратор</Typography>
+                  {profileHover && (
+                     <LogoutHint
+                        onMouseEnter={() => setProfileHover(true)}
+                        onMouseLeave={() => setProfileHover(false)}
+                        onClick={handleLogout}
+                        style={{ cursor: 'pointer' }}
+                     >
+                        Выйти
+                     </LogoutHint>
+                  )}
                </AdminBox>
             </StyledToolbar>
          </StyledAppBar>
@@ -68,7 +88,6 @@ const StyledAppBar = styled(AppBar)`
    background-color: #1a1a25;
    box-shadow: none;
    padding: 0 20px;
-   background-color: #1a1a25;
 `
 
 const StyledToolbar = styled(Toolbar)`
@@ -111,6 +130,7 @@ const AdminBox = styled(Box)`
    display: flex;
    align-items: center;
    gap: 10px;
+   position: relative;
 `
 
 const UserIcon = styled('img')`
@@ -123,4 +143,23 @@ const ModalBox = styled(Box)`
    padding: 20px;
    width: 100%;
    max-width: 600px;
+`
+
+const LogoutHint = styled('div')`
+   margin-top: 8px;
+   background: #fff;
+   color: #cb11ab;
+   font-size: 18px;
+   font-weight: 600;
+   border-radius: 8px;
+   padding: 10px 24px;
+   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+   position: absolute;
+   left: 50%;
+   top: 100%;
+   transform: translateX(-50%);
+   white-space: nowrap;
+   z-index: 10;
+   transition: all 0.2s;
+   pointer-events: auto;
 `

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { axiosInstance } from '../../configs/axiosInstans'
 import { fileUploadInstance } from '../../configs/fileAxiosInstance'
+import { axiosInstance } from '../../configs/axiosInstans'
 
 export const sendPromoMail = createAsyncThunk(
    'mail/postMail',
