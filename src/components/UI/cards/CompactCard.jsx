@@ -6,13 +6,40 @@ import {
    Stack,
    CardMedia,
    Card as MuiCard,
+   IconButton,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleFavoriteOnServer } from '../../../store/favorites/favoritesSlice'
+import { Icons } from '../../../assets/icons'
 
-const CompactCard = ({ image, title, price, rating, reviews }) => {
+const CompactCard = ({ image, title, price, rating, reviews, productId }) => {
+   const dispatch = useDispatch()
+   const favoriteIds = useSelector((state) => state.favorites.ids)
+   const isLiked = favoriteIds.includes(productId)
    return (
       <StyledCard>
-         <StyledCardMedia component="img" image={image} alt={title} />
+         <Box sx={{ position: 'relative', width: '100%' }}>
+            <StyledCardMedia component="img" image={image} alt={title} />
+            <IconButton
+               onClick={() => dispatch(toggleFavoriteOnServer(productId))}
+               sx={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  background: '#fff',
+                  borderRadius: '50%',
+                  boxShadow: '0 2px 8px #0001',
+                  p: 0.5,
+               }}
+            >
+               <img
+                  src={isLiked ? Icons.likeR : Icons.likeW}
+                  alt="like"
+                  style={{ width: 24, height: 24, transition: '0.2s' }}
+               />
+            </IconButton>
+         </Box>
          <StyledCardContent>
             <TitleTypography variant="body2">{title}</TitleTypography>
             <RatingStack

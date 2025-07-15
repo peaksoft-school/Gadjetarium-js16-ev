@@ -34,9 +34,12 @@ export const updateReviewResponse = createAsyncThunk(
 
 export const addReview = createAsyncThunk(
    'reviews/addReview',
-   async (reviewData, { rejectWithValue }) => {
+   async ({ productId, ...reviewData }, { rejectWithValue }) => {
       try {
-         const response = await axiosInstance.post('/api/reviews', reviewData)
+         const response = await axiosInstance.post(
+            `/api/reviews/${productId}`,
+            reviewData
+         )
          return response.data
       } catch (error) {
          const message = error.response?.data?.message || error.message
@@ -111,3 +114,21 @@ export const deleteReview = createAsyncThunk(
       }
    }
 )
+
+// import { createAsyncThunk } from '@reduxjs/toolkit'
+// import { axiosInstance } from '../../configs/axiosInstans'
+
+// export const fetchReviewsByStatus = createAsyncThunk(
+//    'reviews/fetchByStatus',
+//    async (reviewStatus = 'все', { rejectWithValue }) => {
+//       try {
+//          const response = await axiosInstance.get(
+//             `/api/reviews/${reviewStatus}`
+//          )
+//          return response.data
+//       } catch (error) {
+//          const message = error.response?.data?.message || error.message
+//          return rejectWithValue(message)
+//       }
+//    }
+// )

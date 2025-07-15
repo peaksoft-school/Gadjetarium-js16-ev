@@ -1,18 +1,71 @@
+// import { createSlice } from '@reduxjs/toolkit'
+// import { fetchProducts2 } from './productThunk2'
+
+// const initialState = {
+//    sale: [],
+//    new: [],
+//    recommend: [],
+//    loading: false,
+//    error: null,
+// }
+
+// const productSlice2 = createSlice({
+//    name: 'product',
+//    initialState,
+//    reducers: {},
+//    extraReducers: (builder) => {
+//       builder
+//          .addCase(fetchProducts2.pending, (state) => {
+//             state.loading = true
+//             state.error = null
+//          })
+//          .addCase(fetchProducts2.fulfilled, (state, action) => {
+//             state.loading = false
+//             const products = action.payload || []
+//             console.log('Received products:', products)
+//             const total = products.length
+//             state.sale = products.slice(0, Math.floor(total / 3))
+//             state.new = products.slice(
+//                Math.floor(total / 3),
+//                Math.floor((2 * total) / 3)
+//             )
+//             state.recommend = products.slice(Math.floor((2 * total) / 3))
+//             console.log('State updated:', {
+//                sale: state.sale,
+//                new: state.new,
+//                recommend: state.recommend,
+//             })
+//          })
+//          .addCase(fetchProducts2.rejected, (state, action) => {
+//             state.loading = false
+//             state.error = action.payload
+//             console.log('Error:', action.payload)
+//          })
+//    },
+// })
+
+// export default productSlice2.reducer
+
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchProducts2 } from './productThunk2'
+import { fetchProducts2, fetchProductDetail } from './productThunk2'
 
 const initialState = {
    sale: [],
    new: [],
    recommend: [],
+   selectedProduct: null,
    loading: false,
    error: null,
 }
 
 const productSlice2 = createSlice({
-   name: 'product',
+   name: 'products',
    initialState,
-   reducers: {},
+   reducers: {
+      clearSelectedProduct: (state) => {
+         state.selectedProduct = null
+      },
+   },
    extraReducers: (builder) => {
       builder
          .addCase(fetchProducts2.pending, (state) => {
@@ -21,8 +74,10 @@ const productSlice2 = createSlice({
          })
          .addCase(fetchProducts2.fulfilled, (state, action) => {
             state.loading = false
-            const products = action.payload || []
-            console.log('Received products:', products)
+            // Сортируем продукты по id
+            const products = (action.payload || [])
+               .slice()
+               .sort((a, b) => a.id - b.id)
             const total = products.length
             state.sale = products.slice(0, Math.floor(total / 3))
             state.new = products.slice(
@@ -30,18 +85,25 @@ const productSlice2 = createSlice({
                Math.floor((2 * total) / 3)
             )
             state.recommend = products.slice(Math.floor((2 * total) / 3))
-            console.log('State updated:', {
-               sale: state.sale,
-               new: state.new,
-               recommend: state.recommend,
-            })
          })
          .addCase(fetchProducts2.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
-            console.log('Error:', action.payload)
+         })
+         .addCase(fetchProductDetail.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchProductDetail.fulfilled, (state, action) => {
+            state.loading = false
+            state.selectedProduct = action.payload ?? null
+         })
+         .addCase(fetchProductDetail.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
          })
    },
 })
 
+export const { clearSelectedProduct } = productSlice2.actions
 export default productSlice2.reducer

@@ -3,11 +3,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Box, Typography, Button, styled } from '@mui/material'
 import { fetchProducts2 } from '../store/product/productThunk2'
 import { fetchBanner2 } from '../store/banner/bannerThunk2'
+import { fetchProductDetail } from '../store/product/productThunk2'
+import { useNavigate } from 'react-router-dom'
 import Card from '../components/UI/cards/Card'
 import { Icons } from '../assets/icons'
 import UserHeader from '../layout/user/UserHeader'
 import Footer from '../layout/Footer'
 import BannerSlider from '../components/BannerSlider'
+import {
+   toggleFavoriteOnServer,
+   getFavoritesFromServer,
+} from '../store/favorites/favoritesSlice'
 
 const ProductPage = () => {
    const dispatch = useDispatch()
@@ -17,22 +23,30 @@ const ProductPage = () => {
       recommend = [],
       loading,
       error,
+      selectedProduct,
    } = useSelector((state) => state.products)
    const { banner, bannerLoading, bannerError } = useSelector(
       (state) => state.banner2
    )
+   const favoriteIds = useSelector((state) => state.favorites.ids)
+   const navigate = useNavigate()
 
-   const userId = 1
+   const userId = useSelector((state) => state.auth?.user?.id || 1) // Получаем userId из auth, если нет — 1
 
    useEffect(() => {
       dispatch(fetchBanner2())
       dispatch(
          fetchProducts2({
-            status: 'акции',
+            status: 'мы рекомендуем',
             page: 1,
             size: 10,
             userId,
          })
+      )
+      dispatch(getFavoritesFromServer(userId))
+      console.log(
+         'Available product IDs:',
+         sale.map((p) => p.productTypeId)
       )
    }, [dispatch, userId])
 
@@ -41,6 +55,16 @@ const ProductPage = () => {
       return (
          <Typography color="error">Ошибка: {error || bannerError}</Typography>
       )
+
+   const handleCardClick = (productTypeId) => {
+      console.log(
+         'handleCardClick triggered with productTypeId:',
+         productTypeId
+      )
+      dispatch(fetchProductDetail(productTypeId))
+      navigate(`/product/${productTypeId}`)
+      console.log('Navigating to:', `/product/${productTypeId}`)
+   }
 
    const renderSaleCard = (product, index) => (
       <StyledCard
@@ -52,8 +76,18 @@ const ProductPage = () => {
          rating={product.rating}
          reviews={100}
          inStock={product.count}
-         isLiked={product.isFavorite}
+         isLiked={favoriteIds
+            .map(String)
+            .includes(String(product.productTypeId))}
+         productId={product.productTypeId}
+         onToggleFavorite={(id) =>
+            dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
+         }
          onAddToCart={() => console.log('Добавлено в корзину:', product.name)}
+         onClick={() => {
+            console.log('Card clicked, product:', product)
+            handleCardClick(product.productTypeId)
+         }}
          sx={{
             '&:before': {
                content: `"-${product.discount || 0}%"`,
@@ -67,6 +101,7 @@ const ProductPage = () => {
                borderRadius: 8,
                zIndex: 1,
             },
+            cursor: 'pointer',
          }}
       />
    )
@@ -81,8 +116,18 @@ const ProductPage = () => {
          rating={product.rating}
          reviews={100}
          inStock={product.count}
-         isLiked={product.isFavorite}
+         isLiked={favoriteIds
+            .map(String)
+            .includes(String(product.productTypeId))}
+         productId={product.productTypeId}
+         onToggleFavorite={(id) =>
+            dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
+         }
          onAddToCart={() => console.log('Добавлено в корзину:', product.name)}
+         onClick={() => {
+            console.log('Card clicked, product:', product)
+            handleCardClick(product.productTypeId)
+         }}
          sx={{
             '&:before': {
                content: '"New"',
@@ -96,6 +141,7 @@ const ProductPage = () => {
                borderRadius: 8,
                zIndex: 1,
             },
+            cursor: 'pointer',
          }}
       />
    )
@@ -110,8 +156,19 @@ const ProductPage = () => {
          rating={product.rating}
          reviews={100}
          inStock={product.count}
-         isLiked={product.isFavorite}
+         isLiked={favoriteIds
+            .map(String)
+            .includes(String(product.productTypeId))}
+         productId={product.productTypeId}
+         onToggleFavorite={(id) =>
+            dispatch(toggleFavoriteOnServer({ productTypeId: id, userId }))
+         }
          onAddToCart={() => console.log('Добавлено в корзину:', product.name)}
+         onClick={() => {
+            console.log('Card clicked, product:', product)
+            handleCardClick(product.productTypeId)
+         }}
+         sx={{ cursor: 'pointer' }}
       />
    )
 
