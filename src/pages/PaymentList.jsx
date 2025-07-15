@@ -1,46 +1,112 @@
-// PaymentList.jsx
 import React from 'react';
-import { Box, Typography, Divider, Card, CardMedia, CardContent } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Typography, Link } from '@mui/material';
 
-const Summary = styled(Box)(({ theme }) => ({
-  flex: 1,
-  border: '1px solid #eee',
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(2),
-  height: 'fit-content',
-}));
+const PaymentList = ({ orderData }) => {
+  const { summary, products } = orderData;
 
-export default function PaymentList() {
   return (
-    <Summary>
-      <Typography variant="subtitle1" gutterBottom>
-        Сумма заказа
-      </Typography>
-      <Typography>Количество товаров: 3 шт.</Typography>
-      <Typography color="error">Ваша скидка: -20 000 с</Typography>
-      <Typography>Сумма: 220 900 с</Typography>
-      <Typography variant="h6" sx={{ mt: 1 }}>
-        Итого: 200 900 с
-      </Typography>
+    <Box sx={{
+      backgroundColor: '#fff',
+      borderRadius: '8px',
+      padding: '20px',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+      height: 'fit-content'
+    }}>
+      <Box sx={{
+        fontSize: '18px',
+        fontWeight: 700,
+        marginBottom: '20px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        color: '#333'
+      }}>
+        <Typography>Сумма заказа</Typography>
+        <Link href="#" sx={{
+          color: '#2196f3',
+          textDecoration: 'none',
+          fontSize: '14px',
+          fontWeight: 500
+        }}>
+          Изменить
+        </Link>
+      </Box>
 
-      <Divider sx={{ my: 2 }} />
+      <Box sx={{
+        marginBottom: '20px',
+        borderBottom: '1px solid #eee',
+        paddingBottom: '20px'
+      }}>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '10px',
+          fontSize: '14px',
+          color: '#666'
+        }}>
+          <Typography>Количество товаров:</Typography>
+          <Typography>{summary.quantity}</Typography>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '10px',
+          fontSize: '14px',
+          color: '#666'
+        }}>
+          <Typography>Ваша скидка:</Typography>
+          <Typography sx={{ color: '#e91e63' }}>– {summary.discount}</Typography>
+        </Box>
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '10px',
+          fontSize: '14px',
+          color: '#666'
+        }}>
+          <Typography>Сумма:</Typography>
+          <Typography>{summary.subtotal}</Typography>
+        </Box>
+      </Box>
 
-      {[0, 1].map((i) => (
-        <Card key={i} variant="outlined" sx={{ display: 'flex', mb: 1 }}>
-          <CardMedia
-            component="img"
-            alt="Samsung Galaxy S21"
-            sx={{ width: 80 }}
-          />
-          <CardContent sx={{ flex: '1 0 auto' }}>
-            <Typography noWrap>Samsung Galaxy S21 128 GB синий</Typography>
-            <Typography variant="body2">Кол-во: 3 шт.</Typography>
-            <Typography variant="body2">Размер: 44</Typography>
-            <Typography variant="body2">Цвет: Белый</Typography>
-          </CardContent>
-        </Card>
-      ))}
-    </Summary>
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontWeight: 700,
+        fontSize: '16px',
+        marginBottom: '20px',
+        color: '#333'
+      }}>
+        <Typography>Итого:</Typography>
+        <Typography>{summary.total}</Typography>
+      </Box>
+
+      {/* Бардык товарлар бир эле Box'тун ичинде */}
+      <Box sx={{ marginBottom: '20px' }}>
+        {/* Статичный список телефонов, как на скриншоте */}
+        {[1,2].map((_, idx) => (
+          <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start', mb: 3, pb: 2, borderBottom: idx === 0 ? '1px solid #eee' : 'none' }}>
+            <Box sx={{ minWidth: 70, mr: 2 }}>
+              <img
+                src="https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s21-5g-1.jpg"
+                alt="Samsung Galaxy S21"
+                style={{ width: 70, height: 70, borderRadius: 8, objectFit: 'cover' }}
+              />
+            </Box>
+            <Box>
+              <Typography sx={{ fontWeight: 700, fontSize: 17, color: '#222', mb: 0.5 }}>
+                Samsung Galaxy S21 128gb синий 9(MLP3RU)
+              </Typography>
+              <Typography sx={{ fontSize: 14, color: '#444' }}>Артикул: 393478</Typography>
+              <Typography sx={{ fontSize: 14, color: '#444' }}>Кол-во: 3 шт.</Typography>
+              <Typography sx={{ fontSize: 14, color: '#444' }}>Размер: 44</Typography>
+              <Typography sx={{ fontSize: 14, color: '#444' }}>Цвет: Белый</Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Box>
   );
-}
+};
+
+export default PaymentList;

@@ -62,6 +62,9 @@ import gadgetarium from './svgs/gadgetarium.svg'
 import searchGrey from './svgs/searchGrey.svg'
 import link from './svgs/link.svg'
 import search from './svgs/search.svg'
+import visa from './svgs/visa.svg'
+import mastercard from './svgs/mastercard.svg'
+import elcard from './svgs/elcard.svg'
 
 export const Icons = {
    search,
@@ -129,4 +132,7 @@ export const Icons = {
    searchGrey,
    link,
    search,
+   visa,
+mastercard,
+elcard,
 }

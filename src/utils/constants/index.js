@@ -441,3 +441,18 @@ export const catalogProductData = [
       ],
    },
 ]
+
+export const orderData = {
+  summary: {
+    quantity: 1,
+    discount: '5 000 с',
+    subtotal: '245 000 с',
+    total: '250 000 с'
+  },
+  products: [
+    {
+      name: 'Samsung Galaxy S21 128Gb синий',
+      price: '245 000 с'
+    }
+  ]
+};
