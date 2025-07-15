@@ -9,7 +9,7 @@ const PaymentList = ({ orderData }) => {
       backgroundColor: '#fff',
       borderRadius: '8px',
       padding: '20px',
-      boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
       height: 'fit-content'
     }}>
       <Box sx={{

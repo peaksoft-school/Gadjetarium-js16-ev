@@ -106,7 +106,7 @@ const PaymentPage = () => {
         <Box sx={{ marginBottom: '20px', fontSize: '14px', color: '#666' }}>
           <Breadcrumbs/>
         </Box>
-        <Typography sx={{ fontSize: '30px', fontWeight: 700, marginBottom: '30px', textAlign: 'left', color: '#333' }}>
+        <Typography sx={{ fontSize: '30px', fontWeight: 700, marginBottom: '31px', textAlign: 'left', color: '#333' }}>
           Оформление заказа
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4, mt: 1 }}>

@@ -215,7 +215,7 @@ const PaymentForm = ({
                      helperText={errors.firstName}
                      variant="outlined"
                      sx={{
-                        background: '#fff',
+                        background: '#ffff',
                         borderRadius: '8px',
                         '& .MuiOutlinedInput-root': {
                            borderRadius: '8px',
