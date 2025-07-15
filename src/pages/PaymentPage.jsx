@@ -4,6 +4,8 @@ import PaymentForm from './PaymentForm';
 import PaymentList from './PaymentList';
 import { orderData } from '../utils/constants/index';
 import Breadcrumbs from '../components/UI/BreadCrums';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBasket } from '../store/basket/basketThunk';
 
 const PaymentPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -23,6 +25,13 @@ const PaymentPage = () => {
     cvv: '',
     cardHolder: ''
   });
+
+  const dispatch = useDispatch();
+  const basket = useSelector(state => state.basket);
+
+  React.useEffect(() => {
+    dispatch(fetchBasket());
+  }, [dispatch]);
 
   const handleNext = () => {
     if (currentStep < 3) {
@@ -180,7 +189,7 @@ const PaymentPage = () => {
           </Box>
           {currentStep !== 2 && (
             <Box sx={{ flex: '0 0 33.33%' }}>
-              <PaymentList orderData={orderData} />
+              <PaymentList orderData={basket} />
             </Box>
           )}
         </Box>

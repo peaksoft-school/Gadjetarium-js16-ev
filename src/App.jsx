@@ -1,16 +1,9 @@
-// import './App.css'
-// import AppRouter from './routes/AppRouter'
-
-// const App = () => <AppRouter />
-
-// export default App
+import './App.css'
+import AppRouter from './routes/AppRouter'
 
 
-import React from 'react'
-import PaymentPage from './pages/PaymentPage'
+const App = () => <AppRouter />
 
-export default function App() {
-  return (
-    <div><PaymentPage/></div>
-  )
-}
+export default App
+
+
