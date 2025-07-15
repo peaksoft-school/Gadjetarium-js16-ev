@@ -13,10 +13,28 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toggleFavoriteOnServer } from '../../../store/favorites/favoritesSlice'
 import { Icons } from '../../../assets/icons'
 
-const CompactCard = ({ image, title, price, rating, reviews, productId }) => {
+const CompactCard = (props) => {
+   // Если передан card, деструктурируем из него нужные поля
+   const card = props.card || {}
+   const image =
+      props.image ||
+      card.image ||
+      'https://via.placeholder.com/200x200?text=Нет+фото'
+   const title = props.title || card.productName || card.title || ''
+   const price = props.price || card.productPrice || card.price || 0
+   const discountValue = props.discountValue || card.discountPrice
+   const rating = props.rating || card.productRating || card.rating || 0
+   const reviews = props.reviews || card.ratingCount || card.reviews || 0
+   const inStock = props.inStock || card.count || card.inStock
+   const isLiked =
+      typeof props.isLiked === 'boolean' ? props.isLiked : card.like
+   const productId = props.productId || card.productId
+
    const dispatch = useDispatch()
    const favoriteIds = useSelector((state) => state.favorites.ids)
-   const isLiked = favoriteIds.includes(productId)
+   const liked =
+      typeof isLiked === 'boolean' ? isLiked : favoriteIds.includes(productId)
+
    return (
       <StyledCard>
          <Box sx={{ position: 'relative', width: '100%' }}>
@@ -34,7 +52,7 @@ const CompactCard = ({ image, title, price, rating, reviews, productId }) => {
                }}
             >
                <img
-                  src={isLiked ? Icons.likeR : Icons.likeW}
+                  src={liked ? Icons.likeR : Icons.likeW}
                   alt="like"
                   style={{ width: 24, height: 24, transition: '0.2s' }}
                />

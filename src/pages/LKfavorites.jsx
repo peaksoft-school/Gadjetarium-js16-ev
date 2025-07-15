@@ -8,7 +8,9 @@ import { Images } from '../assets/images'
 
 const LKfavorites = () => {
    const dispatch = useDispatch()
-   const { favorites } = useSelector((state) => state.favorite)
+   const favorites = useSelector(
+      (state) => state.favorites.favorites || state.favorites.ids || []
+   )
    const [activeTab, setActiveTab] = useState('favorites')
 
    useEffect(() => {

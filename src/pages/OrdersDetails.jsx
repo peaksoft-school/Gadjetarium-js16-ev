@@ -36,19 +36,25 @@ const OrderDetails = () => {
       date = '',
       status = '',
       products = [],
+      orders: altProducts = [],
       firstName = '',
       lastName = '',
       address = '',
       phone = '',
+      phoneNumber = '',
       email = '',
       paymentMethod = '',
       discountAmount = 0,
       totalPrice = 0,
+      endTotalPrice = 0,
+      fullName = '',
+      article = '',
    } = selectedOrder
+
+   const productList = products.length ? products : altProducts
 
    return (
       <>
-         <UserHeader />
          <StyledBreadCrumbs>
             <Breadcrumbs
                baseLabel="Личный кабинет"
@@ -64,25 +70,24 @@ const OrderDetails = () => {
             <Divider />
             <br />
             <Typography variant="h6" mb={2}>
-               № {orderNumber}
+               № {orderNumber || article}
             </Typography>
 
             <StyledBoxCards>
-               {products.map((product, index) => (
+               {productList.map((product, index) => (
                   <CompactCard
                      key={index}
-                     image={product.image}
-                     title={product.name}
-                     price={product.discountPrice}
-                     rating={product.rating}
-                     reviews={product.quantity}
+                     title={product.productName || product.name}
+                     price={product.discountPrice || product.price}
+                     rating={product.rating || 0}
+                     reviews={product.count || product.quantity || 1}
                   />
                ))}
             </StyledBoxCards>
             <br />
             <Field label="Статус">
                <Chip
-                  label={getStatusLabel(status)}
+                  label={getStatusLabel(status) || status}
                   color={getStatusColor(status)}
                   sx={{ mr: 1 }}
                />
@@ -90,10 +95,11 @@ const OrderDetails = () => {
 
             <Grid container spacing={3} mt={4}>
                <Grid item xs={12} md={6}>
-                  <Field label="Клиент">{`${firstName} ${lastName}`}</Field>
-                  <Field label="Имя">{firstName}</Field>
+                  <Field label="Клиент">
+                     {fullName || `${firstName} ${lastName}`}
+                  </Field>
                   <Field label="Адрес">{address}</Field>
-                  <Field label="Телефон">{phone}</Field>
+                  <Field label="Телефон">{phone || phoneNumber}</Field>
                   <Field label="Email">{email}</Field>
                </Grid>
 
@@ -102,7 +108,7 @@ const OrderDetails = () => {
                   <Field label="Способ оплаты">
                      {formatPayment(paymentMethod)}
                   </Field>
-                  <Field label="Фамилия">{lastName}</Field>
+                  <Field label="Артикул">{article}</Field>
                   <Field label="Город">Чүй</Field>
                </Grid>
             </Grid>
@@ -112,19 +118,14 @@ const OrderDetails = () => {
             <Grid container spacing={2}>
                <Grid item>
                   <Typography>
-                     Скидка:{' '}
-                     <strong>{(discountAmount ?? 0).toFixed(2)} с</strong>
-                  </Typography>
-               </Grid>
-
-               <Grid item>
-                  <Typography>
-                     Итог: <strong>{(totalPrice ?? 0).toFixed(2)} с</strong>
+                     Итог:{' '}
+                     <strong>
+                        {(endTotalPrice || totalPrice || 0).toFixed(2)} с
+                     </strong>
                   </Typography>
                </Grid>
             </Grid>
          </Wrapper>
-         <Footer />
       </>
    )
 }

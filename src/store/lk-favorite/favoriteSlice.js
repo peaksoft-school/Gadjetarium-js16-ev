@@ -4,7 +4,7 @@ const favoritesSlice = createSlice({
   name: 'favorite',
   initialState: { favorites: [], loading: false, error: null },
   reducers: {
-    setFavorites: (state, action) => {
+    setFavorite: (state, action) => {
       state.favorites = action.payload;
       state.loading = false;
     },

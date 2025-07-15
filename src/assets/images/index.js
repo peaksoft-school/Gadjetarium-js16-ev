@@ -4,6 +4,7 @@ import PeopleTc from './pngs/PeopleTc.png'
 import gatget from './pngs/gatget.png'
 import basketPhoto from './pngs/basket-photo.png'
 import bannerF from './pngs/bannerF.png'
+import  izbrannyiImage  from './pngs/izbrannyiImage.png'
 
 export const Images = {
    KyrgyzJerim,
@@ -12,4 +13,5 @@ export const Images = {
    bannerF,
    basketPhoto,
    gatget,
+   izbrannyiImage,
 }

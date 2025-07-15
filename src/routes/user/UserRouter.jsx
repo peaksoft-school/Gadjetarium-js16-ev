@@ -4,9 +4,9 @@ import Footer from '../../layout/Footer'
 import { lazy, Suspense } from 'react'
 import Spinner from '../../components/Spinner'
 
-import OrderDetails from '../../pages/OrdersOplata'
 import OrderHistoryPustoi from '../../pages/OrderHistoryPustoi'
 import AccountLayout from '../../layout/user/AccountLayout'
+import OrderDetails from '../../pages/OrdersDetails'
 
 const LKfavorites = lazy(() => import('../../pages/LKfavorites'))
 const OrderHistory = lazy(() => import('../../pages/OrderHistory'))
