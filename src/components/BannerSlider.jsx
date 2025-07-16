@@ -29,11 +29,7 @@ const BannerSlider = ({ images }) => {
             <SlidesContainer index={index}>
                {images.map((img) => (
                   <Slide key={img.id}>
-                     <SlideImage
-                        component="img"
-                        image={img.imgSrc}
-                        alt={`Slide ${img.id}`}
-                     />
+                     <SlideImage src={img} alt={`Slide ${img.id}`} />
                   </Slide>
                ))}
             </SlidesContainer>
@@ -52,7 +48,7 @@ export default BannerSlider
 
 const Wrapper = styled(Box)({
    width: '100%',
-   height: '500px',
+   height: '600px',
 })
 
 const SliderWrapper = styled(Box)({
@@ -71,7 +67,7 @@ const SlidesContainer = styled(Box)(({ index }) => ({
 
 const Slide = styled(Card)({
    width: '100%',
-   height: '500px',
+   height: '580px',
    flexShrink: 0,
    borderRadius: 0,
    display: 'flex',
@@ -79,11 +75,10 @@ const Slide = styled(Card)({
    alignItems: 'center',
 })
 
-const SlideImage = styled(CardMedia)({
+const SlideImage = styled('img')({
    width: '100%',
    height: '100%',
-   objectFit: 'contain',
-   objectPosition: 'center',
+   objectFit: 'cover', 
 })
 
 const DotsContainer = styled(Box)({

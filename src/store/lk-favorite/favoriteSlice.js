@@ -12,7 +12,7 @@ const initialState = {
    error: null,
 }
 
-const favoritesSlice = createSlice({
+const favoriteSlice = createSlice({
    name: 'favorite',
    initialState,
    reducers: {},
@@ -74,7 +74,6 @@ const favoritesSlice = createSlice({
    },
 })
 
-// Эти экшены нигде не создаются в slice, можно удалить, если не используются:
-export const { setFavorites, setLoading, setError } = favoritesSlice.actions
+export const { setFavorites, setLoading, setError } = favoriteSlice.actions
 
-export default favoritesSlice.reducer
+export default favoriteSlice.reducer

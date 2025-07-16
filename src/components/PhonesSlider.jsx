@@ -25,16 +25,15 @@ const PhonesSlider = ({ images = [] }) => {
    return (
       <SliderWrapper>
          <MainImage
-            src={images[currentIndex]}
+            src={images[currentIndex]?.image || ''}
             alt="Main"
             onClick={handleImageClick}
          />
-
          <Thumbnails>
             <NavIcon src={Icons.arrowLeft} alt="prev" onClick={handlePrev} />
-            {images.map((image, idx) => (
+            {images.map(({ id, image }, idx) => (
                <Thumbnail
-                  key={idx}
+                  key={id || idx} // Fallback to index if id is missing
                   src={image}
                   alt={`Thumbnail ${idx}`}
                   className={currentIndex === idx ? 'selected' : ''}
@@ -43,7 +42,6 @@ const PhonesSlider = ({ images = [] }) => {
             ))}
             <NavIcon src={Icons.arrowRight} alt="next" onClick={handleNext} />
          </Thumbnails>
-
          {isModalOpen && (
             <ModalBackdrop onClick={handleCloseModal}>
                <ModalImageContainer onClick={(e) => e.stopPropagation()}>
@@ -52,16 +50,16 @@ const PhonesSlider = ({ images = [] }) => {
                      alt="close"
                      onClick={handleCloseModal}
                   />
-
                   <ArrowIcon
                      src={Icons.arrowLeftWhite}
                      alt="prev"
                      position="left"
                      onClick={handlePrev}
                   />
-
-                  <ZoomedImage src={images[currentIndex]} alt="Zoomed" />
-
+                  <ZoomedImage
+                     src={images[currentIndex]?.image || ''}
+                     alt="Zoomed"
+                  />
                   <ArrowIcon
                      src={Icons.arrowRightWhite}
                      alt="next"

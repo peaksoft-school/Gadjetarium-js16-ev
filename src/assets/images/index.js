@@ -1,13 +1,17 @@
-import human from './pngs/human.png'
 import KyrgyzJerim from './pngs/KyrgyzJerim.png'
 import GatgetStore from './pngs/GatgetStore.png'
 import PeopleTc from './pngs/PeopleTc.png'
-import izbrannyiImage from './pngs/IzbrannyiImage.png'
+import gatget from './pngs/gatget.png'
+import basketPhoto from './pngs/basket-photo.png'
+import bannerF from './pngs/bannerF.png'
+import  izbrannyiImage  from './pngs/izbrannyiImage.png'
 
 export const Images = {
    KyrgyzJerim,
    GatgetStore,
    PeopleTc,
-   human,
+   bannerF,
+   basketPhoto,
+   gatget,
    izbrannyiImage,
 }

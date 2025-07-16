@@ -72,7 +72,7 @@ const Favorites = () => {
                            oldPrice={favorite.productPrice}
                            discountValue={favorite.discountPrice}
                            rating={favorite.productRating}
-                           onLikeToggle={() =>
+                           onToggleFavorite={() =>
                               handleToggleFavorite(favorite.productId)
                            }
                            reviews={favorite.ratingCount}

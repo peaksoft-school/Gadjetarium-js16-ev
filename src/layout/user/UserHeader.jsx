@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
+
    const { favorites } = useSelector((state) => state.favorite)
 
    const dispatch = useDispatch()
@@ -46,7 +47,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const handleLogout = () => {
       localStorage.clear()
       navigate('/sign-in')
-      window.location.reload() // или просто перезагрузить страницу
+      window.location.reload()
    }
 
    const handleFavoritesNavigate = () => navigate('/user/favorites')
