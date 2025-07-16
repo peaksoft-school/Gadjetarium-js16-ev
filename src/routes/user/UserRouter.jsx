@@ -13,6 +13,7 @@ import AboutPage from '../../pages/AboutPage'
 import FAQ from '../../components/FAQ'
 import ContactPage from '../../pages/ContactPage'
 import BasketComponent from '../../components/BasketComponent'
+import ProductCatalogPage from '../../pages/ProductCatalogPage'
 
 const LKfavorites = lazy(() => import('../../pages/LKfavorites'))
 const OrderHistory = lazy(() => import('../../pages/OrderHistory'))
@@ -80,6 +81,8 @@ const UserRouter = () => {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/contacts" element={<ContactPage />} />
             <Route path="/orders/:id" element={<OrderDetails />} />
+
+            <Route path="catalog" element={<ProductCatalogPage />} />
 
             <Route path="/orders/empty" element={<OrderHistoryPustoi />} />
          </Routes>

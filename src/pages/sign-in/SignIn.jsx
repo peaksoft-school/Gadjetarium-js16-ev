@@ -37,7 +37,7 @@ const SignIn = () => {
          })
       ).then((action) => {
          if (!action.error) {
-            navigate('/user')
+            navigate('/')
          } else {
             setError(action.error.message || 'Ошибка входа')
          }
