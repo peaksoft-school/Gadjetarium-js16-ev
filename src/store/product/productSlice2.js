@@ -47,7 +47,11 @@
 // export default productSlice2.reducer
 
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchProducts2, fetchProductDetail } from './productThunk2'
+import {
+   fetchProducts2,
+   fetchProductDetail,
+   fetchFilteredProducts,
+} from './productThunk2'
 
 const initialState = {
    sale: [],
@@ -84,6 +88,23 @@ const productSlice2 = createSlice({
             else if (status === 'мы рекомендуем') state.recommend = products
          })
          .addCase(fetchProducts2.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+         })
+         // --- фильтрация ---
+         .addCase(fetchFilteredProducts.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(fetchFilteredProducts.fulfilled, (state, action) => {
+            state.loading = false
+            const products = action.payload?.data || []
+            const status = action.payload?.status || action.meta.arg.status
+            if (status === 'акции') state.sale = products
+            else if (status === 'новинки') state.new = products
+            else if (status === 'мы рекомендуем') state.recommend = products
+         })
+         .addCase(fetchFilteredProducts.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
          })

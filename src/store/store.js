@@ -67,6 +67,7 @@ import mailReducer from './mailing/mailSlice'
 import productReducer2 from './product/productSlice2'
 import infographicReducer from './../pages/features/infographicSlice'
 import basketReducer from './basket/basketSlice'
+import filterReducer from './filter/filterSlice'
 
 const rootReducer = combineReducers({
    orders: orderHistoryReducer,
@@ -81,6 +82,7 @@ const rootReducer = combineReducers({
    basket: basketReducer,
    products: productReducer2,
    infographic: infographicReducer,
+   filter: filterReducer,
 })
 
 const persistConfig = {

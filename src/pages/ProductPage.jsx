@@ -19,7 +19,6 @@ import { useState } from 'react'
 import { showToast } from '../utils/helpers/showToast'
 
 const ProductPage = () => {
-   // useState только на верхнем уровне компонента:
    const [visibleSale, setVisibleSale] = useState(4)
    const [visibleNew, setVisibleNew] = useState(4)
    const [visibleRecommend, setVisibleRecommend] = useState(4)
@@ -39,7 +38,7 @@ const ProductPage = () => {
    const favoriteIds = useSelector((state) => state.favorites.ids)
    const navigate = useNavigate()
 
-   const userId = useSelector((state) => state.auth?.user?.id || 1) 
+   const userId = useSelector((state) => state.auth?.user?.id || 1)
 
    useEffect(() => {
       dispatch(fetchBanner2())
