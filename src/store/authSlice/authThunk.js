@@ -28,7 +28,7 @@ export const AUTH_THUNK = {
             showToast({ message: 'Успешный вход!' })
 
             if (handleClose) handleClose()
-            if (navigate) navigate('/')
+            if (navigate) navigate('/user')
 
             return { token, email, role }
          } catch (error) {
@@ -131,7 +131,7 @@ export const AUTH_THUNK = {
 
             showToast({ message: 'Успешный вход через Google' })
 
-            if (navigate) navigate('/')
+            if (navigate) navigate('/user')
             return { token, email, role }
          } catch (error) {
             const err = getErrorMessage(error, 'Ошибка входа через Google')

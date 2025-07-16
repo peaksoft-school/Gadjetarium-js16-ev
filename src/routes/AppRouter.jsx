@@ -23,8 +23,8 @@ const AppRouter = () => (
                      <Home />
                   </Suspense>
                }
-               fallBackPath="admin"
-               roles={['GUEST', 'USER']}
+               fallBackPath="/admin"
+               roles={['GUEST']}
             />
          }
       />
@@ -37,7 +37,7 @@ const AppRouter = () => (
                      <SignIn />
                   </Suspense>
                }
-               fallBackPath="user"
+               fallBackPath="/user"
                roles={['GUEST']}
             />
          }
@@ -51,7 +51,7 @@ const AppRouter = () => (
                      <SignUp />
                   </Suspense>
                }
-               fallBackPath="user"
+               fallBackPath="/user"
                roles={['GUEST']}
             />
          }
@@ -66,7 +66,7 @@ const AppRouter = () => (
                      <ForgotPassword />
                   </Suspense>
                }
-               fallBackPath="user"
+               fallBackPath="/user"
                roles={['GUEST']}
             />
          }
@@ -76,7 +76,7 @@ const AppRouter = () => (
          element={
             <PrivateRouter
                component={<AdminRouter />}
-               fallBackPath="/"
+               fallBackPath="/sign-in"
                roles={['ADMIN']}
             />
          }
@@ -86,7 +86,7 @@ const AppRouter = () => (
          element={
             <PrivateRouter
                component={<UserRouter />}
-               fallBackPath="/"
+               fallBackPath="/sign-in"
                roles={['USER']}
             />
          }

@@ -1,13 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosInstance } from '../../configs/axiosInstans'
+import { showToast } from '../../utils/helpers/showToast'
 
 export const toggleFavoriteOnServer = createAsyncThunk(
    'favorites/toggleFavoriteOnServer',
    async ({ productTypeId, userId }, { rejectWithValue }) => {
       try {
-         await axiosInstance.post(`/api/favorites/toggle/${productTypeId}`, {
-            userId,
-         })
+         const { data } = await axiosInstance.post(
+            `/api/favorites/toggle/${productTypeId}`,
+            {
+               userId,
+            }
+         )
+
+         showToast({ message: data })
+
          return productTypeId
       } catch (error) {
          return rejectWithValue(error.response?.data || error.message)
@@ -19,12 +26,11 @@ export const getFavoritesFromServer = createAsyncThunk(
    'favorites/getFavoritesFromServer',
    async (userId, { rejectWithValue }) => {
       try {
-         // userId теперь передаётся как query-параметр
-         const response = await axiosInstance.get('/api/favorites', {
+         const { data } = await axiosInstance.get('/api/favorites', {
             params: { userId },
          })
-         // Ожидается объект { userId, products: [...] }
-         return response.data
+
+         return data
       } catch (error) {
          return rejectWithValue(error.response?.data || error.message)
       }
@@ -34,7 +40,7 @@ export const getFavoritesFromServer = createAsyncThunk(
 const favoritesSlice = createSlice({
    name: 'favorites',
    initialState: {
-      ids: [], // массив id избранных товаров
+      ids: [],
    },
    reducers: {
       setFavorites(state, action) {

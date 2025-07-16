@@ -6,6 +6,7 @@ import Spinner from '../../components/Spinner'
 
 import OrderHistoryPustoi from '../../pages/OrderHistoryPustoi'
 import AccountLayout from '../../layout/user/AccountLayout'
+import Favorites from '../../pages/user/favorites/Favorites'
 import OrderDetails from '../../pages/OrdersDetails'
 import DeliveryPage from '../../pages/DeliveryPage'
 import AboutPage from '../../pages/AboutPage'
@@ -24,7 +25,9 @@ const UserRouter = () => {
    return (
       <>
          <UserHeader />
+
          <Routes>
+            <Route path="/favorites" element={<Favorites />} />
             <Route
                path="/"
                element={

@@ -4,7 +4,7 @@ import { Box, Typography, Button, styled } from '@mui/material'
 import { fetchProducts2 } from '../store/product/productThunk2'
 import { fetchBanner2 } from '../store/banner/bannerThunk2'
 import { fetchProductDetail } from '../store/product/productThunk2'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import Card from '../components/UI/cards/Card'
 import { Icons } from '../assets/icons'
 import BannerSlider from '../components/BannerSlider'
@@ -56,7 +56,14 @@ const ProductPage = () => {
    if (loading || bannerLoading) return <Typography>Загрузка...</Typography>
    if (error || bannerError)
       return (
-         <Typography color="error">Ошибка: {error || bannerError}</Typography>
+         <Typography color="error">
+            Ошибка:{' '}
+            {typeof (error || bannerError) === 'object'
+               ? (error && error.message) ||
+                 (bannerError && bannerError.message) ||
+                 JSON.stringify(error || bannerError)
+               : error || bannerError}
+         </Typography>
       )
 
    const handleCardClick = (productTypeId) => {
@@ -89,7 +96,7 @@ const ProductPage = () => {
          oldPrice={product.price}
          discountValue={product.discount}
          rating={product.rating}
-         reviews={100}
+         reviews={product.ratingCount}
          inStock={product.count}
          isLiked={product.isFavorite}
          productId={product.productTypeId}

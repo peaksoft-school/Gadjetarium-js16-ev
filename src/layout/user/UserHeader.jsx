@@ -14,9 +14,20 @@ import {
 import { Icons } from '../../assets/icons'
 import { useNavigate } from 'react-router'
 import { useLocation } from 'react-router'
+import CartHoverTrigger from '../../components/UI/CartHoverTrigger'
+import { fetchFavorites } from '../../store/lk-favorite/favoritesThunk'
+import { useDispatch, useSelector } from 'react-redux'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
+
+   const { favorites } = useSelector((state) => state.favorite)
+
+   const dispatch = useDispatch()
+
+   useEffect(() => {
+      dispatch(fetchFavorites())
+   }, [])
 
    const [isScrolled, setIsScrolled] = useState(false)
    const [profileHover, setProfileHover] = useState(false)
@@ -50,6 +61,12 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
       }
    } catch (e) {
       token = null
+   }
+
+   const handleFavoritesNavigate = () => navigate('/user/favorites')
+
+   const handleFavoriteCardClick = (productTypeId) => {
+      navigate(`/user/product/${productTypeId}`)
    }
 
    return (
@@ -163,9 +180,50 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
 
                <Stack direction="row" spacing={2}>
                   <Badge badgeContent={0} color="error">
-                     <WhiteIcon aria-label="favorites">
-                        <IconImage src={Icons.likeW} alt="Favorites" />
-                     </WhiteIcon>
+                     <CartHoverTrigger
+                        icon={Icons.likeW}
+                        onClick={handleFavoritesNavigate}
+                     >
+                        <FavoritesDropdown>
+                           {favorites?.length === 0 ? (
+                              <p>Избранных пока нету!</p>
+                           ) : (
+                              favorites?.slice(0, 2)?.map((favorite) => (
+                                 <Box
+                                    className="favorite-card"
+                                    onClick={() =>
+                                       handleFavoriteCardClick(
+                                          favorite.productTypeId
+                                       )
+                                    }
+                                    style={{ cursor: 'pointer' }}
+                                 >
+                                    <img
+                                       src={favorite.image}
+                                       alt="photo"
+                                       className="image"
+                                    />
+
+                                    <Typography className="product-name">
+                                       {favorite.productName}
+                                    </Typography>
+
+                                    <Typography className="price">
+                                       {favorite.productPrice}
+                                    </Typography>
+                                 </Box>
+                              ))
+                           )}
+
+                           <Button
+                              className="favorite-btn"
+                              variant="contained"
+                              onClick={handleFavoritesNavigate}
+                           >
+                              Перейти в избранное
+                           </Button>
+                        </FavoritesDropdown>
+                     </CartHoverTrigger>
                   </Badge>
                   <Badge badgeContent={basketCount} color="error">
                      <WhiteIcon
@@ -421,5 +479,41 @@ const LogoutHint = styled('div')({
    zIndex: 10,
    transition: 'all 0.2s',
 })
+
+const FavoritesDropdown = styled(Box)(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   padding: '12px',
+   minWidth: '280px',
+   color: '#1a1a25',
+
+   '& .favorite-btn': {
+      marginTop: '20px',
+   },
+
+   '& .favorite-card': {
+      display: 'flex',
+      alignItems: 'start',
+      gap: '12px',
+      borderBottom: '1px solid #858FA426',
+      padding: '10px 0',
+      width: '100%',
+
+      '& .product-name': {
+         width: '100%',
+      },
+
+      '& .price': {
+         color: '#384255',
+         fontSize: '14px',
+         fontWeight: 700,
+      },
+
+      '& .image': {
+         width: '60px',
+      },
+   },
+}))
 
 export default UserHeader
