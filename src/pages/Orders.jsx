@@ -21,11 +21,7 @@ export default function Orders() {
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
-   const {
-      data: orders = [],
-      loading,
-      error,
-   } = useSelector((state) => state.orders)
+   const orders = useSelector((state) => state.orders.data)
 
    const loadOrders = () => {
       const params = {}
@@ -162,22 +158,6 @@ export default function Orders() {
                </StyledTabs>
 
                <br />
-               {loading && <div>Загрузка...</div>}
-               {error && (
-                  <Box
-                     sx={{
-                        color: 'red',
-                        whiteSpace: 'pre-wrap',
-                        fontWeight: 'bold',
-                     }}
-                  >
-                     Ошибка:{' '}
-                     {typeof error === 'object'
-                        ? JSON.stringify(error, null, 2)
-                        : error}
-                  </Box>
-               )}
-
                <UniversalTable
                   variant="orders"
                   data={filteredOrders.map((order) => ({

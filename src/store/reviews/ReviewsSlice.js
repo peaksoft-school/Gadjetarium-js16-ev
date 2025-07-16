@@ -61,3 +61,34 @@ const reviewsSlice = createSlice({
 })
 
 export default reviewsSlice.reducer
+
+////////
+
+// import { createSlice } from '@reduxjs/toolkit'
+// import { fetchReviewsByProductId } from './ReviewsThunk'
+
+// const reviewsSlice = createSlice({
+//    name: 'reviews',
+//    initialState: {
+//       items: [],
+//       status: 'idle',
+//       error: null,
+//    },
+//    reducers: {},
+//    extraReducers: (builder) => {
+//       builder
+//          .addCase(fetchReviewsByProductId.pending, (state) => {
+//             state.status = 'loading'
+//          })
+//          .addCase(fetchReviewsByProductId.fulfilled, (state, action) => {
+//             state.status = 'succeeded'
+//             state.items = action.payload
+//          })
+//          .addCase(fetchReviewsByProductId.rejected, (state, action) => {
+//             state.status = 'failed'
+//             state.error = action.payload
+//          })
+//    },
+// })
+
+// export default reviewsSlice.reducer

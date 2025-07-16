@@ -1,5 +1,9 @@
 import { axiosInstance } from '../../configs/axiosInstans'
-import { setFavorites, setLoading, setError } from '../lk-favorite/favoriteSlice'
+import {
+   setFavorites,
+   setLoading,
+   setError,
+} from '../lk-favorite/favoriteSlice'
 
 export const fetchFavorites = () => async (dispatch) => {
    try {

@@ -1,8 +1,6 @@
 import { Icons } from '../../assets/icons'
 import { Images } from '../../assets/images'
-import gatget from '../../assets/images/gatget.png'
-import PeopleTc from '../../assets/images/PeopleTc.png'
-import GatgetStore from '../../assets/images/GatgetStore.png'
+
 
 const POSSIBILITIES = [
    {
@@ -62,15 +60,15 @@ const QUESTIONS = [
 export const products = [
    {
       id: 1,
-      image: `${GatgetStore}`,
+      image: `${Images.GatgetStore}`,
    },
    {
       id: 2,
-      image: `${gatget}`,
+      image: `${Images.gatget}`,
    },
    {
       id: 3,
-      image: `${PeopleTc}`,
+      image: `${Images.PeopleTc}`,
    },
 ]
 

@@ -5,12 +5,15 @@ import { Box, Typography, Button } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import CompactCard from '../components/UI/cards/CompactCard'
 import { Images } from '../assets/images'
-import Breadcrumbs from '../components/UI/BreadCrums'
 
 const LKfavorites = () => {
    const dispatch = useDispatch()
-   const { favorites } = useSelector((state) => state.favorite)
    const [activeTab, setActiveTab] = useState('favorites')
+   const favorites = useSelector(
+      (state) => state.favorites.favorites || state.favorites.ids || []
+   )
+   console.log(favorites);
+   
 
    useEffect(() => {
       dispatch(fetchFavorites())
@@ -67,6 +70,62 @@ const MainContainer = styled(Box)({
    maxWidth: '1200px',
    margin: '0 auto',
    cursor: 'pointer',
+})
+
+const StyledBreadCrumbs = styled(Box)(() => ({
+   marginTop: '2%',
+   position: 'relative',
+   top: '10px',
+   marginBottom: '4%',
+}))
+
+const PageTitle = styled(Typography)({
+   marginBottom: '30px',
+   color: '#333333',
+   fontWeight: 'bold',
+   fontSize: '28px',
+})
+
+const NavigationContainer = styled(Box)({
+   display: 'flex',
+   marginBottom: '30px',
+   gap: '0px',
+})
+
+const NavigationButton = styled(Button)({
+   textTransform: 'none',
+   color: '#666666',
+   backgroundColor: '#e8e8e8',
+   border: 'none',
+   borderRadius: '8px',
+   padding: '8px 20px',
+   fontSize: '14px',
+   fontWeight: 'normal',
+   marginRight: '8px',
+   minHeight: '36px',
+   cursor: 'pointer',
+   '&:hover': {
+      backgroundColor: '#d8d8d8',
+   },
+   '&:active': {
+      backgroundColor: '#c8c8c8',
+      transform: 'translateY(1px)',
+   },
+   '&.active': {
+      backgroundColor: '#4a5568',
+      color: '#ffffff',
+      fontWeight: 'normal',
+      '&:hover': {
+         backgroundColor: '#3a4558',
+      },
+      '&:active': {
+         backgroundColor: '#2a3548',
+         transform: 'translateY(1px)',
+      },
+   },
+   '&:last-of-type': {
+      marginRight: '0',
+   },
 })
 
 const ProductsGrid = styled(Box)({

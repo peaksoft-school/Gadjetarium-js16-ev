@@ -4,7 +4,6 @@ import { fetchOrdersThunk } from '../store/orders/orderHistoryThink'
 import { Box, Container, Typography, styled } from '@mui/material'
 import Footer from '../layout/Footer'
 import { useNavigate } from 'react-router'
-import Breadcrumbs from '../components/UI/BreadCrums'
 
 const statusColors = {
    READY_FOR_PICKUP: '#00A500',
@@ -12,8 +11,6 @@ const statusColors = {
    WAITING: '#FFA500',
    DELIVERED: '#00BFFF',
 }
-
-const tabs = ['История заказов', 'Избранное', 'Профиль']
 
 const OrderHistory = () => {
    const dispatch = useDispatch()
@@ -28,7 +25,7 @@ const OrderHistory = () => {
    }, [dispatch, activeTab])
 
    const handleOrderClick = (orderId) => {
-      navigate(`/orders/${orderId}`)
+      navigate(`/user/orders/${orderId}`)
    }
 
    if (loading) return <Typography>Загрузка...</Typography>
@@ -107,17 +104,20 @@ const OrderHistory = () => {
 export default OrderHistory
 
 const TabButton = styled('button')(({ active }) => ({
-   backgroundColor: active ? '#1F1F1F' : '#F0F0F0',
-   color: active ? '#FFFFFF' : '#000000',
+   background: active ? '#CB11AB' : '#F7F7F8',
+   color: active ? '#fff' : '#292929',
    border: 'none',
-   borderRadius: '6px',
-   padding: '8px 16px',
-   fontWeight: 500,
+   borderRadius: '8px',
+   padding: '10px 28px',
+   fontWeight: 600,
+   fontSize: '16px',
    cursor: 'pointer',
-   fontSize: '14px',
-   transition: '0.2s ease',
+   marginRight: '12px',
+   transition: 'background 0.2s, color 0.2s',
+   boxShadow: active ? '0 2px 8px rgba(203,17,171,0.10)' : 'none',
    '&:hover': {
-      backgroundColor: active ? '#333' : '#e0e0e0',
+      background: active ? '#B10E97' : '#ececec',
+      color: active ? '#fff' : '#CB11AB',
    },
 }))
 

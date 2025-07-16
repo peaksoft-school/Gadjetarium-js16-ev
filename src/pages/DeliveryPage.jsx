@@ -8,7 +8,7 @@ const DeliveryPage = () => {
    return (
       <div>
          <StyledDelivery>
-            <Breadcrumbs />
+            {/* <Breadcrumbs /> */}
             <StyledContent>
                <StyledText>Доставка</StyledText>
 
@@ -58,9 +58,8 @@ const DeliveryPage = () => {
                               <Typography sx={{ fontWeight: 700 }}>
                                  Доставка
                               </Typography>
-                              По городу 200сом, по регионам
-                              <br /> Бесплатная доставка
-                              <br /> при покупках свыше — 10 000с.
+                              Бесплатная доставка
+                              <br /> при покупках свыше —10 000с.
                            </Typography>
                         </StyledOneInfo>
                         <StyledOneInfo>
@@ -103,8 +102,8 @@ const DeliveryPage = () => {
 export default DeliveryPage
 
 const StyledDelivery = styled(Container)({
-   padding: 30,
-   width: '100%',
+   // width: '130%',
+   width: '1600px',
 })
 
 const StyledBottomRow = styled(Container)({
@@ -125,11 +124,11 @@ const StyledIcon = styled('img')({
 })
 
 const StyledContent = styled(Container)({
-   padding: '40px 120px',
+   padding: '0px 120px',
    display: 'flex',
    flexDirection: 'column',
    gap: '40px',
-   maxWidth: '1440px',
+   maxWidth: '1600px',
 })
 
 const StyledText = styled(Typography)({

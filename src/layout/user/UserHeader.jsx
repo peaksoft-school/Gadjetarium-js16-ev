@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import { Icons } from '../../assets/icons'
 import { useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
@@ -20,6 +21,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const [isScrolled, setIsScrolled] = useState(false)
    const [profileHover, setProfileHover] = useState(false)
    const navigate = useNavigate()
+   const location = useLocation()
 
    useEffect(() => {
       const handleScroll = () => {
@@ -39,6 +41,17 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
       window.location.reload()
    }
 
+   let token = 1
+   try {
+      const authStr = localStorage.getItem('auth')
+      if (authStr) {
+         const authObj = JSON.parse(authStr)
+         token = authObj.token
+      }
+   } catch (e) {
+      token = null
+   }
+
    return (
       <StyledAppBar position={isScrolled ? 'fixed' : 'static'}>
          <TopRow sx={{ display: isScrolled ? 'none' : 'flex' }}>
@@ -50,7 +63,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                      const handleNavClick = () => {
                         switch (item) {
                            case 'Главная':
-                              navigate('/')
+                              navigate('/user')
                               break
                            case 'О магазине':
                               navigate('/user/about')
@@ -149,23 +162,27 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                )}
 
                <Stack direction="row" spacing={2}>
-                  <Badge badgeContent={compareCount} color="error">
-                     <WhiteIcon aria-label="compare items">
-                        <IconImage src={Icons.scales} alt="Compare" />
-                     </WhiteIcon>
-                  </Badge>
-
                   <Badge badgeContent={0} color="error">
                      <WhiteIcon aria-label="favorites">
                         <IconImage src={Icons.likeW} alt="Favorites" />
                      </WhiteIcon>
                   </Badge>
-
                   <Badge badgeContent={basketCount} color="error">
-                     <WhiteIcon aria-label="cart">
+                     <WhiteIcon
+                        onClick={() => navigate('/user/basket')}
+                        aria-label="cart"
+                     >
                         <IconImage src={Icons.basket} alt="Cart" />
                      </WhiteIcon>
                   </Badge>
+                  {location.pathname === '/' && (
+                     <Button
+                        variant="contained"
+                        onClick={() => navigate('/sign-in')}
+                     >
+                        Войти
+                     </Button>
+                  )}
                </Stack>
             </IconsContainer>
          </BottomRow>
