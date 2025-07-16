@@ -373,6 +373,7 @@ const PaymentForm = ({
    const [localFormData, setLocalFormData] = useState({
       ...formData,
       cardType: 'visa',
+      phone: formData.phone || '',
    })
    const [errors, setErrors] = useState({})
 
@@ -380,40 +381,44 @@ const PaymentForm = ({
       const newErrors = {}
       if (currentStep === 1) {
          if (!/^[а-яА-Яa-zA-Z\s]{2,}$/.test(localFormData.firstName)) {
-            newErrors.firstName = 'Имя керек, минимум 2 ариб'
+            newErrors.firstName = 'Поля не должно быть пустым'
          }
          if (!/^[а-яА-Яa-zA-Z\s]{2,}$/.test(localFormData.lastName)) {
-            newErrors.lastName = 'Фамилия керек, минимум 2 ариб'
+            newErrors.lastName = 'Поля не должна быть пустой'
          }
-         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(localFormData.email)) {
-            newErrors.email = 'Жарактуу email керек (user@example.com)'
+         // Email '@gmail.com' менен бүтүшү керек
+         if (!/^[^\s@]+@gmail\.com$/.test(localFormData.email)) {
+            newErrors.email = 'Email должен обязательно заканчиваться на gmail.com'
          }
          if (!/^\+996\d{9}$/.test(localFormData.phone)) {
             newErrors.phone =
-               'Телефон +996 менен, 9 цифра керек (мисалы, +996555123456)'
+               'Телефон должен начинаться с +996 и содержать 9 цифр (например, +996555123456)'
          }
          if (deliveryType === 'courier' && !localFormData.address.trim()) {
-            newErrors.address = 'Дарек керек'
+            newErrors.address = 'Адрес обязателен для доставки курьером'
          }
       }
       if (currentStep === 2 && paymentMethod === 'online') {
          if (!/^\d{16}$/.test(localFormData.cardNumber)) {
-            newErrors.cardNumber = 'Карта номери 16 сан болуш керек'
+            newErrors.cardNumber = 'Номер карты должен состоять из 16 цифр'
          }
          const [month, year] = localFormData.expiryDate.split('/')
-         if (
-            !/^(0[1-9]|1[0-2])$/.test(month) ||
-            !/^(25|2[6-9]|3[0-5])$/.test(year)
-         ) {
-            newErrors.expiryDate =
-               'MM (01-12) жана YY (25-35) туура болуш керек'
+         let expiryErrors = [];
+         if (!/^(0[1-9]|1[0-2])$/.test(month)) {
+            expiryErrors.push(' от 01 до 12.');
+         }
+         if (!/^(0[1-9]|1[0-9]|2[0-9]|3[0-1])$/.test(year)) {
+            expiryErrors.push('от 01 до 31.');
+         }
+         if (expiryErrors.length) {
+            newErrors.expiryDate = expiryErrors.join(' ');
          }
          if (!/^\d{3}$/.test(localFormData.cvv)) {
-            newErrors.cvv = 'CVC 3 сан болуш керек'
+            newErrors.cvv = 'CVC должен состоять из 3 цифр'
          }
          if (!/^[а-яА-Яa-zA-Z\s]+$/.test(localFormData.cardHolder)) {
             newErrors.cardHolder =
-               'Имя владельца ариб жана боштуктар гана болуш керек'
+               'Имя владельца должно содержать только буквы и пробелы'
          }
       }
       return newErrors
@@ -421,8 +426,70 @@ const PaymentForm = ({
 
    const handleInputChange = (e) => {
       const { name, value } = e.target
-      // Карта номерине 16 сандан ашык жазылбашы үчүн
-      if (name === 'cardNumber' && value.length > 16) {
+      // Карта номерине 16 сандан ашык жазылбашы жана сандар гана болушу үчүн
+      if (name === 'cardNumber') {
+         let onlyDigits = value.replace(/[^\d]/g, '')
+         if (onlyDigits.length > 16) {
+            onlyDigits = onlyDigits.slice(0, 16)
+         }
+         setLocalFormData((prev) => ({
+            ...prev,
+            [name]: onlyDigits,
+         }))
+         setErrors((prev) => ({ ...prev, [name]: '' }))
+         return
+      }
+      // Имя владельца талаасына сандар жазылбашы үчүн
+      if (name === 'cardHolder') {
+         let onlyLetters = value.replace(/[\d]/g, '')
+         setLocalFormData((prev) => ({
+            ...prev,
+            [name]: onlyLetters,
+         }))
+         setErrors((prev) => ({ ...prev, [name]: '' }))
+         return
+      }
+      // CVC талаасына 3 сандан ашык жазылбашы үчүн
+      if (name === 'cvv' && value.length > 3) {
+         return
+      }
+      if (name === 'phone') {
+         // Сандар жана + гана уруксат
+         let filtered = value.replace(/[^\d+]/g, '')
+         // Эгер талаа бош болсо, phone да бош болот
+         if (filtered === '') {
+            setLocalFormData((prev) => ({
+               ...prev,
+               [name]: '',
+            }))
+            setErrors((prev) => ({ ...prev, [name]: '' }))
+            return
+         }
+         // Эгер value '+996' менен башталса, value'ну ошол бойдон сактайбыз (бирден-бирден өчөт)
+         if (filtered.startsWith('+996')) {
+            setLocalFormData((prev) => ({
+               ...prev,
+               [name]: filtered.slice(0, 13),
+            }))
+            setErrors((prev) => ({ ...prev, [name]: '' }))
+            return
+         }
+         // Эгер value'да '+' жок болсо, биринчи символду жазганда гана +996 кошулат
+         if (!filtered.includes('+')) {
+            let newValue = '+996' + filtered
+            setLocalFormData((prev) => ({
+               ...prev,
+               [name]: newValue.slice(0, 13),
+            }))
+            setErrors((prev) => ({ ...prev, [name]: '' }))
+            return
+         }
+         // Болбосо value'ну ошол бойдон сактайбыз
+         setLocalFormData((prev) => ({
+            ...prev,
+            [name]: filtered.slice(0, 13),
+         }))
+         setErrors((prev) => ({ ...prev, [name]: '' }))
          return
       }
       setLocalFormData((prev) => ({
@@ -543,7 +610,7 @@ const PaymentForm = ({
                      name="phone"
                      value={localFormData.phone}
                      onChange={handleInputChange}
-                     placeholder="+996 (___) __ __ __"
+                     placeholder="напишите номер"
                      required
                      fullWidth
                      error={!!errors.phone}
@@ -703,6 +770,11 @@ const PaymentForm = ({
                            helperText={errors.cvv}
                         />
                      </ExpiryContainer>
+                     {errors.expiryDate && (
+                        <Typography style={{ color: '#d32f2f', fontSize: 13, marginBottom: 8 }}>
+                          {errors.expiryDate}
+                        </Typography>
+                     )}
                      <CardTextField
                         placeholder="Имя владельца"
                         variant="standard"
