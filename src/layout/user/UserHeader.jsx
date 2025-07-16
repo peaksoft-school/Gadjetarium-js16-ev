@@ -148,6 +148,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
             <InputContainer>
                <CatalogButton
                   startIcon={<IconImage src={Icons.catalog} alt="Catalog" />}
+                  onClick={() => navigate('/user/catalog')}
                >
                   Каталог
                </CatalogButton>

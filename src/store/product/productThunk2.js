@@ -18,6 +18,33 @@ export const fetchProducts2 = createAsyncThunk(
    }
 )
 
+export const fetchFilteredProducts = createAsyncThunk(
+   'product/fetchFilteredProducts',
+   async (params, { rejectWithValue }) => {
+      try {
+         // params: {  discountRange, brandsId, startPrice, endPrice, categoryId, colors, storages, ram, page, pageSize, status }
+         const paramsSerializer = (p) => {
+            const searchParams = new URLSearchParams()
+            Object.entries(p).forEach(([key, value]) => {
+               if (Array.isArray(value)) {
+                  value.forEach((v) => searchParams.append(key, v))
+               } else if (value !== undefined && value !== null) {
+                  searchParams.append(key, value)
+               }
+            })
+            return searchParams.toString()
+         }
+         const response = await axiosInstance.get('/api/product/filter', {
+            params,
+            paramsSerializer,
+         })
+         return { data: response.data.data, status: params.status }
+      } catch (error) {
+         return rejectWithValue(error.response?.data || error.message)
+      }
+   }
+)
+
 export const fetchProductDetail = createAsyncThunk(
    'products/fetchProductDetail',
    async (productTypeId, { rejectWithValue }) => {
@@ -26,18 +53,8 @@ export const fetchProductDetail = createAsyncThunk(
             `/api/product/get/${productTypeId}`
          )
          const product = response.data?.data
-
-         if (!product) {
-            console.warn('No product detail found for ID:', productTypeId)
-            return response.data
-         }
-
          return product
       } catch (error) {
-         console.log(
-            'Fetch Product Detail Error:',
-            error.response?.data || error.message
-         )
          return rejectWithValue(error.response?.data || error.message)
       }
    }

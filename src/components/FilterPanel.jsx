@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
    Box,
    Typography,
@@ -12,40 +12,88 @@ import {
    TextField,
    Button,
    Divider,
+   styled,
 } from '@mui/material'
-import { styled } from '@mui/system'
-import { Icons } from '../assets/icons'
 import { catalogProductData } from '../utils/constants'
 
-const FilterPanel = () => {
-   const [price, setPrice] = useState([500, 250000])
-   const [selectedFilters, setSelectedFilters] = useState({})
+const PurpleCheckbox = styled(Checkbox)({
+   color: '#a000c0',
+   '&.Mui-checked': {
+      color: '#a000c0',
+   },
+})
+
+const ResetLinkStyled = styled(Button)({
+   color: '#1976d2',
+   textDecoration: 'underline',
+   fontWeight: 500,
+   fontSize: 15,
+   background: 'none',
+   border: 'none',
+   boxShadow: 'none',
+   cursor: 'pointer',
+   marginBottom: 16,
+   padding: 0,
+   minHeight: 0,
+   minWidth: 0,
+   '&:hover': {
+      background: 'none',
+      textDecoration: 'underline',
+   },
+})
+
+const colorOptions = [
+   { name: 'Black', color: 'Black' },
+   { name: 'Blue', color: 'Blue' },
+   { name: 'Gold', color: '#FFD700' },
+   { name: 'Graphite', color: '#666' },
+   { name: 'Green', color: 'Green' },  
+   { name: 'Rose Gold', color: '#e0bfb8' },
+   { name: 'Red', color: 'Red' },
+   { name: 'Silver', color: 'Silver' },
+   { name: 'White', color: 'White' },
+]
+
+const FilterPanel = ({ onApply, value }) => {
+   const [draftFilters, setDraftFilters] = useState(
+      value || { filters: {}, price: [500, 250000] }
+   )
+   useEffect(() => {
+      setDraftFilters(value || { filters: {}, price: [500, 250000] })
+   }, [value])
    const [expandedCategories, setExpandedCategories] = useState(
       catalogProductData.reduce((acc, item) => {
          acc[item.id] = true
          return acc
       }, {})
    )
+   const [showAllColors, setShowAllColors] = useState(false)
+   const [showAllStorage, setShowAllStorage] = useState(false)
 
    const handlePriceChange = (_, newValue) => {
-      setPrice(newValue)
+      setDraftFilters((prev) => ({ ...prev, price: newValue }))
    }
 
    const handleCheckboxChange = (key, value) => {
-      setSelectedFilters((prev) => {
-         const values = prev[key] || []
-         return {
-            ...prev,
+      setDraftFilters((prev) => {
+         const f = prev.filters || {}
+         const values = f[key] || []
+         const updated = {
+            ...f,
             [key]: values.includes(value)
                ? values.filter((v) => v !== value)
                : [...values, value],
          }
+         return { ...prev, filters: updated }
       })
    }
 
    const resetFilters = () => {
-      setPrice([500, 250000])
-      setSelectedFilters({})
+      setDraftFilters({ filters: {}, price: [500, 250000] })
+   }
+
+   const handleApply = () => {
+      if (onApply) onApply(draftFilters)
    }
 
    const toggleCategory = (id) => {
@@ -64,7 +112,9 @@ const FilterPanel = () => {
                   key={item.id}
                   control={
                      <Checkbox
-                        checked={selectedFilters[key]?.includes(label) || false}
+                        checked={
+                           draftFilters.filters[key]?.includes(label) || false
+                        }
                         onChange={() => handleCheckboxChange(key, label)}
                         size="small"
                         sx={{ padding: '4px 8px' }}
@@ -78,108 +128,228 @@ const FilterPanel = () => {
       </FormGroup>
    )
 
+   const visibleColors = showAllColors ? colorOptions : colorOptions.slice(0, 6)
+   const handleColorCheckbox = (color) => {
+      handleCheckboxChange('colors', color.name)
+   }
+   const selectedColors = draftFilters.filters['colors'] || []
+
+   const storageOptions = [
+      8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,
+      131072, 262144, 524288, 1048576, 2097152, 4194304,
+   ]
+   const visibleStorage = showAllStorage
+      ? storageOptions
+      : storageOptions.slice(0, 6)
+   const selectedStorage = draftFilters.filters['1-storage'] || []
+
    return (
       <FilterWrapper>
-         <ResetLink onClick={resetFilters}>Сбросить все фильтры</ResetLink>
-
+         <ResetLinkStyled type="button" onClick={resetFilters}>
+            Сбросить все фильтры
+         </ResetLinkStyled>
+         <Divider sx={{ my: 1 }} />
          <Section>
-            <Accordion defaultExpanded>
-               <AccordionSummary expandIcon={<img src={Icons.arrowDown} />}>
-                  <FilterTitle>Стоимость</FilterTitle>
-               </AccordionSummary>
-               <AccordionDetails>
-                  <Box display="flex" gap={1} mb={2}>
-                     <TextField
-                        size="small"
-                        value={price[0]}
-                        onChange={(e) =>
-                           setPrice([+e.target.value || 0, price[1]])
+            <Typography fontWeight={700} fontSize={16} mb={1} color="#a000c0">
+               Категории
+            </Typography>
+            {catalogProductData[0].category.subCategory.map((item) => (
+               <FormControlLabel
+                  key={item.id}
+                  control={
+                     <PurpleCheckbox
+                        checked={
+                           draftFilters.filters['1-brands']?.includes(
+                              item.categoryName
+                           ) || false
                         }
-                        inputProps={{ type: 'number' }}
-                     />
-                     <TextField
-                        size="small"
-                        value={price[1]}
-                        onChange={(e) =>
-                           setPrice([price[0], +e.target.value || 0])
+                        onChange={() =>
+                           handleCheckboxChange('1-brands', item.categoryName)
                         }
-                        inputProps={{ type: 'number' }}
+                        size="small"
                      />
-                  </Box>
-                  <Slider
-                     value={price}
-                     min={500}
-                     max={250000}
-                     step={500}
-                     onChange={handlePriceChange}
-                     valueLabelDisplay="auto"
-                     sx={{ color: '#a000c0' }}
-                  />
-               </AccordionDetails>
-            </Accordion>
+                  }
+                  label={
+                     <Typography variant="body2">
+                        {item.categoryName}
+                     </Typography>
+                  }
+                  sx={{ margin: 0, mb: 1 }}
+               />
+            ))}
          </Section>
-
-         <Divider sx={{ my: 2 }} />
-
-         {catalogProductData.map((product) => (
-            <Box key={product.id}>
-               <CategoryHeader onClick={() => toggleCategory(product.id)}>
-                  <Typography fontWeight="bold" color="#a000c0">
-                     {product.title}
-                  </Typography>
-                  <img
-                     src={Icons.arrowDown}
-                     style={{
-                        transform: expandedCategories[product.id]
-                           ? 'rotate(180deg)'
-                           : 'rotate(0deg)',
-                        transition: 'transform 0.3s ease',
-                     }}
-                  />
-               </CategoryHeader>
-
-               {expandedCategories[product.id] && (
-                  <>
-                     <Section>
-                        <Accordion defaultExpanded>
-                           <AccordionSummary
-                              expandIcon={<img src={Icons.arrowDown} />}
-                           >
-                              <FilterTitle>Бренды</FilterTitle>
-                           </AccordionSummary>
-                           <AccordionDetails>
-                              {renderCheckboxGroup(
-                                 product.category.subCategory,
-                                 `${product.id}-brands`
-                              )}
-                           </AccordionDetails>
-                        </Accordion>
-                     </Section>
-
-                     {product.categories.map((characteristic) => (
-                        <Section key={characteristic.id}>
-                           <Accordion defaultExpanded>
-                              <AccordionSummary
-                                 expandIcon={<img src={Icons.arrowDown} />}
-                              >
-                                 <FilterTitle>
-                                    {characteristic.type}
-                                 </FilterTitle>
-                              </AccordionSummary>
-                              <AccordionDetails>
-                                 {renderCheckboxGroup(
-                                    characteristic.subCategory,
-                                    `${product.id}-${characteristic.filterCharacteristicsKey}`
-                                 )}
-                              </AccordionDetails>
-                           </Accordion>
-                        </Section>
-                     ))}
-                  </>
-               )}
-               <Divider sx={{ my: 2 }} />
+         <Divider sx={{ my: 1 }} />
+         <Section>
+            <Typography fontWeight={700} fontSize={16} mb={1} color="#a000c0">
+               Стоимость
+            </Typography>
+            <Box display="flex" gap={1} mb={2}>
+               <TextField
+                  size="small"
+                  value={draftFilters.price[0]}
+                  onChange={(e) =>
+                     setDraftFilters((prev) => ({
+                        ...prev,
+                        price: [+e.target.value || 0, prev.price[1]],
+                     }))
+                  }
+                  inputProps={{ type: 'number' }}
+                  placeholder="от"
+                  sx={{ width: 90 }}
+               />
+               <TextField
+                  size="small"
+                  value={draftFilters.price[1]}
+                  onChange={(e) =>
+                     setDraftFilters((prev) => ({
+                        ...prev,
+                        price: [prev.price[0], +e.target.value || 0],
+                     }))
+                  }
+                  inputProps={{ type: 'number' }}
+                  placeholder="до"
+                  sx={{ width: 90 }}
+               />
             </Box>
-         ))}
+            <Slider
+               value={draftFilters.price}
+               min={500}
+               max={250000}
+               step={500}
+               onChange={handlePriceChange}
+               valueLabelDisplay="auto"
+               sx={{ color: '#a000c0' }}
+            />
+         </Section>
+         <Divider sx={{ my: 1 }} />
+         {/* --- Цвет --- */}
+         <Section>
+            <Typography fontWeight={700} fontSize={16} mb={1} color="#a000c0">
+               Цвет
+            </Typography>
+            {visibleColors.map((color) => (
+               <FormControlLabel
+                  key={color.name}
+                  control={
+                     <PurpleCheckbox
+                        checked={selectedColors.includes(color.name)}
+                        onChange={() => handleColorCheckbox(color)}
+                        size="small"
+                     />
+                  }
+                  label={
+                     <Box display="flex" alignItems="center" gap={1}>
+                        <span
+                           style={{
+                              display: 'inline-block',
+                              width: 14,
+                              height: 14,
+                              borderRadius: '50%',
+                              background: color.color,
+                              border: color.border
+                                 ? `1px solid ${color.border}`
+                                 : '1px solid #eee',
+                           }}
+                        />
+                        <Typography variant="body2">{color.name}</Typography>
+                        <Typography
+                           variant="body2"
+                           sx={{ color: '#aaa', ml: 0.5 }}
+                        >
+                           ({color.count})
+                        </Typography>
+                     </Box>
+                  }
+                  sx={{ margin: 0, mb: 1 }}
+               />
+            ))}
+            {colorOptions.length > 6 && (
+               <Button
+                  sx={{
+                     color: '#a000c0',
+                     textTransform: 'none',
+                     fontWeight: 500,
+                     fontSize: 14,
+                     pl: 0,
+                  }}
+                  onClick={() => setShowAllColors((v) => !v)}
+               >
+                  {showAllColors ? 'Скрыть' : `Еще ${colorOptions.length - 6}`}
+               </Button>
+            )}
+         </Section>
+         <Divider sx={{ my: 1 }} />
+         <Section>
+            <Typography fontWeight={700} fontSize={16} mb={1} color="#a000c0">
+               Объем памяти (GB)
+            </Typography>
+            {visibleStorage.map((val) => (
+               <FormControlLabel
+                  key={val}
+                  control={
+                     <PurpleCheckbox
+                        checked={selectedStorage.includes(val)}
+                        onChange={() => handleCheckboxChange('1-storage', val)}
+                        size="small"
+                     />
+                  }
+                  label={<Typography variant="body2">{val}</Typography>}
+                  sx={{ margin: 0, mb: 1 }}
+               />
+            ))}
+            {storageOptions.length > 6 && (
+               <Button
+                  sx={{
+                     color: '#a000c0',
+                     textTransform: 'none',
+                     fontWeight: 500,
+                     fontSize: 14,
+                     pl: 0,
+                  }}
+                  onClick={() => setShowAllStorage((v) => !v)}
+               >
+                  {showAllStorage
+                     ? 'Скрыть'
+                     : `Еще ${storageOptions.length - 6}`}
+               </Button>
+            )}
+         </Section>
+         <Divider sx={{ my: 1 }} />
+         {/* --- Объем оперативной памяти (GB) --- */}
+         <Section>
+            <Typography fontWeight={700} fontSize={16} mb={1} color="#a000c0">
+               Объем оперативной памяти (GB)
+            </Typography>
+            {catalogProductData[0].categories[1].subCategory.map((item) => (
+               <FormControlLabel
+                  key={item.title}
+                  control={
+                     <PurpleCheckbox
+                        checked={
+                           draftFilters.filters['1-ram']?.includes(
+                              item.title
+                           ) || false
+                        }
+                        onChange={() =>
+                           handleCheckboxChange('1-ram', item.title)
+                        }
+                        size="small"
+                     />
+                  }
+                  label={<Typography variant="body2">{item.title}</Typography>}
+                  sx={{ margin: 0, mb: 1 }}
+               />
+            ))}
+         </Section>
+         <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
+            onClick={handleApply}
+         >
+            Показать
+         </Button>
       </FilterWrapper>
    )
 }
