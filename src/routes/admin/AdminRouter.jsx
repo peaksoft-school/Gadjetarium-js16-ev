@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet } from 'react-router'
+import { Route, Routes, Outlet, Navigate } from 'react-router'
 import AdminLayout from '../../layout/admin/AdminLayout'
 import AdminHeader from '../../layout/admin/AdminHeader'
 import { lazy, Suspense } from 'react'
@@ -16,7 +16,10 @@ const AdminRouter = () => {
       <>
          <AdminHeader />
          <Routes>
-            <Route path="/" element={<AdminLayout />} />
+            <Route
+               path="/"
+               element={<Navigate to="/admin/products" replace />}
+            />
             <Route
                path="/products"
                element={

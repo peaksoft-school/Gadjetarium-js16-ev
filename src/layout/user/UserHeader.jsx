@@ -13,6 +13,7 @@ import {
 } from '@mui/material'
 import { Icons } from '../../assets/icons'
 import { useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
 import CartHoverTrigger from '../../components/UI/CartHoverTrigger'
 import { fetchFavorites } from '../../store/lk-favorite/favoritesThunk'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,6 +32,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const [isScrolled, setIsScrolled] = useState(false)
    const [profileHover, setProfileHover] = useState(false)
    const navigate = useNavigate()
+   const location = useLocation()
 
    useEffect(() => {
       const handleScroll = () => {
@@ -50,7 +52,22 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
       window.location.reload()
    }
 
+   let token = 1
+   try {
+      const authStr = localStorage.getItem('auth')
+      if (authStr) {
+         const authObj = JSON.parse(authStr)
+         token = authObj.token
+      }
+   } catch (e) {
+      token = null
+   }
+
    const handleFavoritesNavigate = () => navigate('/user/favorites')
+
+   const handleFavoriteCardClick = (productTypeId) => {
+      navigate(`/user/product/${productTypeId}`)
+   }
 
    return (
       <StyledAppBar position={isScrolled ? 'fixed' : 'static'}>
@@ -59,11 +76,39 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                <Logo src={Icons.gadgetarium} alt="Gadgetarium Logo" />
 
                <NavContainer>
-                  {navArray.map((item) => (
-                     <NavButton sx={{ whiteSpace: 'nowrap' }} key={item}>
-                        {item}
-                     </NavButton>
-                  ))}
+                  {navArray.map((item) => {
+                     const handleNavClick = () => {
+                        switch (item) {
+                           case 'Главная':
+                              navigate('/user')
+                              break
+                           case 'О магазине':
+                              navigate('/user/about')
+                              break
+                           case 'Доставка':
+                              navigate('/user/delivery')
+                              break
+                           case 'FAQ':
+                              navigate('/user/faq')
+                              break
+                           case 'Контакты':
+                              navigate('/user/contacts')
+                              break
+                           default:
+                              break
+                        }
+                     }
+
+                     return (
+                        <NavButton
+                           key={item}
+                           sx={{ whiteSpace: 'nowrap' }}
+                           onClick={handleNavClick}
+                        >
+                           {item}
+                        </NavButton>
+                     )
+                  })}
                </NavContainer>
             </TopInfo>
 
@@ -133,13 +178,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                   </Stack>
                )}
 
-               <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-                  <Badge badgeContent={compareCount} color="error">
-                     <WhiteIcon aria-label="compare items">
-                        <IconImage src={Icons.scales} alt="Compare" />
-                     </WhiteIcon>
-                  </Badge>
-
+               <Stack direction="row" spacing={2}>
                   <Badge badgeContent={0} color="error">
                      <CartHoverTrigger
                         icon={Icons.likeW}
@@ -150,7 +189,15 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                               <p>Избранных пока нету!</p>
                            ) : (
                               favorites?.slice(0, 2)?.map((favorite) => (
-                                 <Box className="favorite-card">
+                                 <Box
+                                    className="favorite-card"
+                                    onClick={() =>
+                                       handleFavoriteCardClick(
+                                          favorite.productTypeId
+                                       )
+                                    }
+                                    style={{ cursor: 'pointer' }}
+                                 >
                                     <img
                                        src={favorite.image}
                                        alt="photo"
@@ -178,12 +225,22 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                         </FavoritesDropdown>
                      </CartHoverTrigger>
                   </Badge>
-
                   <Badge badgeContent={basketCount} color="error">
-                     <WhiteIcon aria-label="cart">
+                     <WhiteIcon
+                        onClick={() => navigate('/user/basket')}
+                        aria-label="cart"
+                     >
                         <IconImage src={Icons.basket} alt="Cart" />
                      </WhiteIcon>
                   </Badge>
+                  {location.pathname === '/' && (
+                     <Button
+                        variant="contained"
+                        onClick={() => navigate('/sign-in')}
+                     >
+                        Войти
+                     </Button>
+                  )}
                </Stack>
             </IconsContainer>
          </BottomRow>

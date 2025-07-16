@@ -5,6 +5,7 @@ import favoriteReducer from './lk-favorite/favoriteSlice'
 import favoritesReducer from './favorites/favoritesSlice'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import reviewsReducer from './reviews/ReviewsSlice'
+import ordersReducer from '../pages/orderSlice'
 import orderHistoryReducer from './orders/orderHistorySlice'
 import { injectStore } from '../configs/axiosInstans'
 import { authReducer } from './authSlice/authSlice'
@@ -19,7 +20,8 @@ import basketReducer from './basket/basketSlice'
 import profileReducer from './profile/profileSlice'
 
 const rootReducer = combineReducers({
-   orders: orderHistoryReducer,
+   orders: ordersReducer,
+   orderHistory: orderHistoryReducer,
    product: productReducer,
    reviews: reviewsReducer,
    auth: authReducer,

@@ -1208,7 +1208,11 @@ const PageWrapper = styled(Box)`
    background: #fff;
    border-radius: 12px;
    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-   padding: 32px 40px 40px 40px;
+   padding: 32px 32px 40px 32px;
+   @media (max-width: 900px) {
+      padding: 16px 4px 24px 4px;
+      max-width: 99vw;
+   }
 `
 const Divider = styled('div')`
    height: 1px;
@@ -1251,17 +1255,20 @@ const FormRow = styled(Box)`
    display: flex;
    gap: 32px;
    margin-bottom: 16px;
+   flex-wrap: wrap;
 `
 const FormCol = styled(Box)`
    flex: 1;
+   min-width: 260px;
 `
 const ProductBlock = styled(Box)`
    background: #fafafa;
-   border-radius: 10px;
+   border-radius: 12px;
    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
    padding: 24px;
    margin-bottom: 24px;
    border: 1px solid #eee;
+   min-width: 260px;
 `
 const ColorPaletteRow = styled(Box)`
    display: flex;
@@ -1310,6 +1317,9 @@ const PhotoPreviewBox = styled(Box)`
    position: relative;
    width: 60px;
    height: 60px;
+   border-radius: 8px;
+   overflow: hidden;
+   background: #f0f0f0;
 `
 const RemoveImgBtn = styled('div')`
    position: absolute;
@@ -1320,6 +1330,7 @@ const RemoveImgBtn = styled('div')`
    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
    cursor: pointer;
    padding: 2px;
+   z-index: 2;
 `
 const AddPhotoBtn = styled(Box)`
    width: 60px;
@@ -1387,8 +1398,8 @@ const ProductLabel = styled('div')`
    font-size: 15px;
    font-weight: 600;
    color: #222;
+   margin-bottom: 8px;
 `
-
 const ColorPickerField = styled(Box)`
    display: flex;
    align-items: center;
@@ -1428,6 +1439,9 @@ const ColorArrow = styled('div')`
    margin-left: 8px;
    user-select: none;
 `
-const DropText = styled('div')``
+const DropText = styled('div')`
+   color: #888;
+   font-size: 15px;
+`
 
 export default AddProd

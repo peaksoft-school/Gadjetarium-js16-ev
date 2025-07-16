@@ -56,7 +56,14 @@ const ProductPage = () => {
    if (loading || bannerLoading) return <Typography>Загрузка...</Typography>
    if (error || bannerError)
       return (
-         <Typography color="error">Ошибка: {error || bannerError}</Typography>
+         <Typography color="error">
+            Ошибка:{' '}
+            {typeof (error || bannerError) === 'object'
+               ? (error && error.message) ||
+                 (bannerError && bannerError.message) ||
+                 JSON.stringify(error || bannerError)
+               : error || bannerError}
+         </Typography>
       )
 
    const handleCardClick = (productTypeId) => {

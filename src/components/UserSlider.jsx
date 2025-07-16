@@ -28,7 +28,7 @@ export default function UserSlider({ products = [] }) {
    useEffect(() => {
       const timer = setTimeout(() => setTransitioning(false), 800)
       return () => clearTimeout(timer)
-   }, [currentIndex])   
+   }, [currentIndex])
 
    const getSlidePosition = (index) => {
       const total = products.length
@@ -44,11 +44,11 @@ export default function UserSlider({ products = [] }) {
    return (
       <FullscreenContainer>
          <NavButtonLeft onClick={prevSlide} disabled={transitioning}>
-            <ArrowIcon src={Icons.arrowLeftWhite} alt="Previous" />
+            <ArrowIcon src={Icons.arrowLFiolet} alt="Previous" />
          </NavButtonLeft>
 
          <NavButtonRight onClick={nextSlide} disabled={transitioning}>
-            <ArrowIcon src={Icons.arrowRightWhite} alt="Next" />
+            <ArrowIcon src={Icons.arrowRFiolet} alt="Next" />
          </NavButtonRight>
 
          <SliderContainer>

@@ -86,10 +86,13 @@ const productSlice2 = createSlice({
          })
          .addCase(fetchProducts2.fulfilled, (state, action) => {
             state.loading = false
-            // Сортируем продукты по id
-            const products = (action.payload || [])
-               .slice()
-               .sort((a, b) => a.id - b.id)
+            let products = []
+            if (Array.isArray(action.payload)) {
+               products = action.payload
+            } else if (action.payload && Array.isArray(action.payload.products)) {
+               products = action.payload.products
+            }
+            products = products.slice().sort((a, b) => a.id - b.id)
             const status = action.meta.arg.status
             if (status === 'акции') state.sale = products
             else if (status === 'новинки') state.new = products

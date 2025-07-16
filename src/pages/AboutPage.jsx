@@ -17,7 +17,6 @@ import Breadcrumbs from '../components/UI/BreadCrums'
 const AboutPage = () => {
    return (
       <Box>
-         <UserHeader />
          <StyledKingContainer>
             <Breadcrumbs />
             <br />
@@ -110,7 +109,6 @@ const AboutPage = () => {
                </TextImageWrapper>
             </Section>
          </Root>
-         <Footer />
       </Box>
    )
 }

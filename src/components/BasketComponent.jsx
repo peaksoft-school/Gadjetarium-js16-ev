@@ -217,7 +217,6 @@ const BasketComponent = () => {
 
    return (
       <>
-         <UserHeader />
          <MainContainer>
             <BreadcrumbContainer>
                <Breadcrumbs />
@@ -229,7 +228,6 @@ const BasketComponent = () => {
             <PageDivider />
             {mainContent}
          </MainContainer>
-         <Footer />
       </>
    )
 }

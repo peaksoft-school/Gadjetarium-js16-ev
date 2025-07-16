@@ -24,7 +24,6 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { useNavigate } from 'react-router'
 import Footer from '../layout/Footer'
-import UserHeader from '../layout/user/UserHeader'
 
 export default function ProfilePage() {
    const dispatch = useDispatch()
@@ -202,7 +201,9 @@ export default function ProfilePage() {
                   />
 
                   <ActionButtons>
-                     <BackButton onClick={() => navigate('/user')}>
+                     <BackButton
+                        onClick={() => navigate('/user/account/profile')}
+                     >
                         Назад
                      </BackButton>
                      <EditButton variant="contained" onClick={handleUpdate}>

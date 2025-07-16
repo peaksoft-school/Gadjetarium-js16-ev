@@ -25,6 +25,7 @@ const Wrapper = styled(Box)`
    position: relative;
    display: inline-block;
    cursor: pointer;
+   top:5px
 `
 
 const IconWrapper = styled(Box)`
