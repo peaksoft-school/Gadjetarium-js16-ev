@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { Box } from '@mui/material'
 
-const CartHoverTrigger = ({ icon, children }) => {
+const CartHoverTrigger = ({ icon, children, onClick }) => {
    const [hovered, setHovered] = useState(false)
 
    return (
@@ -10,7 +10,7 @@ const CartHoverTrigger = ({ icon, children }) => {
          onMouseEnter={() => setHovered(true)}
          onMouseLeave={() => setHovered(false)}
       >
-         <IconWrapper>
+         <IconWrapper onClick={onClick}>
             <img src={icon} alt="cart icon" />
          </IconWrapper>
 
@@ -28,8 +28,8 @@ const Wrapper = styled(Box)`
 `
 
 const IconWrapper = styled(Box)`
-   width: 28px;
-   height: 28px;
+   width: 18px;
+   height: 18px;
 
    img {
       width: 100%;
@@ -43,4 +43,9 @@ const DropdownWrapper = styled(Box)`
    top: 40px;
    right: 0;
    z-index: 100;
+   background-color: white;
+   border-radius: 8px;
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+   padding: 12px;
+   min-width: 180px;
 `

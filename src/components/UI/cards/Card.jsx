@@ -256,6 +256,7 @@ const Card = ({
    onToggleFavorite,
 }) => {
    const hasDiscount = discountValue && oldPrice
+
    const price = hasDiscount
       ? Math.round(oldPrice * (1 - discountValue / 100))
       : oldPrice
@@ -311,7 +312,9 @@ const Card = ({
             <PriceBox>
                <Box>
                   <PriceText variant="h6">{price} с</PriceText>
-                  {hasDiscount && <OldPriceText>{oldPrice} с</OldPriceText>}
+                  {hasDiscount && (
+                     <OldPriceText>{Math.round(oldPrice)} с</OldPriceText>
+                  )}
                </Box>
                <AddToCartButton
                   variant="contained"

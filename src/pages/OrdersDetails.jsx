@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router'
 import { fetchOrderDetailsThunk } from '../store/orders/orderHistoryThink'
 import { Box, Typography, Grid, styled, Divider, Chip } from '@mui/material'
-import Footer from '../layout/Footer'
-import UserHeader from '../layout/user/UserHeader'
 import CompactCard from '../components/UI/cards/CompactCard'
 import Breadcrumbs from '../components/UI/BreadCrums'
 

@@ -6,6 +6,7 @@ import Spinner from '../../components/Spinner'
 
 import OrderHistoryPustoi from '../../pages/OrderHistoryPustoi'
 import AccountLayout from '../../layout/user/AccountLayout'
+import Favorites from '../../pages/user/favorites/Favorites'
 import OrderDetails from '../../pages/OrdersDetails'
 
 const LKfavorites = lazy(() => import('../../pages/LKfavorites'))
@@ -18,7 +19,9 @@ const UserRouter = () => {
    return (
       <>
          <UserHeader />
+
          <Routes>
+            <Route path="/favorites" element={<Favorites />} />
             <Route
                path="/"
                element={

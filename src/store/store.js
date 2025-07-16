@@ -1,6 +1,7 @@
 import persistReducer from 'redux-persist/es/persistReducer'
 import persistStore from 'redux-persist/es/persistStore'
 import storage from 'redux-persist/lib/storage'
+import favoriteReducer from './lk-favorite/favoriteSlice'
 import favoritesReducer from './favorites/favoritesSlice'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import reviewsReducer from './reviews/ReviewsSlice'
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
    discount: discountReducer,
    mail: mailReducer,
    favorites: favoritesReducer,
+   favorite: favoriteReducer,
    basket: basketReducer,
    products: productReducer2,
    infographic: infographicReducer,

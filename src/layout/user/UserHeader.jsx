@@ -13,9 +13,20 @@ import {
 } from '@mui/material'
 import { Icons } from '../../assets/icons'
 import { useNavigate } from 'react-router'
+import CartHoverTrigger from '../../components/UI/CartHoverTrigger'
+import { fetchFavorites } from '../../store/lk-favorite/favoritesThunk'
+import { useDispatch, useSelector } from 'react-redux'
 
 const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const navArray = ['Главная', 'О магазине', 'Доставка', 'FAQ', 'Контакты']
+
+   const { favorites } = useSelector((state) => state.favorite)
+
+   const dispatch = useDispatch()
+
+   useEffect(() => {
+      dispatch(fetchFavorites())
+   }, [])
 
    const [isScrolled, setIsScrolled] = useState(false)
    const [profileHover, setProfileHover] = useState(false)
@@ -36,8 +47,10 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
    const handleLogout = () => {
       localStorage.clear()
       navigate('/sign-in')
-      window.location.reload() // или просто перезагрузить страницу
+      window.location.reload()
    }
+
+   const handleFavoritesNavigate = () => navigate('/user/favorites')
 
    return (
       <StyledAppBar position={isScrolled ? 'fixed' : 'static'}>
@@ -120,7 +133,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                   </Stack>
                )}
 
-               <Stack direction="row" spacing={2}>
+               <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
                   <Badge badgeContent={compareCount} color="error">
                      <WhiteIcon aria-label="compare items">
                         <IconImage src={Icons.scales} alt="Compare" />
@@ -128,9 +141,42 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                   </Badge>
 
                   <Badge badgeContent={0} color="error">
-                     <WhiteIcon aria-label="favorites">
-                        <IconImage src={Icons.likeW} alt="Favorites" />
-                     </WhiteIcon>
+                     <CartHoverTrigger
+                        icon={Icons.likeW}
+                        onClick={handleFavoritesNavigate}
+                     >
+                        <FavoritesDropdown>
+                           {favorites?.length === 0 ? (
+                              <p>Избранных пока нету!</p>
+                           ) : (
+                              favorites?.slice(0, 2)?.map((favorite) => (
+                                 <Box className="favorite-card">
+                                    <img
+                                       src={favorite.image}
+                                       alt="photo"
+                                       className="image"
+                                    />
+
+                                    <Typography className="product-name">
+                                       {favorite.productName}
+                                    </Typography>
+
+                                    <Typography className="price">
+                                       {favorite.productPrice}
+                                    </Typography>
+                                 </Box>
+                              ))
+                           )}
+
+                           <Button
+                              className="favorite-btn"
+                              variant="contained"
+                              onClick={handleFavoritesNavigate}
+                           >
+                              Перейти в избранное
+                           </Button>
+                        </FavoritesDropdown>
+                     </CartHoverTrigger>
                   </Badge>
 
                   <Badge badgeContent={basketCount} color="error">
@@ -360,21 +406,57 @@ const ProfileIconBox = styled('div')({
 })
 
 const LogoutHint = styled('div')({
-   marginTop: "-5px", 
+   marginTop: '-5px',
    background: '#fff',
    color: '#CB11AB',
-   fontSize: 12, 
+   fontSize: 12,
    fontWeight: 600,
    borderRadius: 8,
    padding: '6px 18px',
    boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
    position: 'absolute',
-   top: '120%', 
+   top: '120%',
    left: '50%',
    transform: 'translateX(-50%)',
    whiteSpace: 'nowrap',
    zIndex: 10,
    transition: 'all 0.2s',
 })
+
+const FavoritesDropdown = styled(Box)(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   padding: '12px',
+   minWidth: '280px',
+   color: '#1a1a25',
+
+   '& .favorite-btn': {
+      marginTop: '20px',
+   },
+
+   '& .favorite-card': {
+      display: 'flex',
+      alignItems: 'start',
+      gap: '12px',
+      borderBottom: '1px solid #858FA426',
+      padding: '10px 0',
+      width: '100%',
+
+      '& .product-name': {
+         width: '100%',
+      },
+
+      '& .price': {
+         color: '#384255',
+         fontSize: '14px',
+         fontWeight: 700,
+      },
+
+      '& .image': {
+         width: '60px',
+      },
+   },
+}))
 
 export default UserHeader
