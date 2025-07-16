@@ -28,8 +28,8 @@ const Wrapper = styled(Box)`
 `
 
 const IconWrapper = styled(Box)`
-   width: 28px;
-   height: 28px;
+   width: 18px;
+   height: 18px;
 
    img {
       width: 100%;

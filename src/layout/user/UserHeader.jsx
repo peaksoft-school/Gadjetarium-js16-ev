@@ -132,7 +132,7 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                   </Stack>
                )}
 
-               <Stack direction="row" spacing={2}>
+               <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
                   <Badge badgeContent={compareCount} color="error">
                      <WhiteIcon aria-label="compare items">
                         <IconImage src={Icons.scales} alt="Compare" />
@@ -145,11 +145,35 @@ const UserHeader = ({ compareCount = 0, basketCount = 0 }) => {
                         onClick={handleFavoritesNavigate}
                      >
                         <FavoritesDropdown>
-                           {favorites.length === 0 ? (
+                           {favorites?.length === 0 ? (
                               <p>Избранных пока нету!</p>
                            ) : (
-                              favorites?.map((favorite) => <Box></Box>)
+                              favorites?.slice(0, 2)?.map((favorite) => (
+                                 <Box className="favorite-card">
+                                    <img
+                                       src={favorite.image}
+                                       alt="photo"
+                                       className="image"
+                                    />
+
+                                    <Typography className="product-name">
+                                       {favorite.productName}
+                                    </Typography>
+
+                                    <Typography className="price">
+                                       {favorite.productPrice}
+                                    </Typography>
+                                 </Box>
+                              ))
                            )}
+
+                           <Button
+                              className="favorite-btn"
+                              variant="contained"
+                              onClick={handleFavoritesNavigate}
+                           >
+                              Перейти в избранное
+                           </Button>
                         </FavoritesDropdown>
                      </CartHoverTrigger>
                   </Badge>
@@ -398,13 +422,40 @@ const LogoutHint = styled('div')({
    transition: 'all 0.2s',
 })
 
-const FavoritesDropdown = styled(Box)`
-   background-color: white;
-   border-radius: 8px;
-   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-   padding: 12px;
-   min-width: 180px;
-   color: #1a1a25;
-`
+const FavoritesDropdown = styled(Box)(() => ({
+   display: 'flex',
+   flexDirection: 'column',
+   alignItems: 'center',
+   padding: '12px',
+   minWidth: '280px',
+   color: '#1a1a25',
+
+   '& .favorite-btn': {
+      marginTop: '20px',
+   },
+
+   '& .favorite-card': {
+      display: 'flex',
+      alignItems: 'start',
+      gap: '12px',
+      borderBottom: '1px solid #858FA426',
+      padding: '10px 0',
+      width: '100%',
+
+      '& .product-name': {
+         width: '100%',
+      },
+
+      '& .price': {
+         color: '#384255',
+         fontSize: '14px',
+         fontWeight: 700,
+      },
+
+      '& .image': {
+         width: '60px',
+      },
+   },
+}))
 
 export default UserHeader
