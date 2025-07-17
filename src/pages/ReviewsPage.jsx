@@ -9,7 +9,7 @@ import { injectStore } from '../configs/axiosInstans'
 
 const ReviewsContainer = styled(Container)(({ theme }) => ({
    padding: theme.spacing(2),
-   backgroundColor: '#f5f5f5',
+   backgroundColor: '#f5f5f6',
 }))
 
 const ReviewsPage = () => {
